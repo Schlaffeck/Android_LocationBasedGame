@@ -4,6 +4,7 @@
         <variable
             name="vm"
             type="com.slamcode.testgame.viewmodels.TrackerDataViewModel"/>
+        <import type="android.view.View"/>
     </data>
 <LinearLayout
     android:layout_margin="@dimen/fab_margin"
@@ -14,9 +15,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Your location Is:"/>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text='@{String.format("Latitude: %d, Longitude: %d", vm.location.latitude, vm.location.longitude) }'/>
+        android:visibility="@{vm.location.determined ? View.VISIBLE : View.GONE}"
+        android:text="Unknown"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="@{vm.location.determined ? View.GONE : View.VISIBLE}"
+        android:text='@{String.format("Latitude: %f, Longitude: %f", vm.location.latitude, vm.location.longitude) }'/>
 </LinearLayout>
 </layout>

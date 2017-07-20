@@ -27,7 +27,7 @@ public class TrackerDataViewModel extends BaseObservable {
             location = this.locationTracker.getLastKnownLocation();
 
         if (location == null)
-            return null;
+            return new LocationData();
 
         return new LocationData(location.getLatitude(), location.getLongitude());
     }

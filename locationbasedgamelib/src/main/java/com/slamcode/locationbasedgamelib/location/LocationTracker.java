@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 
 import com.slamcode.locationbasedgamelib.permission.PermissionRequestor;
 import com.slamcode.locationbasedgamelib.general.Configurable;
@@ -49,8 +50,8 @@ public final class LocationTracker extends Service implements LocationListener, 
         if(!this.isNetworkEnabled && !this.isLocationProviderEnabled)
             return result;
 
-        if (ActivityCompat.checkSelfPermission(
-            this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+        if (ContextCompat.checkSelfPermission(
+                this.mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
             && ActivityCompat.checkSelfPermission(
                     this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
             && !this.requestLocationPermissions())
@@ -59,7 +60,8 @@ public final class LocationTracker extends Service implements LocationListener, 
         if (this.isNetworkEnabled) {
             result = this.manager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
         }
-        else if(isLocationProviderEnabled){
+
+        if(result == null && isLocationProviderEnabled){
             result = this.manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         }
 
@@ -156,8 +158,7 @@ public final class LocationTracker extends Service implements LocationListener, 
     }
 
     private void setupUpdates(String providerName) {
-        if (ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+        if (ContextCompat.checkSelfPermission(this.mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && !this.requestLocationPermissions())
                     return;
