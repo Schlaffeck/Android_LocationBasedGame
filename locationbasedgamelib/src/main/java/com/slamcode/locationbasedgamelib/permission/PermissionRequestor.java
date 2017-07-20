@@ -10,9 +10,16 @@ public interface PermissionRequestor {
      * Sends request for given permission and synchronously waits for result whether permission was granted or not
      * @param permissions Set of permissions to request for
      * @param permissionRequestCode Request code
-     * @return Flag indicating whether [ermission was granted or not
+     * @return Flag indicating whether permission was granted or not
      */
-    boolean requestPermissions(String[] permissions, int permissionRequestCode);
+    boolean requestPermissionsAndWait(String[] permissions, int permissionRequestCode);
+
+    /**
+     * Sends request for permission and returns. Result of the request can be handled by listener.
+     * @param permissions Permissions to request for
+     * @param permissionRequestCode Request code
+     */
+    void requestPermissions(String[] permissions, int permissionRequestCode);
 
     void addRequestListener(RequestListener listener);
 

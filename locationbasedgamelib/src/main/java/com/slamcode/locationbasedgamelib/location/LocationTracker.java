@@ -36,7 +36,7 @@ public final class LocationTracker extends Service implements LocationListener, 
 
     private Collection<ConfigurationChangedListener<LocationTrackerConfiguration>> configurationChangedListeners = new ArrayList<>();
 
-    LocationTracker(Context context, LocationTrackerConfiguration configuration, PermissionRequestor permissionRequestor) {
+    public LocationTracker(Context context, LocationTrackerConfiguration configuration, PermissionRequestor permissionRequestor) {
         this.mContext = context;
         this.permissionRequestor = permissionRequestor;
         this.configure(configuration);
@@ -170,6 +170,6 @@ public final class LocationTracker extends Service implements LocationListener, 
 
     private boolean requestLocationPermissions()
     {
-        return this.permissionRequestor.requestPermissions(new String[] { Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION }, PermissionRequestCodes.LOCATION_ACCESS_CODE);
+        return this.permissionRequestor.requestPermissionsAndWait(new String[] { Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION }, PermissionRequestCodes.LOCATION_ACCESS_CODE);
     }
 }

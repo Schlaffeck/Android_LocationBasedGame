@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">LocationBasedGame</string>
+    <string name="title_activity_tracker">TrackerActivity</string>
 </resources>
