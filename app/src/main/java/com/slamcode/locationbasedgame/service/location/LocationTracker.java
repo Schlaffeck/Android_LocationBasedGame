@@ -14,6 +14,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 
 import com.slamcode.locationbasedgame.general.Configurable;
+import com.slamcode.locationbasedgame.permission.PermissionRequestCodes;
+import com.slamcode.locationbasedgame.permission.PermissionRequestor;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,6 +28,7 @@ public final class LocationTracker extends Service implements LocationListener, 
 
     private Location lastKnownLocation;
     private Context mContext;
+    private final PermissionRequestor permissionRequestor;
     private boolean isLocationProviderEnabled;
     private boolean isNetworkEnabled;
     private LocationManager manager;
@@ -33,8 +36,9 @@ public final class LocationTracker extends Service implements LocationListener, 
 
     private Collection<ConfigurationChangedListener<LocationTrackerConfiguration>> configurationChangedListeners = new ArrayList<>();
 
-    LocationTracker(Context context, LocationTrackerConfiguration configuration) {
+    LocationTracker(Context context, LocationTrackerConfiguration configuration, PermissionRequestor permissionRequestor) {
         this.mContext = context;
+        this.permissionRequestor = permissionRequestor;
         this.configure(configuration);
         this.setupServices();
         this.lastKnownLocation = this.getLocation();
@@ -45,17 +49,12 @@ public final class LocationTracker extends Service implements LocationListener, 
         if(!this.isNetworkEnabled && !this.isLocationProviderEnabled)
             return result;
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return null;
-        }
+        if (ActivityCompat.checkSelfPermission(
+            this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+            && ActivityCompat.checkSelfPermission(
+                    this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+            && !this.requestLocationPermissions())
+                return result;
 
         if (this.isNetworkEnabled) {
             result = this.manager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
@@ -150,49 +149,27 @@ public final class LocationTracker extends Service implements LocationListener, 
         this.manager = (LocationManager) mContext.getSystemService(LOCATION_SERVICE);
 
         if(this.isNetworkEnabled = manager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
-        {
-            this.setupNetworkLocationUpdates();
-        }
+            this.setupUpdates(LocationManager.NETWORK_PROVIDER);
 
         if(this.isLocationProviderEnabled = manager.isProviderEnabled(LocationManager.GPS_PROVIDER))
-        {
-            this.setupLocationProviderUpdates();
-        }
+            this.setupUpdates(LocationManager.GPS_PROVIDER);
     }
 
-    private void setupNetworkLocationUpdates() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
+    private void setupUpdates(String providerName) {
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && !this.requestLocationPermissions())
+                    return;
         this.manager.requestLocationUpdates(
-                LocationManager.NETWORK_PROVIDER,
+                providerName,
                 this.configuration.getMinimalTimeBetweenUpdatesMillis(),
                 this.configuration.getMinimalTimeBetweenUpdatesMillis(),
                 this);
     }
 
-    private void setupLocationProviderUpdates() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        this.manager.requestLocationUpdates(
-                LocationManager.GPS_PROVIDER,
-                this.configuration.getMinimalTimeBetweenUpdatesMillis(),
-                this.configuration.getMinimalTimeBetweenUpdatesMillis(),
-                this);
+    private boolean requestLocationPermissions()
+    {
+        return this.permissionRequestor.requestPermissions(new String[] { Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION }, PermissionRequestCodes.LOCATION_ACCESS_CODE);
     }
 }
