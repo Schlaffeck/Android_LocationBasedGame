@@ -14,6 +14,6 @@
     tools:context="com.slamcode.testgame.TrackerActivity"
     tools:showIn="@layout/activity_tracker">
 
-    <include layout="@layout/trackerdata_view"/>
+    <include layout="@layout/tracker_data_view"/>
 </android.support.constraint.ConstraintLayout>
 </layout>
