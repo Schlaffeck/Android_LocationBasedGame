@@ -1,25 +1,14 @@
 package com.slamcode.locationbasedgamelib.permission;
 
+import java.util.concurrent.Future;
+
 /**
  * Interface representing simple set of methods for requesting permissions within current app context
  */
 
 public interface PermissionRequestor {
 
-    /**
-     * Sends request for given permission and synchronously waits for result whether permission was granted or not
-     * @param permissions Set of permissions to request for
-     * @param permissionRequestCode Request code
-     * @return Flag indicating whether permission was granted or not
-     */
-    boolean requestPermissionsAndWait(String[] permissions, int permissionRequestCode);
-
-    /**
-     * Sends request for permission and returns. Result of the request can be handled by listener.
-     * @param permissions Permissions to request for
-     * @param permissionRequestCode Request code
-     */
-    void requestPermissions(String[] permissions, int permissionRequestCode);
+    void requestPermissions(PermissionRequest request);
 
     void addRequestListener(RequestListener listener);
 
@@ -27,6 +16,24 @@ public interface PermissionRequestor {
 
     void clearRequestListeners();
 
+    class PermissionRequest
+    {
+        private String[] permissions;
+        private int permissionRequestCode;
+
+        public PermissionRequest(String[] permissions, int permissionRequestCode) {
+            this.permissions = permissions;
+            this.permissionRequestCode = permissionRequestCode;
+        }
+
+        public String[] getPermissions() {
+            return permissions;
+        }
+
+        public int getPermissionRequestCode() {
+            return permissionRequestCode;
+        }
+    }
     interface RequestListener{
 
         void requestFinished(int requestCode, boolean permissionGranted);

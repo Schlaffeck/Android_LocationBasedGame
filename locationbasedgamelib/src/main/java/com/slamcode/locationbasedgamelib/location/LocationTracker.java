@@ -11,12 +11,11 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 
-import com.slamcode.locationbasedgamelib.permission.PermissionRequestor;
 import com.slamcode.locationbasedgamelib.general.Configurable;
 import com.slamcode.locationbasedgamelib.permission.PermissionRequestCodes;
+import com.slamcode.locationbasedgamelib.permission.PermissionRequestor;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,7 +24,7 @@ import java.util.Collection;
  * Simple service for tracking and updating current location
  */
 
-public final class LocationTracker extends Service implements LocationListener, Configurable<LocationTrackerConfiguration> {
+public final class LocationTracker extends Service implements LocationListener, Configurable<LocationTrackerConfiguration>, PermissionRequestor.RequestListener {
 
     private Location lastKnownLocation;
     private Context mContext;
@@ -43,6 +42,7 @@ public final class LocationTracker extends Service implements LocationListener, 
         this.configure(configuration);
         this.setupServices();
         this.lastKnownLocation = this.getLocation();
+        this.permissionRequestor.addRequestListener(this);
     }
 
     public Location getLocation() {
@@ -52,10 +52,11 @@ public final class LocationTracker extends Service implements LocationListener, 
 
         if (ContextCompat.checkSelfPermission(
                 this.mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-            && ActivityCompat.checkSelfPermission(
-                    this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
-            && !this.requestLocationPermissions())
-                return result;
+            && ContextCompat.checkSelfPermission(
+                    this.mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            this.requestLocationPermissions();
+            return null;
+        }
 
         if (this.isNetworkEnabled) {
             result = this.manager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
@@ -158,10 +159,12 @@ public final class LocationTracker extends Service implements LocationListener, 
     }
 
     private void setupUpdates(String providerName) {
-        if (ContextCompat.checkSelfPermission(this.mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && !this.requestLocationPermissions())
-                    return;
+        boolean fineLocationGranted = ContextCompat.checkSelfPermission(this.mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED;
+        boolean coarseLocationGranted = ContextCompat.checkSelfPermission(this.mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED;
+        if (!fineLocationGranted && !coarseLocationGranted) {
+            this.requestLocationPermissions();
+                return;
+        }
         this.manager.requestLocationUpdates(
                 providerName,
                 this.configuration.getMinimalTimeBetweenUpdatesMillis(),
@@ -169,8 +172,14 @@ public final class LocationTracker extends Service implements LocationListener, 
                 this);
     }
 
-    private boolean requestLocationPermissions()
+    private void requestLocationPermissions()
     {
-        return this.permissionRequestor.requestPermissionsAndWait(new String[] { Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION }, PermissionRequestCodes.LOCATION_ACCESS_CODE);
+        this.permissionRequestor.requestPermissions(PermissionRequestCodes.LOCATION_PERMISSION_REQUEST);
+    }
+
+    @Override
+    public void requestFinished(int requestCode, boolean permissionGranted) {
+        if(requestCode == PermissionRequestCodes.LOCATION_ACCESS_CODE && permissionGranted)
+            this.getLocation();
     }
 }
