@@ -7,6 +7,7 @@
         <import type="android.view.View"/>
     </data>
 <LinearLayout
+    android:id="@+id/tracker_data_view"
     android:layout_margin="@dimen/fab_margin"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -19,12 +20,6 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="@{vm.location.determined ? View.VISIBLE : View.GONE}"
-        android:text="Unknown"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="@{vm.location.determined ? View.GONE : View.VISIBLE}"
-        android:text='@{String.format("Latitude: %f, Longitude: %f", vm.location.latitude, vm.location.longitude) }'/>
+        android:text='@{!vm.location.determined ? "Unknown" : String.format("Latitude: %f, Longitude: %f", vm.location.latitude, vm.location.longitude) }'/>
 </LinearLayout>
 </layout>

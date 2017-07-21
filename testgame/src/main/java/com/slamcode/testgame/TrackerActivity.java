@@ -10,14 +10,13 @@ import android.support.v7.widget.Toolbar;
 
 import com.slamcode.locationbasedgamelib.location.LocationTracker;
 import com.slamcode.locationbasedgamelib.location.LocationTrackerConfiguration;
-import com.slamcode.locationbasedgamelib.permission.PermissionRequestCodes;
 import com.slamcode.locationbasedgamelib.permission.PermissionRequestor;
 import com.slamcode.testgame.databinding.ActivityTrackerBinding;
+import com.slamcode.testgame.databinding.TrackerDataViewBinding;
 import com.slamcode.testgame.viewmodels.TrackerDataViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Semaphore;
 
 public class TrackerActivity extends AppCompatActivity implements PermissionRequestor{
 
@@ -31,12 +30,14 @@ public class TrackerActivity extends AppCompatActivity implements PermissionRequ
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tracker);
         ActivityTrackerBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_tracker);
+        TrackerDataViewBinding trackerDataViewBinding = DataBindingUtil.findBinding(findViewById(R.id.tracker_data_view));
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         this.locationTracker = new LocationTracker(this, new LocationTrackerConfiguration(), this);
         this.viewModel = new TrackerDataViewModel(this.locationTracker);
         binding.setVm(this.viewModel);
+        trackerDataViewBinding.setVm(this.viewModel);
     }
 
     @Override
