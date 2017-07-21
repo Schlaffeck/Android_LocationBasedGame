@@ -34,7 +34,7 @@ public class TrackerActivity extends AppCompatActivity implements PermissionRequ
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        this.locationTracker = new LocationTracker(this, new LocationTrackerConfiguration(), this);
+        this.locationTracker = new LocationTracker(this, new LocationTrackerConfiguration(1, 30_000), this);
         this.viewModel = new TrackerDataViewModel(this.locationTracker);
         binding.setVm(this.viewModel);
         trackerDataViewBinding.setVm(this.viewModel);

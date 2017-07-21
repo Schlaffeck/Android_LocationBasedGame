@@ -14,7 +14,7 @@ public final class LocationTrackerConfiguration {
     {
     }
 
-    public LocationTrackerConfiguration(long minimalDistanceMeters, long minimalTimeMillis)
+    public LocationTrackerConfiguration(float minimalDistanceMeters, long minimalTimeMillis)
     {
         this.minimalDistanceToUpdateLocationMeters = minimalDistanceMeters;
         this.minimalTimeBetweenUpdatesMillis = minimalTimeMillis;
