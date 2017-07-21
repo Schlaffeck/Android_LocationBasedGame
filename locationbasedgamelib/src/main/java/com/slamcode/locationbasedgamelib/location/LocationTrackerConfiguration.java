@@ -6,9 +6,9 @@ package com.slamcode.locationbasedgamelib.location;
 
 public final class LocationTrackerConfiguration {
 
-    private long minimalDistanceToUpdateLocationMeters = 10;
+    private float minimalDistanceToUpdateLocationMeters;
 
-    private long minimalTimeBetweenUpdatesMillis = 60_000;
+    private long minimalTimeBetweenUpdatesMillis;
 
     public LocationTrackerConfiguration()
     {
@@ -20,7 +20,7 @@ public final class LocationTrackerConfiguration {
         this.minimalTimeBetweenUpdatesMillis = minimalTimeMillis;
     }
 
-    public long getMinimalDistanceToUpdateLocationMeters() {
+    public float getMinimalDistanceToUpdateLocationMeters() {
         return minimalDistanceToUpdateLocationMeters;
     }
 

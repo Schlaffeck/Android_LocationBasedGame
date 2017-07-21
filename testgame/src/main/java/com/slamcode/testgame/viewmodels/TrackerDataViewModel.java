@@ -4,6 +4,8 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.DataBindingUtil;
 import android.location.Location;
+import android.location.LocationListener;
+import android.os.Bundle;
 
 import com.android.databinding.library.baseAdapters.BR;
 import com.slamcode.locationbasedgamelib.location.LocationTracker;
@@ -19,6 +21,7 @@ public class TrackerDataViewModel extends BaseObservable {
 
     public TrackerDataViewModel(LocationTracker locationTracker) {
         this.locationTracker = locationTracker;
+        this.locationTracker.addLocationListener(new TrackerLocationListener());
     }
 
     @Bindable
@@ -39,4 +42,26 @@ public class TrackerDataViewModel extends BaseObservable {
         notifyPropertyChanged(BR.location);
     }
 
+    private class TrackerLocationListener implements LocationListener{
+
+        @Override
+        public void onLocationChanged(Location location) {
+            refreshLocation();
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+            refreshLocation();
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+            refreshLocation();
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+            refreshLocation();
+        }
+    }
 }

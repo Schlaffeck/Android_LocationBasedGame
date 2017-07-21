@@ -19,6 +19,7 @@ import com.slamcode.locationbasedgamelib.permission.PermissionRequestor;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Simple service for tracking and updating current location
@@ -29,10 +30,10 @@ public final class LocationTracker extends Service implements LocationListener, 
     private Location lastKnownLocation;
     private Context mContext;
     private final PermissionRequestor permissionRequestor;
-    private boolean isLocationProviderEnabled;
-    private boolean isNetworkEnabled;
     private LocationManager manager;
     private LocationTrackerConfiguration configuration;
+
+    private List<LocationListener> locationListeners = new ArrayList<>();
 
     private Collection<ConfigurationChangedListener<LocationTrackerConfiguration>> configurationChangedListeners = new ArrayList<>();
 
@@ -46,28 +47,12 @@ public final class LocationTracker extends Service implements LocationListener, 
     }
 
     public Location getLocation() {
-        Location result = null;
-        if(!this.isNetworkEnabled && !this.isLocationProviderEnabled)
-            return result;
 
-        if (ContextCompat.checkSelfPermission(
-                this.mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-            && ContextCompat.checkSelfPermission(
-                    this.mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-            this.requestLocationPermissions();
-            return null;
-        }
-
-        if (this.isNetworkEnabled) {
-            result = this.manager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        }
-
-        if(result == null && isLocationProviderEnabled){
-            result = this.manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        }
+        Location result = this.getBestLocation();
 
         if(result != null)
             this.lastKnownLocation = result;
+
         return result;
     }
 
@@ -80,35 +65,28 @@ public final class LocationTracker extends Service implements LocationListener, 
     @Override
     public void onLocationChanged(Location location) {
         this.lastKnownLocation = location;
+        for(LocationListener locationListener : this.locationListeners)
+            locationListener.onLocationChanged(location);
     }
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
-
+        for(LocationListener locationListener : this.locationListeners)
+            locationListener.onStatusChanged(provider, status, extras);
     }
 
     @Override
     public void onProviderEnabled(String provider) {
-        switch (provider) {
-            case LocationManager.GPS_PROVIDER:
-                this.isLocationProviderEnabled = true;
-                break;
-            case LocationManager.NETWORK_PROVIDER:
-                this.isNetworkEnabled = true;
-                break;
-        }
+
+        for(LocationListener locationListener : this.locationListeners)
+            locationListener.onProviderEnabled(provider);
     }
 
     @Override
     public void onProviderDisabled(String provider) {
-        switch (provider) {
-            case LocationManager.GPS_PROVIDER:
-                this.isLocationProviderEnabled = false;
-                break;
-            case LocationManager.NETWORK_PROVIDER:
-                this.isNetworkEnabled = false;
-                break;
-        }
+
+        for(LocationListener locationListener : this.locationListeners)
+            locationListener.onProviderDisabled(provider);
     }
 
     public Location getLastKnownLocation() {
@@ -148,27 +126,45 @@ public final class LocationTracker extends Service implements LocationListener, 
         }
     }
 
+    @Override
+    public void requestFinished(int requestCode, boolean permissionGranted) {
+        if(requestCode == PermissionRequestCodes.LOCATION_ACCESS_CODE && permissionGranted) {
+            this.getLocation();
+        }
+    }
+
+    public void addLocationListener(LocationListener locationListener)
+    {
+        this.locationListeners.add(locationListener);
+    }
+
+    public void removeLocationListener(LocationListener locationListener)
+    {
+        this.locationListeners.remove(locationListener);
+    }
+
+    public void clearLocationListeners()
+    {
+        this.locationListeners.clear();
+    }
+
     private void setupServices() {
         this.manager = (LocationManager) mContext.getSystemService(LOCATION_SERVICE);
 
-        if(this.isNetworkEnabled = manager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
-            this.setupUpdates(LocationManager.NETWORK_PROVIDER);
-
-        if(this.isLocationProviderEnabled = manager.isProviderEnabled(LocationManager.GPS_PROVIDER))
-            this.setupUpdates(LocationManager.GPS_PROVIDER);
+        for(String provider : this.manager.getAllProviders())
+            this.setupLocationProviderUpdates(provider);
     }
 
-    private void setupUpdates(String providerName) {
+    private void setupLocationProviderUpdates(String providerName) {
         boolean fineLocationGranted = ContextCompat.checkSelfPermission(this.mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED;
         boolean coarseLocationGranted = ContextCompat.checkSelfPermission(this.mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED;
         if (!fineLocationGranted && !coarseLocationGranted) {
             this.requestLocationPermissions();
-                return;
         }
         this.manager.requestLocationUpdates(
                 providerName,
                 this.configuration.getMinimalTimeBetweenUpdatesMillis(),
-                this.configuration.getMinimalTimeBetweenUpdatesMillis(),
+                this.configuration.getMinimalDistanceToUpdateLocationMeters(),
                 this);
     }
 
@@ -177,9 +173,30 @@ public final class LocationTracker extends Service implements LocationListener, 
         this.permissionRequestor.requestPermissions(PermissionRequestCodes.LOCATION_PERMISSION_REQUEST);
     }
 
-    @Override
-    public void requestFinished(int requestCode, boolean permissionGranted) {
-        if(requestCode == PermissionRequestCodes.LOCATION_ACCESS_CODE && permissionGranted)
-            this.getLocation();
+    private Location getBestLocation()
+    {
+        Location location = null;
+
+        if (ContextCompat.checkSelfPermission(
+                this.mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(
+                this.mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            this.requestLocationPermissions();
+            return null;
+        }
+
+        for(String provider : this.manager.getProviders(true))
+        {
+            Location providerLocation = this.manager.getLastKnownLocation(provider);
+            if(providerLocation != null) {
+                if (location == null
+                        || providerLocation.hasAccuracy() && providerLocation.getAccuracy() > location.getAccuracy())
+                {
+                    location = providerLocation;
+                }
+            }
+        }
+
+        return location;
     }
 }
