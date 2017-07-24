@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:bind="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="vm"
+            type="com.slamcode.locationbasedgamelib.model.GameTaskData"/>
+    </data>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/header_font_size"
+        android:text="@{vm.gameTaskHeader.headerTitle}"/>
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            bind:gameTaskContentItems="@{vm.gameTaskContent}"/>
+</LinearLayout>
+</layout>
