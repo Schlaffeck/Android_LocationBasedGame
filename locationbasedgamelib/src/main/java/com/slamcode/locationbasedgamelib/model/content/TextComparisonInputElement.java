@@ -4,7 +4,9 @@ import com.slamcode.locationbasedgamelib.model.InputContent;
 import com.slamcode.locationbasedgamelib.model.InputResult;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Represents input used with text field to input by user and button or other action item to commit the
@@ -13,13 +15,37 @@ import java.util.List;
 
 public final class TextComparisonInputElement implements InputContent {
 
+    public final static TextComparisonConfiguration IgnoreAllConfiguration = new TextComparisonConfiguration(true, true);
     public static final String CONTENT_TYPE = "TEXT_COMPARISON_INPUT";
 
     public final static int CONTENT_TYPE_ID = CONTENT_TYPE.hashCode();
+    private final TextComparisonConfiguration comparisonConfiguration;
 
     private List<OnInputCommittedListener> listeners = new ArrayList<>();
     private String inputText;
-    private String commitText;
+    private List<String> acceptableInputValues = new ArrayList<>();
+
+    public TextComparisonInputElement(String expectedInputValue)
+    {
+        this(expectedInputValue, IgnoreAllConfiguration);
+    }
+
+    public TextComparisonInputElement(Collection<String> acceptableInputValues)
+    {
+        this(acceptableInputValues, IgnoreAllConfiguration);
+    }
+
+    public TextComparisonInputElement(String expectedInputValue, TextComparisonConfiguration comparisonConfiguration)
+    {
+        this.comparisonConfiguration = comparisonConfiguration;
+        this.acceptableInputValues.add(expectedInputValue);
+    }
+
+    public TextComparisonInputElement(Collection<String> acceptableInputValues, TextComparisonConfiguration comparisonConfiguration)
+    {
+        this.comparisonConfiguration = comparisonConfiguration;
+        this.acceptableInputValues.addAll(acceptableInputValues);
+    }
 
     @Override
     public String getContentType() {
@@ -41,17 +67,37 @@ public final class TextComparisonInputElement implements InputContent {
         this.inputText = inputText;
     }
 
-    public String getCommitText() {
-        return commitText;
-    }
-
-    public void setCommitText(String commitText) {
-        this.commitText = commitText;
+    public Iterable<String> getAcceptableInputValues()
+    {
+        return this.acceptableInputValues;
     }
 
     @Override
     public InputResult commitInput() {
         InputResult result = new InputResult();
+
+        String input = this.inputText;
+        if(this.comparisonConfiguration.ignoreCase)
+            input = this.inputText.toLowerCase();
+
+        if(this.comparisonConfiguration.ignoreNonAlphaNumericCharacters)
+            input = input.replace("[\\W]", "");
+
+        for (int i = 0; i < this.acceptableInputValues.size() && !result.isInputCorrect(); i++) {
+            String acceptableInput = this.acceptableInputValues.get(i);
+            if(this.comparisonConfiguration.ignoreCase) {
+                acceptableInput = acceptableInput.toLowerCase();
+                input = this.inputText.toLowerCase();
+            }
+
+            if(this.comparisonConfiguration.ignoreNonAlphaNumericCharacters)
+            {
+                acceptableInput = acceptableInput.replace("[\\W]", "");
+            }
+
+            result.setInputCorrect(input.equals(acceptableInput));
+        }
+        
         this.onInputCommitted(result);
         return result;
     }
@@ -78,4 +124,24 @@ public final class TextComparisonInputElement implements InputContent {
         this.listeners.clear();
     }
 
+
+    public static class TextComparisonConfiguration
+    {
+        private boolean ignoreCase;
+
+        private boolean ignoreNonAlphaNumericCharacters;
+
+        public TextComparisonConfiguration(boolean ignoreCase, boolean ignoreNonAlphaNumericCharacters) {
+            this.ignoreCase = ignoreCase;
+            this.ignoreNonAlphaNumericCharacters = ignoreNonAlphaNumericCharacters;
+        }
+
+        public boolean isIgnoreCase() {
+            return ignoreCase;
+        }
+
+        public boolean isIgnoreNonAlphaNumericCharacters() {
+            return ignoreNonAlphaNumericCharacters;
+        }
+    }
 }
