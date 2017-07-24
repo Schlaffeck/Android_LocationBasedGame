@@ -5,4 +5,17 @@ package com.slamcode.locationbasedgamelib.model;
  */
 
 public interface DisplayContent extends GameTaskContentElement {
+
+    void onDisplayContentChanged();
+
+    void addOnDisplayChangedListener(OnDisplayContentChangedListener listener);
+
+    void removeOnDisplayChangedListener(OnDisplayContentChangedListener listener);
+
+    void clearOnDisplayChangedListeners();
+
+    interface OnDisplayContentChangedListener{
+
+        void onDisplayContentChanged();
+    }
 }
