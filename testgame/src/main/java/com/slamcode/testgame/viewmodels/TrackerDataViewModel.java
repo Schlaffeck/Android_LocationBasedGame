@@ -24,29 +24,39 @@ import java.util.Date;
 public class TrackerDataViewModel extends BaseObservable {
 
     private LocationTracker locationTracker;
+    private LocationData currentLocation;
+    private final LocationData targetLocation;
     private String lastLog;
 
-    public TrackerDataViewModel(LocationTracker locationTracker) {
+    public TrackerDataViewModel(LocationTracker locationTracker, LocationData targetLocation) {
         this.locationTracker = locationTracker;
+        this.targetLocation = targetLocation;
         this.locationTracker.addLocationListener(new TrackerLocationListener());
     }
 
     @Bindable
     public LocationData getLocation() {
-        LocationData result = new LocationData();
+        this.currentLocation = new LocationData();
         Location location = this.locationTracker.getLocation();
         if(location == null)
             location = this.locationTracker.getLastKnownLocation();
 
         if (location != null)
-            result = new LocationData(location.getLatitude(), location.getLongitude());
+            this.currentLocation = new LocationData(location.getLatitude(), location.getLongitude());
 
-        return result;
+        return this.currentLocation;
     }
 
     public void refreshLocation()
     {
         notifyPropertyChanged(BR.location);
+        notifyPropertyChanged(BR.distance);
+    }
+
+    @Bindable
+    public float getDistance()
+    {
+        return this.targetLocation.countDistanceFrom(this.currentLocation);
     }
 
     @Bindable
