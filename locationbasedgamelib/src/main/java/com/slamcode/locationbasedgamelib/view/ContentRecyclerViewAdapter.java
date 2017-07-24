@@ -15,12 +15,12 @@ import java.util.List;
  * General adapter for recycler view control assigning provided layouts to game task content elements
  */
 
-public class GameTaskContentRecyclerViewAdapter extends RecyclerView.Adapter<GameTaskContentRecyclerViewAdapter.ViewHolder> {
+public abstract class ContentRecyclerViewAdapter<ViewHolderType extends ContentRecyclerViewAdapter.ViewHolder> extends RecyclerView.Adapter<ViewHolderType> {
 
     private final List<GameTaskContentElement> elements;
     private final ContentLayoutProvider layoutProvider;
 
-    public GameTaskContentRecyclerViewAdapter(Iterable<GameTaskContentElement> elements, ContentLayoutProvider layoutProvider)
+    public ContentRecyclerViewAdapter(Iterable<GameTaskContentElement> elements, ContentLayoutProvider layoutProvider)
     {
         this.elements = new ArrayList<>();
         for (GameTaskContentElement element : elements)
@@ -29,14 +29,14 @@ public class GameTaskContentRecyclerViewAdapter extends RecyclerView.Adapter<Gam
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolderType onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(this.layoutProvider.getGameTaskContentElementLayoutId(viewType), parent, false);
-        return new ViewHolder(view);
+        return this.createNewViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolderType holder, int position) {
         holder.bindToModel(this.elements.get(position));
     }
 
@@ -50,15 +50,14 @@ public class GameTaskContentRecyclerViewAdapter extends RecyclerView.Adapter<Gam
         return this.elements.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    protected abstract ViewHolderType createNewViewHolder(View itemView);
+
+    public static abstract class ViewHolder extends RecyclerView.ViewHolder{
 
         public ViewHolder(View itemView) {
             super(itemView);
         }
 
-        public void bindToModel(GameTaskContentElement model)
-        {
-            //todo: add binding implementation
-        }
+        public abstract void bindToModel(GameTaskContentElement model);
     }
 }
