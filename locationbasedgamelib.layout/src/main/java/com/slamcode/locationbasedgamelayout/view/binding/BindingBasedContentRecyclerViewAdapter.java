@@ -1,4 +1,4 @@
-package com.slamcode.locationbasedgamelayout.view;
+package com.slamcode.locationbasedgamelayout.view.binding;
 
 import android.view.View;
 

@@ -31,6 +31,11 @@ public final class DisplayPictureElement implements DisplayContent {
         return CONTENT_TYPE_ID;
     }
 
+    public boolean isPathProvided()
+    {
+        return this.picturePath != null && this.picturePath != "";
+    }
+
     public int getPictureResourceId() {
         return pictureResourceId;
     }

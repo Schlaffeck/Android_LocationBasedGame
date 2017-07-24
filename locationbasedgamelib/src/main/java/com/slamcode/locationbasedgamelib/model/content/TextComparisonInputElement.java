@@ -19,6 +19,7 @@ public final class TextComparisonInputElement implements InputContent {
 
     private List<OnInputCommittedListener> listeners = new ArrayList<>();
     private String inputText;
+    private String commitText;
 
     @Override
     public String getContentType() {
@@ -38,6 +39,14 @@ public final class TextComparisonInputElement implements InputContent {
         if(this.inputText == inputText)
             return;
         this.inputText = inputText;
+    }
+
+    public String getCommitText() {
+        return commitText;
+    }
+
+    public void setCommitText(String commitText) {
+        this.commitText = commitText;
     }
 
     @Override
@@ -68,4 +77,5 @@ public final class TextComparisonInputElement implements InputContent {
     public void clearOnInputCommittedListeners() {
         this.listeners.clear();
     }
+
 }
