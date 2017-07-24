@@ -15,12 +15,19 @@ public final class TextComparisonInputElement implements InputContent {
 
     public static final String CONTENT_TYPE = "TEXT_COMPARISON_INPUT";
 
+    public final static int CONTENT_TYPE_ID = CONTENT_TYPE.hashCode();
+
     private List<OnInputCommittedListener> listeners = new ArrayList<>();
     private String inputText;
 
     @Override
     public String getContentType() {
         return CONTENT_TYPE;
+    }
+
+    @Override
+    public int getContentTypeId() {
+        return CONTENT_TYPE_ID;
     }
 
     public String getInputText() {

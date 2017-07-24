@@ -13,6 +13,8 @@ public final class DisplayPictureElement implements DisplayContent {
 
     public final static String CONTENT_TYPE = "DISPLAY_PICTURE";
 
+    public final static int CONTENT_TYPE_ID = CONTENT_TYPE.hashCode();
+
     private List<OnDisplayContentChangedListener> listeners = new ArrayList<>();
 
     private int pictureResourceId;
@@ -22,6 +24,11 @@ public final class DisplayPictureElement implements DisplayContent {
     @Override
     public String getContentType() {
         return CONTENT_TYPE;
+    }
+
+    @Override
+    public int getContentTypeId() {
+        return CONTENT_TYPE_ID;
     }
 
     public int getPictureResourceId() {

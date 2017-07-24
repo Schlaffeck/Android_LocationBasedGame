@@ -13,6 +13,8 @@ public final class DisplayTextElement implements DisplayContent {
 
     public final static String CONTENT_TYPE = "DISPLAY_TEXT";
 
+    public final static int CONTENT_TYPE_ID = CONTENT_TYPE.hashCode();
+
     private List<OnDisplayContentChangedListener> listeners = new ArrayList<>();
 
     private String text;
@@ -20,6 +22,11 @@ public final class DisplayTextElement implements DisplayContent {
     @Override
     public String getContentType() {
         return CONTENT_TYPE;
+    }
+
+    @Override
+    public int getContentTypeId() {
+        return CONTENT_TYPE_ID;
     }
 
     public String getText() {

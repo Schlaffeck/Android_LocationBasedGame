@@ -1,1 +1,1 @@
-include ':testgame', ':locationbasedgamelib'
+include ':testgame', ':locationbasedgamelib', ':locationbasedgamelib.layout'

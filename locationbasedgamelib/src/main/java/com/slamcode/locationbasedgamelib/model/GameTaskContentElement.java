@@ -11,4 +11,10 @@ public interface GameTaskContentElement {
      * @return content type
      */
     String getContentType();
+
+    /**
+     * Returns integer value of type of content identifier
+     * @return Numerical identifier of type of content
+     */
+    int getContentTypeId();
 }
