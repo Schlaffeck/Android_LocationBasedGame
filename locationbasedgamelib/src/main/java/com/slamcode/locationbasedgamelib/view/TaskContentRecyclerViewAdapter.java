@@ -15,12 +15,12 @@ import java.util.List;
  * General adapter for recycler view control assigning provided layouts to game task content elements
  */
 
-public abstract class ContentRecyclerViewAdapter<ViewHolderType extends ContentRecyclerViewAdapter.ViewHolder> extends RecyclerView.Adapter<ViewHolderType> {
+public abstract class TaskContentRecyclerViewAdapter<ViewHolderType extends ModelBasedViewHolder<GameTaskContentElement>> extends RecyclerView.Adapter<ViewHolderType> {
 
     private final List<GameTaskContentElement> elements;
     private final ContentLayoutProvider layoutProvider;
 
-    public ContentRecyclerViewAdapter(Iterable<GameTaskContentElement> elements, ContentLayoutProvider layoutProvider)
+    public TaskContentRecyclerViewAdapter(Iterable<GameTaskContentElement> elements, ContentLayoutProvider layoutProvider)
     {
         this.elements = new ArrayList<>();
         for (GameTaskContentElement element : elements)
@@ -51,13 +51,4 @@ public abstract class ContentRecyclerViewAdapter<ViewHolderType extends ContentR
     }
 
     protected abstract ViewHolderType createNewViewHolder(View itemView);
-
-    public static abstract class ViewHolder extends RecyclerView.ViewHolder{
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-        }
-
-        public abstract void bindToModel(GameTaskContentElement model);
-    }
 }

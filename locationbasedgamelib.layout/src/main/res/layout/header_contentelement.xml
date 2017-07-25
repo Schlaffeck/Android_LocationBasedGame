@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@{vm.headerTitle}"/>
+        android:textSize="@dimen/header_font_size"
+        android:text="@{vm.headerTitle, default=@string/headerElement_default_text}"/>
 </LinearLayout>
 </layout>

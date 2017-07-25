@@ -24,28 +24,31 @@ public final class TextComparisonInputElement implements InputContent {
     public final static int CONTENT_TYPE_ID = CONTENT_TYPE.hashCode();
     private final Comparator<String> comparator;
 
+    private String commitCommandName;
     private List<OnInputCommittedListener> listeners = new ArrayList<>();
     private String inputText;
     private List<String> acceptableInputValues = new ArrayList<>();
 
-    public TextComparisonInputElement(String expectedInputValue)
+    public TextComparisonInputElement(String expectedInputValue, String commitCommandName)
     {
-        this(expectedInputValue, IgnoreAllComparator);
+        this(expectedInputValue, commitCommandName, IgnoreAllComparator);
     }
 
-    public TextComparisonInputElement(Collection<String> acceptableInputValues)
+    public TextComparisonInputElement(Collection<String> acceptableInputValues, String commitCommandName)
     {
-        this(acceptableInputValues, IgnoreAllComparator);
+        this(acceptableInputValues, commitCommandName, IgnoreAllComparator);
     }
 
-    public TextComparisonInputElement(String expectedInputValue, Comparator<String> comparator)
+    public TextComparisonInputElement(String expectedInputValue, String commitCommandName, Comparator<String> comparator)
     {
+        this.commitCommandName = commitCommandName;
         this.comparator = comparator;
         this.acceptableInputValues.add(expectedInputValue);
     }
 
-    public TextComparisonInputElement(Collection<String> acceptableInputValues, Comparator<String> comparator)
+    public TextComparisonInputElement(Collection<String> acceptableInputValues, String commitCommandName, Comparator<String> comparator)
     {
+        this.commitCommandName = commitCommandName;
         this.comparator = comparator;
         this.acceptableInputValues.addAll(acceptableInputValues);
     }
@@ -106,6 +109,10 @@ public final class TextComparisonInputElement implements InputContent {
     @Override
     public void clearOnInputCommittedListeners() {
         this.listeners.clear();
+    }
+
+    public String getCommitCommandName() {
+        return commitCommandName;
     }
 
 

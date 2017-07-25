@@ -3,4 +3,6 @@
     <dimen name="contentItem_margin">10dp</dimen>
 
     <dimen name="header_font_size">20sp</dimen>
+
+    <dimen name="button_minWidth" >150dp</dimen>
 </resources>

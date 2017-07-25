@@ -6,22 +6,23 @@ import android.view.View;
 
 import com.slamcode.locationbasedgamelayout.BR;
 import com.slamcode.locationbasedgamelib.model.GameTaskContentElement;
-import com.slamcode.locationbasedgamelib.view.ContentRecyclerViewAdapter;
+import com.slamcode.locationbasedgamelib.view.ModelBasedViewHolder;
+import com.slamcode.locationbasedgamelib.view.TaskContentRecyclerViewAdapter;
 
 /**
  * Adapter view holder setting bound view model instance for view
  */
 
-public final class BindingBasedViewHolder extends ContentRecyclerViewAdapter.ViewHolder {
+public final class BindableViewHolder<Model> extends ModelBasedViewHolder<Model> {
 
     public static final int VIEW_MODEL_BINDING_VARIABLE_ID = BR.vm;
 
-    public BindingBasedViewHolder(View itemView) {
+    public BindableViewHolder(View itemView) {
         super(itemView);
     }
 
     @Override
-    public void bindToModel(GameTaskContentElement model) {
+    public void bindToModel(Model model) {
 
             ViewDataBinding binding = DataBindingUtil.findBinding(this.itemView);
             if(binding == null)
