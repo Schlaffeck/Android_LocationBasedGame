@@ -14,7 +14,7 @@ import com.slamcode.locationbasedgamelib.model.GameTaskData;
 public class Bindings {
 
     @BindingAdapter("bind:gameTaskContentItems")
-    static void setGameTaskContentItems(RecyclerView recyclerView, GameTaskContent content)
+    public static void setGameTaskContentItems(RecyclerView recyclerView, GameTaskContent content)
     {
         BindableTaskContentRecyclerViewAdapter recyclerViewAdapter = new BindableTaskContentRecyclerViewAdapter(
                 content.getContentElements(),
@@ -23,7 +23,7 @@ public class Bindings {
     }
 
     @BindingAdapter("bind:gameTasks")
-    static void setGameTaskContentItems(RecyclerView recyclerView, Iterable<GameTaskData> items)
+    public static void setGameTaskContentItems(RecyclerView recyclerView, Iterable<GameTaskData> items)
     {
         BindableTasksListRecyclerViewAdapter recyclerViewAdapter = new BindableTasksListRecyclerViewAdapter(
                 items,
