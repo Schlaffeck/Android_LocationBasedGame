@@ -1,10 +1,13 @@
 package com.slamcode.locationbasedgamelib.model.content;
 
+import com.slamcode.locationbasedgamelib.general.Configurable;
+import com.slamcode.locationbasedgamelib.general.ConfigurableAbstract;
 import com.slamcode.locationbasedgamelib.model.InputContent;
 import com.slamcode.locationbasedgamelib.model.InputResult;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -15,11 +18,11 @@ import java.util.Objects;
 
 public final class TextComparisonInputElement implements InputContent {
 
-    public final static TextComparisonConfiguration IgnoreAllConfiguration = new TextComparisonConfiguration(true, true);
+    public final static TextInputComparator IgnoreAllComparator = new TextInputComparator(new TextComparisonConfiguration(true, true));
     public static final String CONTENT_TYPE = "TEXT_COMPARISON_INPUT";
 
     public final static int CONTENT_TYPE_ID = CONTENT_TYPE.hashCode();
-    private final TextComparisonConfiguration comparisonConfiguration;
+    private final Comparator<String> comparator;
 
     private List<OnInputCommittedListener> listeners = new ArrayList<>();
     private String inputText;
@@ -27,23 +30,23 @@ public final class TextComparisonInputElement implements InputContent {
 
     public TextComparisonInputElement(String expectedInputValue)
     {
-        this(expectedInputValue, IgnoreAllConfiguration);
+        this(expectedInputValue, IgnoreAllComparator);
     }
 
     public TextComparisonInputElement(Collection<String> acceptableInputValues)
     {
-        this(acceptableInputValues, IgnoreAllConfiguration);
+        this(acceptableInputValues, IgnoreAllComparator);
     }
 
-    public TextComparisonInputElement(String expectedInputValue, TextComparisonConfiguration comparisonConfiguration)
+    public TextComparisonInputElement(String expectedInputValue, Comparator<String> comparator)
     {
-        this.comparisonConfiguration = comparisonConfiguration;
+        this.comparator = comparator;
         this.acceptableInputValues.add(expectedInputValue);
     }
 
-    public TextComparisonInputElement(Collection<String> acceptableInputValues, TextComparisonConfiguration comparisonConfiguration)
+    public TextComparisonInputElement(Collection<String> acceptableInputValues, Comparator<String> comparator)
     {
-        this.comparisonConfiguration = comparisonConfiguration;
+        this.comparator = comparator;
         this.acceptableInputValues.addAll(acceptableInputValues);
     }
 
@@ -76,27 +79,8 @@ public final class TextComparisonInputElement implements InputContent {
     public InputResult commitInput() {
         InputResult result = new InputResult();
 
-        String input = this.inputText;
-        if(this.comparisonConfiguration.ignoreCase)
-            input = this.inputText.toLowerCase();
-
-        if(this.comparisonConfiguration.ignoreNonAlphaNumericCharacters)
-            input = input.replace("[\\W]", "");
-
-        for (int i = 0; i < this.acceptableInputValues.size() && !result.isInputCorrect(); i++) {
-            String acceptableInput = this.acceptableInputValues.get(i);
-            if(this.comparisonConfiguration.ignoreCase) {
-                acceptableInput = acceptableInput.toLowerCase();
-                input = this.inputText.toLowerCase();
-            }
-
-            if(this.comparisonConfiguration.ignoreNonAlphaNumericCharacters)
-            {
-                acceptableInput = acceptableInput.replace("[\\W]", "");
-            }
-
-            result.setInputCorrect(input.equals(acceptableInput));
-        }
+        for (int i = 0; i < this.acceptableInputValues.size() && !result.isInputCorrect(); i++)
+            result.setInputCorrect(this.comparator.compare(this.inputText, this.acceptableInputValues.get(i)) == 0);
         
         this.onInputCommitted(result);
         return result;
@@ -142,6 +126,34 @@ public final class TextComparisonInputElement implements InputContent {
 
         public boolean isIgnoreNonAlphaNumericCharacters() {
             return ignoreNonAlphaNumericCharacters;
+        }
+    }
+
+    public static class TextInputComparator extends ConfigurableAbstract<TextComparisonConfiguration> implements Comparator<String>
+    {
+        public TextInputComparator(TextComparisonConfiguration configuration)
+        {
+            this.configure(configuration);
+        }
+
+        @Override
+        protected boolean configureCore(TextComparisonConfiguration textComparisonConfiguration) {
+            return true;
+        }
+
+        @Override
+        public int compare(String one, String another) {
+            if(this.getCurrentConfiguration().ignoreCase) {
+                one = one.toLowerCase();
+                another = another.toLowerCase();
+            }
+
+            if(this.getCurrentConfiguration().ignoreNonAlphaNumericCharacters) {
+                one = one.replaceAll("[\\W]|_", "");
+                another = another.replaceAll("[\\W]|_", "");
+            }
+
+            return one.compareTo(another);
         }
     }
 }

@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">LocationBasedGame</string>
     <string name="title_activity_tracker">TrackerActivity</string>
+    <string name="your_location_is">Your location Is:</string>
 </resources>
