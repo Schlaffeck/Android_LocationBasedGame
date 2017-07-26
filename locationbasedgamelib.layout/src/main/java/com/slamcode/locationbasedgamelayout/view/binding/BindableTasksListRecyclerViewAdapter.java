@@ -30,12 +30,12 @@ public class BindableTasksListRecyclerViewAdapter extends TasksListRecyclerViewA
     }
 
     @Override
-    public void onBindViewHolder(BindableViewHolder<GameTaskData> holder, final int position) {
+    public void onBindViewHolder(final BindableViewHolder<GameTaskData> holder, final int position) {
         super.onBindViewHolder(holder, position);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onItemClicked(v, position);
+                onItemClicked(v, holder.getAdapterPosition());
             }
         });
     }
