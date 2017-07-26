@@ -43,5 +43,26 @@ public class TextInputComparatorTest {
         actual = comparator.compare(o1, o2);
 
         assertEquals(expected, actual);
+
+        o1 = "";
+        o2 = null;
+        expected = 0;
+        actual = comparator.compare(o1, o2);
+
+        assertEquals(expected, actual);
+
+        o1 = null;
+        o2 = null;
+        expected = 0;
+        actual = comparator.compare(o1, o2);
+
+        assertEquals(expected, actual);
+
+        o1 = null;
+        o2 = "  ";
+        expected = 0;
+        actual = comparator.compare(o1, o2);
+
+        assertEquals(expected, actual);
     }
 }

@@ -150,6 +150,13 @@ public final class TextComparisonInputElement implements InputContent {
 
         @Override
         public int compare(String one, String another) {
+
+            if(one == null)
+                one = "";
+
+            if(another == null)
+                another = "";
+
             if(this.getCurrentConfiguration().ignoreCase) {
                 one = one.toLowerCase();
                 another = another.toLowerCase();
