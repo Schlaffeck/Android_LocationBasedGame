@@ -13,4 +13,7 @@ public interface ContentLayoutProvider {
     int getGameTaskListItemLayoutId();
 
     int getGameTaskContentElementLayoutId(int contentTypeId);
+
+    int getGameTaskDataLayoutId();
+
 }

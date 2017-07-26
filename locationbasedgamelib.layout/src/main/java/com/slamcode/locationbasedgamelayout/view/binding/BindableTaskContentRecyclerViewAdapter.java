@@ -10,7 +10,7 @@ import com.slamcode.locationbasedgamelib.view.TaskContentRecyclerViewAdapter;
  * General recycler view holder binding view model variable to given view
  */
 
-public final class BindableTaskContentRecyclerViewAdapter extends TaskContentRecyclerViewAdapter<BindableViewHolder<GameTaskContentElement>> {
+public class BindableTaskContentRecyclerViewAdapter extends TaskContentRecyclerViewAdapter<BindableViewHolder<GameTaskContentElement>> {
 
     public BindableTaskContentRecyclerViewAdapter(Iterable<GameTaskContentElement> elements, ContentLayoutProvider layoutProvider) {
         super(elements, layoutProvider);

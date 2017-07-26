@@ -34,4 +34,9 @@ public final class GameTaskContentSimpleLayoutProvider implements ContentLayoutP
 
         return 0;
     }
+
+    @Override
+    public int getGameTaskDataLayoutId() {
+        return R.layout.gametask_data;
+    }
 }

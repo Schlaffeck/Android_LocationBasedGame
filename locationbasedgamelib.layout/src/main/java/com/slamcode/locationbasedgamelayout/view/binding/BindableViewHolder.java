@@ -9,13 +9,13 @@ import com.slamcode.locationbasedgamelib.model.GameTaskContentElement;
 import com.slamcode.locationbasedgamelib.view.ModelBasedViewHolder;
 import com.slamcode.locationbasedgamelib.view.TaskContentRecyclerViewAdapter;
 
+import static com.slamcode.locationbasedgamelayout.view.binding.Bindings.VIEW_MODEL_BINDING_VARIABLE_ID;
+
 /**
  * Adapter view holder setting bound view model instance for view
  */
 
 public final class BindableViewHolder<Model> extends ModelBasedViewHolder<Model> {
-
-    public static final int VIEW_MODEL_BINDING_VARIABLE_ID = BR.vm;
 
     public BindableViewHolder(View itemView) {
         super(itemView);
