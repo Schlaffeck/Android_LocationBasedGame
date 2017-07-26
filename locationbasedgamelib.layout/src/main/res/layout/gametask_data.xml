@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/header_font_size"
+        android:padding="@dimen/contentItem_margin"
         android:text="@{vm.gameTaskHeader.headerTitle, default=@string/headerElement_default_text}"/>
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
