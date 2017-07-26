@@ -17,11 +17,6 @@
             android:name=".TrackerActivity"
             android:label="@string/title_activity_tracker"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <category android:name="android.intent.category.LAUNCHER" />
-
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
         </activity>
         <activity android:name=".GameTasksActivity">
             <intent-filter>
