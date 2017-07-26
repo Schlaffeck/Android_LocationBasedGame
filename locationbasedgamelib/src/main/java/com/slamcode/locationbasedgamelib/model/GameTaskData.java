@@ -7,7 +7,7 @@ public class GameTaskData {
 
     private GameTaskHeader gameTaskHeader;
 
-    private GameTaskStatus status;
+    private GameTaskStatus status = GameTaskStatus.NotStarted;
 
     private GameTaskContent gameTaskContent;
 
