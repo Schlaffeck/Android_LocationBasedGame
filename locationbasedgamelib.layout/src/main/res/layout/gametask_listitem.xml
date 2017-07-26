@@ -4,12 +4,17 @@
         <variable
             name="vm"
             type="com.slamcode.locationbasedgamelib.model.GameTaskData"/>
+        <import type="com.slamcode.locationbasedgamelib.model.GameTaskStatus"/>
     </data>
-<LinearLayout
+<RelativeLayout
+    android:id="@+id/gameTask_listItem_layout"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="@dimen/contentItem_margin">
+    android:layout_height="wrap_content"
+    android:padding="@dimen/contentItem_margin"
+    android:clickable="true"
+    android:gravity="center">
     <TextView
+        android:id="@+id/gameTask_listItem_header_textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/header_font_size"
@@ -17,6 +22,14 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text='@{String.format("Status: ", vm.status), default=@string/status_default_text}'/>
-</LinearLayout>
+        android:layout_below="@id/gameTask_listItem_header_textView"
+        android:text='@{String.format("Status: %s", vm.status), default=@string/status_default_text}'/>
+    <CheckBox
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:layout_alignRight="@id/gameTask_listItem_header_textView"
+        android:checked="@{vm.status == GameTaskStatus.Success}"/>
+</RelativeLayout>
 </layout>
