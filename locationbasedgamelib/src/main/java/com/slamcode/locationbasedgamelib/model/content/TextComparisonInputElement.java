@@ -29,6 +29,8 @@ public final class TextComparisonInputElement implements InputContent {
     private String inputText;
     private List<String> acceptableInputValues = new ArrayList<>();
 
+    private String contentType = CONTENT_TYPE;
+
     public TextComparisonInputElement(String expectedInputValue, String commitCommandName)
     {
         this(expectedInputValue, commitCommandName, IgnoreAllComparator);
@@ -55,7 +57,7 @@ public final class TextComparisonInputElement implements InputContent {
 
     @Override
     public String getContentType() {
-        return CONTENT_TYPE;
+        return this.contentType;
     }
 
     @Override

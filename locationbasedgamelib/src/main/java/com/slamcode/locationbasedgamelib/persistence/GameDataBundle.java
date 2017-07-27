@@ -2,23 +2,22 @@ package com.slamcode.locationbasedgamelib.persistence;
 
 import com.slamcode.locationbasedgamelib.model.GameTaskData;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * General bundle interface for persisted game data
+ * Simple game data container class bundle
  */
 
-public interface GameDataBundle {
+public class GameDataBundle {
 
-    /**
-     * Retrieves persisted game tasks data list
-     * @return All game tasks in list
-     */
-    List<GameTaskData> getGameTasks();
+    private List<GameTaskData> gameTaskDataList = new ArrayList<>();
 
-    /**
-     * Sets given list as base for all game tasks
-     * @param gameTasks list to set
-     */
-    void setGameTasks(List<GameTaskData> gameTasks);
+    public List<GameTaskData> getGameTasks() {
+        return this.gameTaskDataList;
+    }
+
+    public void setGameTasks(List<GameTaskData> gameTasks) {
+        this.gameTaskDataList = gameTasks;
+    }
 }

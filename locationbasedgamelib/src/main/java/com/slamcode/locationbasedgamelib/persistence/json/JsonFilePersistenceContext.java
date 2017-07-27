@@ -4,9 +4,9 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.slamcode.locationbasedgamelib.persistence.GameDataBundle;
+import com.slamcode.locationbasedgamelib.model.GameTaskContentElement;
 import com.slamcode.locationbasedgamelib.persistence.PersistenceContext;
-import com.slamcode.locationbasedgamelib.persistence.SimpleDataBundle;
+import com.slamcode.locationbasedgamelib.persistence.GameDataBundle;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -20,7 +20,7 @@ public class JsonFilePersistenceContext implements PersistenceContext {
 
     private final Context applicationContext;
     private final String fileName;
-    private SimpleDataBundle data;
+    private GameDataBundle data;
 
     public JsonFilePersistenceContext(Context applicationContext, String fileName)
     {
@@ -36,13 +36,14 @@ public class JsonFilePersistenceContext implements PersistenceContext {
                 FileReader fileReader = new FileReader(this.getFilePath());
 
                 Gson gson = new GsonBuilder()
+                        .registerTypeAdapter(GameTaskContentElement.class, new GameTaskContentElementJsonDeserializer())
                         .create();
-                this.data = gson.fromJson(fileReader, SimpleDataBundle.class);
+                this.data = gson.fromJson(fileReader, GameDataBundle.class);
             }
 
             if(this.data == null)
             {
-                this.data = new SimpleDataBundle();
+                this.data = new GameDataBundle();
             }
         }
         catch(Exception exception)
@@ -56,9 +57,10 @@ public class JsonFilePersistenceContext implements PersistenceContext {
         FileOutputStream fileStream;
         try{
             Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(GameTaskContentElement.class, new GameTaskContentElementJsonDeserializer())
                     .create();
             fileStream = this.applicationContext.openFileOutput(this.fileName, Context.MODE_PRIVATE);
-            fileStream.write(gson.toJson(this.data, SimpleDataBundle.class).getBytes());
+            fileStream.write(gson.toJson(this.data, GameDataBundle.class).getBytes());
             fileStream.close();
         }
         catch(Exception exception)

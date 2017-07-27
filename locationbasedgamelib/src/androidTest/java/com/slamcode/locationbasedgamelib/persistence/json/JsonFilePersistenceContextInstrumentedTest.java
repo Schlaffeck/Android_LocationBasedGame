@@ -7,7 +7,7 @@ import android.support.test.runner.AndroidJUnit4;
 import com.google.gson.Gson;
 import com.slamcode.locationbasedgamelib.model.GameTaskData;
 import com.slamcode.locationbasedgamelib.model.builder.GameTaskBuilder;
-import com.slamcode.locationbasedgamelib.persistence.SimpleDataBundle;
+import com.slamcode.locationbasedgamelib.persistence.GameDataBundle;
 
 import org.junit.After;
 import org.junit.Before;
@@ -31,11 +31,11 @@ public class JsonFilePersistenceContextInstrumentedTest {
 
     private static final String BUNDLE_FILE_NAME = "test_json.data";
     private Context appContext;
-    private SimpleDataBundle bundle;
+    private GameDataBundle bundle;
 
     @Before
     public void setUp() throws Exception {
-        this.bundle = new SimpleDataBundle();
+        this.bundle = new GameDataBundle();
         List<GameTaskData> gameTasks = new ArrayList<>();
         gameTasks.add(new GameTaskBuilder().withTitle("Task 1").withTextElement("Task 1 text").getTask());
         gameTasks.add(new GameTaskBuilder().withTitle("Task 2").withTextElement("Task 2 text").getTask());
@@ -192,7 +192,7 @@ public class JsonFilePersistenceContextInstrumentedTest {
         newContext.initializePersistedData();
 
         gameTaskDataList = newContext.getData().getGameTasks();
-        assertEquals(4, gameTaskDataList.size());
+        assertEquals(3, gameTaskDataList.size());
         assertEquals("new header 1", gameTaskDataList.get(0).getGameTaskHeader().getHeaderTitle());
         assertEquals("new header 2", gameTaskDataList.get(1).getGameTaskHeader().getHeaderTitle());
         assertEquals("new header 3", gameTaskDataList.get(2).getGameTaskHeader().getHeaderTitle());

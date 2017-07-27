@@ -21,9 +21,11 @@ public final class DisplayPictureElement implements DisplayContent {
 
     private String picturePath;
 
+    private String contentType = CONTENT_TYPE;
+
     @Override
     public String getContentType() {
-        return CONTENT_TYPE;
+        return this.contentType;
     }
 
     @Override

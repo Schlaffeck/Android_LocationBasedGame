@@ -19,9 +19,11 @@ public final class DisplayTextElement implements DisplayContent {
 
     private String text;
 
+    private String contentType = CONTENT_TYPE;
+
     @Override
     public String getContentType() {
-        return CONTENT_TYPE;
+        return this.contentType;
     }
 
     @Override

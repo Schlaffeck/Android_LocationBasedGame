@@ -15,9 +15,21 @@ public final class RegisterBasedContentTypeToClassMatcher implements ContentType
     Map<String, Class<? extends GameTaskContentElement>> typeToClassRegistry = new HashMap<>();
     Map<Class<? extends GameTaskContentElement>, String> classToTypeRegistry = new HashMap<>();
 
+    public RegisterBasedContentTypeToClassMatcher()
+    {
+        this.register(DisplayPictureElement.class, DisplayPictureElement.CONTENT_TYPE);
+        this.register(DisplayTextElement.class, DisplayTextElement.CONTENT_TYPE);
+        this.register(TextComparisonInputElement.class, TextComparisonInputElement.CONTENT_TYPE);
+    }
+
     @Override
     public Class<? extends GameTaskContentElement> getClassForContentType(String contentTypeName) {
-        return null;
+        Class<? extends GameTaskContentElement> clazz = null;
+
+        if(typeToClassRegistry.containsKey(contentTypeName))
+            clazz = typeToClassRegistry.get(contentTypeName);
+
+        return clazz;
     }
 
     public void register(Class<? extends GameTaskContentElement> clazz, String typeName)
