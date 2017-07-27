@@ -11,12 +11,12 @@ import com.slamcode.locationbasedgamelayout.view.OnAdapterItemClickListener;
 import com.slamcode.locationbasedgamelayout.view.binding.BindableTasksListRecyclerViewAdapter;
 import com.slamcode.locationbasedgamelib.model.GameTaskData;
 import com.slamcode.locationbasedgamelib.model.builder.GameTaskBuilder;
+import com.slamcode.locationbasedgamelib.persistence.PersistenceContext;
+import com.slamcode.testgame.data.PersistenceContextContainer;
 
 import java.util.Arrays;
 
 public class GameTasksListActivity extends AppCompatActivity {
-
-    private GameTaskData[] tasksList    ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,30 +30,30 @@ public class GameTasksListActivity extends AppCompatActivity {
         this.setupTasksList();
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        PersistenceContextContainer.getCurrentContext().persist();
+    }
+
     private void goToGameTaskContent(GameTaskData gameTask)
     {
         Intent intent = new Intent(this, GameTaskContentActivity.class);
+        intent.putExtra(GameTaskData.ID_FIELD_NAME, gameTask.getId());
         this.startActivity(intent);
     }
 
     private void setupTasksList()
     {
-        if(this.tasksList != null)
-            return;
-        this.tasksList = new GameTaskData[]
-                {
-                        new GameTaskBuilder(1).withTitle("Task 1").withTextElement("Test text message").getTask(),
-                        new GameTaskBuilder(2).withTitle("Task 2").withTextElement("Test text message number 2\nWith new line").getTask(),
-                        new GameTaskBuilder(3).withTitle("Task 3").withTextElement("Test text message number 2\nWith new line\nAnd input")
-                                .withTextInputComparisonElement("Check", "test", "game").getTask(),
-                };
+        final PersistenceContext persistenceContext = PersistenceContextContainer.initializePersistenceContext(this);
+
         RecyclerView recyclerView = (RecyclerView) this.findViewById(R.id.testGame_tasksList_recyclerView);
-        BindableTasksListRecyclerViewAdapter adapter = new BindableTasksListRecyclerViewAdapter(Arrays.asList(this.tasksList), new GameTaskContentSimpleLayoutProvider());
+        BindableTasksListRecyclerViewAdapter adapter = new BindableTasksListRecyclerViewAdapter(persistenceContext.getData().getGameTasks(), new GameTaskContentSimpleLayoutProvider());
         adapter.addOnAdapterItemClickListener(new OnAdapterItemClickListener() {
             @Override
             public void onItemClick(RecyclerView.Adapter adapter, View itemView, int itemPosition) {
                 // move to details activity
-                goToGameTaskContent(null);
+                goToGameTaskContent(persistenceContext.getData().getGameTasks().get(itemPosition));
             }
         });
         recyclerView.setAdapter(adapter);
