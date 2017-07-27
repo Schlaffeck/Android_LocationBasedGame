@@ -17,8 +17,8 @@ public class GameTaskBuilder {
 
     private GameTaskData buildingTask;
 
-    public GameTaskBuilder(){
-        this.buildingTask = new GameTaskData();
+    public GameTaskBuilder(int taskId){
+        this.buildingTask = new GameTaskData(taskId);
     }
 
     public GameTaskBuilder withTitle(String taskTitle)

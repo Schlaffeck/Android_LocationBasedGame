@@ -1,15 +1,24 @@
 package com.slamcode.locationbasedgamelib.model;
 
+import java.util.UUID;
+
 /**
  * Represents general information about task to do in the game
  */
 public class GameTaskData {
+
+    private final int id;
 
     private GameTaskHeader gameTaskHeader;
 
     private GameTaskStatus status = GameTaskStatus.NotStarted;
 
     private GameTaskContent gameTaskContent;
+
+    public GameTaskData(int id)
+    {
+        this.id = id;
+    }
 
     public GameTaskStatus getStatus() {
         return status;
@@ -33,5 +42,9 @@ public class GameTaskData {
 
     public void setGameTaskContent(GameTaskContent gameTaskContent) {
         this.gameTaskContent = gameTaskContent;
+    }
+
+    public int getId() {
+        return id;
     }
 }

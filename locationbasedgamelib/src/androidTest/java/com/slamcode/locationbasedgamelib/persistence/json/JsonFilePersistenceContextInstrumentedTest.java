@@ -37,9 +37,9 @@ public class JsonFilePersistenceContextInstrumentedTest {
     public void setUp() throws Exception {
         this.bundle = new GameDataBundle();
         List<GameTaskData> gameTasks = new ArrayList<>();
-        gameTasks.add(new GameTaskBuilder().withTitle("Task 1").withTextElement("Task 1 text").getTask());
-        gameTasks.add(new GameTaskBuilder().withTitle("Task 2").withTextElement("Task 2 text").getTask());
-        gameTasks.add(new GameTaskBuilder().withTitle("Task 3").withTextElement("Task 3 text").getTask());
+        gameTasks.add(new GameTaskBuilder(1).withTitle("Task 1").withTextElement("Task 1 text").getTask());
+        gameTasks.add(new GameTaskBuilder(2).withTitle("Task 2").withTextElement("Task 2 text").getTask());
+        gameTasks.add(new GameTaskBuilder(3).withTitle("Task 3").withTextElement("Task 3 text").getTask());
         this.bundle.setGameTasks(gameTasks);
         this.appContext = InstrumentationRegistry.getTargetContext();
         Gson gson = new Gson();
@@ -147,7 +147,7 @@ public class JsonFilePersistenceContextInstrumentedTest {
         assertEquals("Task 3", gameTaskDataList.get(2).getGameTaskHeader().getHeaderTitle());
 
         // add task
-        gameTaskDataList.add(new GameTaskBuilder().withTitle("Task 4").withTextElement("Task 4 text").getTask());
+        gameTaskDataList.add(new GameTaskBuilder(4).withTitle("Task 4").withTextElement("Task 4 text").getTask());
         primalContext.persist();
 
         // read again
