@@ -30,7 +30,7 @@ public class GameTaskContentActivity extends AppCompatActivity {
         super.onStart();
         if(this.sampleGameTask != null)
             return;
-        this.sampleGameTask = new GameTaskBuilder()
+        this.sampleGameTask = new GameTaskBuilder(4)
                 .withTitle("Sample task title")
                 .withPictureElement(R.drawable.sromamba)
                 .withTextElement("Some freaking long text\nWith additional lines\nAnd so on")

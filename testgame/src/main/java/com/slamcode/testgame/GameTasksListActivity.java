@@ -42,9 +42,9 @@ public class GameTasksListActivity extends AppCompatActivity {
             return;
         this.tasksList = new GameTaskData[]
                 {
-                        new GameTaskBuilder().withTitle("Task 1").withTextElement("Test text message").getTask(),
-                        new GameTaskBuilder().withTitle("Task 2").withTextElement("Test text message number 2\nWith new line").getTask(),
-                        new GameTaskBuilder().withTitle("Task 3").withTextElement("Test text message number 2\nWith new line\nAnd input")
+                        new GameTaskBuilder(1).withTitle("Task 1").withTextElement("Test text message").getTask(),
+                        new GameTaskBuilder(2).withTitle("Task 2").withTextElement("Test text message number 2\nWith new line").getTask(),
+                        new GameTaskBuilder(3).withTitle("Task 3").withTextElement("Test text message number 2\nWith new line\nAnd input")
                                 .withTextInputComparisonElement("Check", "test", "game").getTask(),
                 };
         RecyclerView recyclerView = (RecyclerView) this.findViewById(R.id.testGame_tasksList_recyclerView);

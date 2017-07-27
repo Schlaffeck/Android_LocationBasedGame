@@ -7,6 +7,8 @@ import java.util.UUID;
  */
 public class GameTaskData {
 
+    public final static String ID_FIELD_NAME = "id";
+
     private final int id;
 
     private GameTaskHeader gameTaskHeader;
