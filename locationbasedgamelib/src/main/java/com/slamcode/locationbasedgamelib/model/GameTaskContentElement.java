@@ -6,6 +6,8 @@ package com.slamcode.locationbasedgamelib.model;
 
 public interface GameTaskContentElement {
 
+    String CONTENT_TYPE_FIELD_NAME = "contentType";
+
     /**
      * Returns string value of type of content to be displayed
      * @return content type
