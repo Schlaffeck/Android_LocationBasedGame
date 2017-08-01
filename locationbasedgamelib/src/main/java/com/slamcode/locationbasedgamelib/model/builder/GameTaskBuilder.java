@@ -1,6 +1,7 @@
 package com.slamcode.locationbasedgamelib.model.builder;
 
 import com.slamcode.locationbasedgamelib.model.GameTaskContent;
+import com.slamcode.locationbasedgamelib.model.GameTaskContentElement;
 import com.slamcode.locationbasedgamelib.model.GameTaskData;
 import com.slamcode.locationbasedgamelib.model.GameTaskHeader;
 import com.slamcode.locationbasedgamelib.model.content.DisplayPictureElement;
@@ -59,6 +60,15 @@ public class GameTaskBuilder {
             this.buildingTask.setGameTaskContent((content = new GameTaskContent()));
         TextComparisonInputElement comparisonElement = new TextComparisonInputElement(Arrays.asList(acceptableInputValues), commitMessage);
         content.addContentElement(comparisonElement);
+        return this;
+    }
+
+    public GameTaskBuilder withCustomContentElement(GameTaskContentElement element)
+    {
+        GameTaskContent content = this.buildingTask.getGameTaskContent();
+        if(content == null)
+            this.buildingTask.setGameTaskContent((content = new GameTaskContent()));
+        content.addContentElement(element);
         return this;
     }
 
