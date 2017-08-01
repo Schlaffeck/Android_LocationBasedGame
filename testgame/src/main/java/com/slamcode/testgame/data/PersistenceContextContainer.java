@@ -40,15 +40,17 @@ public final class PersistenceContextContainer {
 
     private static void addSampleTasks()
     {
-        GameTaskData[] tasksList = new GameTaskData[]
-                {
-                        new GameTaskBuilder(1).withTitle("Task 1").withTextElement("Test text message")
-                                .withPictureElement(R.drawable.sromamba).getTask(),
-                        new GameTaskBuilder(2).withTitle("Task 2").withTextElement("Test text message number 2\nWith new line").getTask(),
-                        new GameTaskBuilder(3).withTitle("Task 3").withTextElement("Test text message number 2\nWith new line\nAnd input")
-                                .withTextInputComparisonElement("Check", "test", "game").getTask(),
-                };
+        if(currentContext.getData().getGameTasks() == null || currentContext.getData().getGameTasks().isEmpty()) {
+            GameTaskData[] tasksList = new GameTaskData[]
+                    {
+                            new GameTaskBuilder(1).withTitle("Task 1").withTextElement("Test text message")
+                                    .withPictureElement(R.drawable.sromamba).getTask(),
+                            new GameTaskBuilder(2).withTitle("Task 2").withTextElement("Test text message number 2\nWith new line").getTask(),
+                            new GameTaskBuilder(3).withTitle("Task 3").withTextElement("Test text message number 2\nWith new line\nAnd input")
+                                    .withTextInputComparisonElement("Check", "test", "game").getTask(),
+                    };
 
-                currentContext.getData().setGameTasks(Arrays.asList(tasksList));
+            currentContext.getData().setGameTasks(Arrays.asList(tasksList));
+        }
     }
 }
