@@ -1,5 +1,7 @@
 package com.slamcode.locationbasedgamelib.model.builder;
 
+import android.content.Context;
+
 import com.slamcode.locationbasedgamelib.model.GameTaskContent;
 import com.slamcode.locationbasedgamelib.model.GameTaskContentElement;
 import com.slamcode.locationbasedgamelib.model.GameTaskData;
@@ -11,6 +13,8 @@ import com.slamcode.locationbasedgamelib.model.content.DisplayPictureElement;
 import com.slamcode.locationbasedgamelib.model.content.DisplayTextElement;
 import com.slamcode.locationbasedgamelib.model.content.LocationComparisonInputElement;
 import com.slamcode.locationbasedgamelib.model.content.TextComparisonInputElement;
+import com.slamcode.locationbasedgamelib.multimedia.AudioPlayer;
+import com.slamcode.locationbasedgamelib.multimedia.MediaServiceAudioPlayer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -59,13 +63,33 @@ public class GameTaskBuilder {
         return this;
     }
 
-    public GameTaskBuilder withAudioPlayerElement(int audioFileResourceId)
+    /**
+     * Adds audio player content element to the game task with default MediaServiceAudioPlayer
+     * from given context.
+     * @param audioFileResourceId
+     * @param context
+     * @return This builder to use further
+     */
+    public GameTaskBuilder withAudioPlayerElement(int audioFileResourceId, Context context)
     {
         GameTaskContent content = this.buildingTask.getGameTaskContent();
         if(content == null)
             this.buildingTask.setGameTaskContent((content = new GameTaskContent()));
         DisplayAudioPlayerElement audioElement = new DisplayAudioPlayerElement();
         audioElement.setAudioFileResourceId(audioFileResourceId);
+        audioElement.useAudioPlayer(new MediaServiceAudioPlayer(context, audioFileResourceId));
+        content.addContentElement(audioElement);
+        return this;
+    }
+
+    public GameTaskBuilder withAudioPlayerElement(int audioFileResourceId, AudioPlayer audioPlayer)
+    {
+        GameTaskContent content = this.buildingTask.getGameTaskContent();
+        if(content == null)
+            this.buildingTask.setGameTaskContent((content = new GameTaskContent()));
+        DisplayAudioPlayerElement audioElement = new DisplayAudioPlayerElement();
+        audioElement.setAudioFileResourceId(audioFileResourceId);
+        audioElement.useAudioPlayer(audioPlayer);
         content.addContentElement(audioElement);
         return this;
     }
