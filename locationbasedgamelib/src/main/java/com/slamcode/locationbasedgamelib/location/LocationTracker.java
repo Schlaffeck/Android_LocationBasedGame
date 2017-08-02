@@ -14,6 +14,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 
 import com.slamcode.locationbasedgamelib.general.Configurable;
+import com.slamcode.locationbasedgamelib.model.LocationData;
 import com.slamcode.locationbasedgamelib.permission.PermissionRequestCodes;
 import com.slamcode.locationbasedgamelib.permission.PermissionRequestor;
 
@@ -25,7 +26,7 @@ import java.util.List;
  * Simple service for tracking and updating current location
  */
 
-public final class LocationTracker extends Service implements LocationListener, Configurable<LocationTrackerConfiguration>, PermissionRequestor.RequestListener {
+public final class LocationTracker extends Service implements LocationListener, LocationDataProvider, Configurable<LocationTrackerConfiguration>, PermissionRequestor.RequestListener {
 
     private Location lastKnownLocation;
     private Context mContext;
@@ -198,5 +199,17 @@ public final class LocationTracker extends Service implements LocationListener, 
         }
 
         return location;
+    }
+
+    @Override
+    public LocationData getLocationData() {
+        Location location = this.getLocation();
+        if(location == null)
+            location = this.getLastKnownLocation();
+
+        if (location != null)
+            return new LocationData(location.getLatitude(), location.getLongitude());
+
+        return null;
     }
 }

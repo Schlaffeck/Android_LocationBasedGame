@@ -35,13 +35,4 @@ public class LocationData {
     public boolean isDetermined() {
         return determined;
     }
-
-    public float countDistanceFrom(LocationData otherLocation)
-    {
-        float[] result = new float[2];
-
-        Location.distanceBetween(otherLocation.latitude, otherLocation.longitude, this.latitude, this.longitude, result);
-
-        return result[0];
-    }
 }

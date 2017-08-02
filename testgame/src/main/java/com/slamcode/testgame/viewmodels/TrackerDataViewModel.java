@@ -10,6 +10,7 @@ import android.location.LocationListener;
 import android.os.Bundle;
 
 import com.android.databinding.library.baseAdapters.BR;
+import com.slamcode.locationbasedgamelib.location.LocationDataHelper;
 import com.slamcode.locationbasedgamelib.location.LocationTracker;
 import com.slamcode.locationbasedgamelib.model.LocationData;
 
@@ -56,7 +57,7 @@ public class TrackerDataViewModel extends BaseObservable {
     @Bindable
     public float getDistance()
     {
-        return this.targetLocation.countDistanceFrom(this.currentLocation);
+        return LocationDataHelper.countDistanceFrom(this.targetLocation, this.currentLocation);
     }
 
     @Bindable

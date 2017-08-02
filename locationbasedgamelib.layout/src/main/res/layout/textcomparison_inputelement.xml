@@ -20,6 +20,6 @@
         android:minWidth="@dimen/button_minWidth"
         android:layout_gravity="center"
         android:text="@{vm.commitCommandName, default=@string/inputElement_commitCommand_defaultText}"
-        android:onClick="@{(view) -> vm.commitInput()}"/>
+        android:onClick="@{(view) -> vm.commitInput(vm.inputText)}"/>
 </LinearLayout>
 </layout>

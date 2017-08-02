@@ -16,13 +16,13 @@ import java.util.Objects;
  * text and compare it with the expected one
  */
 
-public final class TextComparisonInputElement implements InputContent {
+public final class TextComparisonInputElement implements InputContent<String> {
 
     public final static TextInputComparator IgnoreAllComparator = new TextInputComparator(new TextComparisonConfiguration(true, true));
     public static final String CONTENT_TYPE = "TEXT_COMPARISON_INPUT";
 
     public final static int CONTENT_TYPE_ID = CONTENT_TYPE.hashCode();
-    private final Comparator<String> comparator;
+    private final TextInputComparator comparator;
 
     private String commitCommandName;
     private List<OnInputCommittedListener> listeners = new ArrayList<>();
@@ -41,14 +41,14 @@ public final class TextComparisonInputElement implements InputContent {
         this(acceptableInputValues, commitCommandName, IgnoreAllComparator);
     }
 
-    public TextComparisonInputElement(String expectedInputValue, String commitCommandName, Comparator<String> comparator)
+    public TextComparisonInputElement(String expectedInputValue, String commitCommandName, TextInputComparator comparator)
     {
         this.commitCommandName = commitCommandName;
         this.comparator = comparator;
         this.acceptableInputValues.add(expectedInputValue);
     }
 
-    public TextComparisonInputElement(Collection<String> acceptableInputValues, String commitCommandName, Comparator<String> comparator)
+    public TextComparisonInputElement(Collection<String> acceptableInputValues, String commitCommandName, TextInputComparator comparator)
     {
         this.commitCommandName = commitCommandName;
         this.comparator = comparator;
@@ -81,11 +81,11 @@ public final class TextComparisonInputElement implements InputContent {
     }
 
     @Override
-    public InputResult commitInput() {
+    public InputResult commitInput(String inputParameter) {
         InputResult result = new InputResult();
 
         for (int i = 0; i < this.acceptableInputValues.size() && !result.isInputCorrect(); i++)
-            result.setInputCorrect(this.comparator.compare(this.inputText, this.acceptableInputValues.get(i)) == 0);
+            result.setInputCorrect(this.comparator.compare(inputParameter, this.acceptableInputValues.get(i)) == 0);
         
         this.onInputCommitted(result);
         return result;
