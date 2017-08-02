@@ -4,8 +4,10 @@ import com.slamcode.locationbasedgamelib.model.GameTaskContent;
 import com.slamcode.locationbasedgamelib.model.GameTaskContentElement;
 import com.slamcode.locationbasedgamelib.model.GameTaskData;
 import com.slamcode.locationbasedgamelib.model.GameTaskHeader;
+import com.slamcode.locationbasedgamelib.model.LocationData;
 import com.slamcode.locationbasedgamelib.model.content.DisplayPictureElement;
 import com.slamcode.locationbasedgamelib.model.content.DisplayTextElement;
+import com.slamcode.locationbasedgamelib.model.content.LocationComparisonInputElement;
 import com.slamcode.locationbasedgamelib.model.content.TextComparisonInputElement;
 
 import java.util.Arrays;
@@ -59,6 +61,16 @@ public class GameTaskBuilder {
         if(content == null)
             this.buildingTask.setGameTaskContent((content = new GameTaskContent()));
         TextComparisonInputElement comparisonElement = new TextComparisonInputElement(Arrays.asList(acceptableInputValues), commitMessage);
+        content.addContentElement(comparisonElement);
+        return this;
+    }
+
+    public GameTaskBuilder withLocationComparisonElement(String commitMessage, float latitude, float longitude, float acceptanceDistanceMeters)
+    {
+        GameTaskContent content = this.buildingTask.getGameTaskContent();
+        if(content == null)
+            this.buildingTask.setGameTaskContent((content = new GameTaskContent()));
+        LocationComparisonInputElement comparisonElement = new LocationComparisonInputElement(new LocationData(latitude, longitude), acceptanceDistanceMeters, commitMessage);
         content.addContentElement(comparisonElement);
         return this;
     }
