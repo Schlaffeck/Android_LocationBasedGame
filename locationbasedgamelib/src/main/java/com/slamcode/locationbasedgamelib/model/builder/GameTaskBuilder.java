@@ -6,6 +6,7 @@ import com.slamcode.locationbasedgamelib.model.GameTaskData;
 import com.slamcode.locationbasedgamelib.model.GameTaskHeader;
 import com.slamcode.locationbasedgamelib.model.InputContent;
 import com.slamcode.locationbasedgamelib.model.LocationData;
+import com.slamcode.locationbasedgamelib.model.content.DisplayAudioPlayerElement;
 import com.slamcode.locationbasedgamelib.model.content.DisplayPictureElement;
 import com.slamcode.locationbasedgamelib.model.content.DisplayTextElement;
 import com.slamcode.locationbasedgamelib.model.content.LocationComparisonInputElement;
@@ -58,6 +59,17 @@ public class GameTaskBuilder {
         return this;
     }
 
+    public GameTaskBuilder withAudioPlayerElement(int audioFileResourceId)
+    {
+        GameTaskContent content = this.buildingTask.getGameTaskContent();
+        if(content == null)
+            this.buildingTask.setGameTaskContent((content = new GameTaskContent()));
+        DisplayAudioPlayerElement audioElement = new DisplayAudioPlayerElement();
+        audioElement.setAudioFileResourceId(audioFileResourceId);
+        content.addContentElement(audioElement);
+        return this;
+    }
+
     public GameTaskBuilder withTextInputComparisonElement(String commitMessage, String... acceptableInputValues)
     {
         GameTaskContent content = this.buildingTask.getGameTaskContent();
@@ -67,7 +79,6 @@ public class GameTaskBuilder {
         content.addContentElement(comparisonElement);
         return this;
     }
-
 
     public GameTaskBuilder withLocationComparisonElement(String commitMessage, float latitude, float longitude, float acceptanceDistanceMeters, InputContent.OnInputCommittedListener<LocationData> listener)
     {

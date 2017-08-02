@@ -1,6 +1,7 @@
 package com.slamcode.locationbasedgamelib.persistence;
 
 import com.slamcode.locationbasedgamelib.model.GameTaskContentElement;
+import com.slamcode.locationbasedgamelib.model.content.DisplayAudioPlayerElement;
 import com.slamcode.locationbasedgamelib.model.content.DisplayPictureElement;
 import com.slamcode.locationbasedgamelib.model.content.DisplayTextElement;
 import com.slamcode.locationbasedgamelib.model.content.LocationComparisonInputElement;
@@ -24,6 +25,7 @@ public final class RegisterBasedContentTypeToClassMatcher implements ContentType
         this.register(DisplayTextElement.class, DisplayTextElement.CONTENT_TYPE);
         this.register(TextComparisonInputElement.class, TextComparisonInputElement.CONTENT_TYPE);
         this.register(LocationComparisonInputElement.class, LocationComparisonInputElement.CONTENT_TYPE);
+        this.register(DisplayAudioPlayerElement.class, DisplayAudioPlayerElement.CONTENT_TYPE);
     }
 
     @Override

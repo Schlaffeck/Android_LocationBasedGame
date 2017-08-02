@@ -9,13 +9,11 @@ import java.util.List;
  * Simple display text content for task
  */
 
-public final class DisplayTextElement implements DisplayContent {
+public final class DisplayTextElement extends DisplayContentElementAbstract {
 
     public final static String CONTENT_TYPE = "DISPLAY_TEXT";
 
     public final static int CONTENT_TYPE_ID = CONTENT_TYPE.hashCode();
-
-    private List<OnDisplayContentChangedListener> listeners = new ArrayList<>();
 
     private String text;
 
@@ -40,27 +38,5 @@ public final class DisplayTextElement implements DisplayContent {
             return;
         this.text = text;
         this.onDisplayContentChanged();
-    }
-
-    @Override
-    public void onDisplayContentChanged() {
-        for (OnDisplayContentChangedListener listener : this.listeners) {
-            listener.onDisplayContentChanged();
-        }
-    }
-
-    @Override
-    public void addOnDisplayChangedListener(OnDisplayContentChangedListener listener) {
-        listeners.add(listener);
-    }
-
-    @Override
-    public void removeOnDisplayChangedListener(OnDisplayContentChangedListener listener) {
-        listeners.remove(listener);
-    }
-
-    @Override
-    public void clearOnDisplayChangedListeners() {
-        this.listeners.clear();
     }
 }

@@ -9,13 +9,11 @@ import java.util.List;
  * Dimple display content with single picture got either from resource or path to file
  */
 
-public final class DisplayPictureElement implements DisplayContent {
+public final class DisplayPictureElement extends DisplayContentElementAbstract {
 
     public final static String CONTENT_TYPE = "DISPLAY_PICTURE";
 
     public final static int CONTENT_TYPE_ID = CONTENT_TYPE.hashCode();
-
-    private List<OnDisplayContentChangedListener> listeners = new ArrayList<>();
 
     private int pictureResourceId;
 
@@ -58,27 +56,5 @@ public final class DisplayPictureElement implements DisplayContent {
             return;
         this.picturePath = picturePath;
         this.onDisplayContentChanged();
-    }
-
-    @Override
-    public void onDisplayContentChanged() {
-        for (OnDisplayContentChangedListener listener : this.listeners) {
-            listener.onDisplayContentChanged();
-        }
-    }
-
-    @Override
-    public void addOnDisplayChangedListener(OnDisplayContentChangedListener listener) {
-        listeners.add(listener);
-    }
-
-    @Override
-    public void removeOnDisplayChangedListener(OnDisplayContentChangedListener listener) {
-        listeners.remove(listener);
-    }
-
-    @Override
-    public void clearOnDisplayChangedListeners() {
-        this.listeners.clear();
     }
 }
