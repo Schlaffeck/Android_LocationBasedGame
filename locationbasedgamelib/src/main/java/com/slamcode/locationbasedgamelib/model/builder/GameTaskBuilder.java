@@ -4,13 +4,16 @@ import com.slamcode.locationbasedgamelib.model.GameTaskContent;
 import com.slamcode.locationbasedgamelib.model.GameTaskContentElement;
 import com.slamcode.locationbasedgamelib.model.GameTaskData;
 import com.slamcode.locationbasedgamelib.model.GameTaskHeader;
+import com.slamcode.locationbasedgamelib.model.InputContent;
 import com.slamcode.locationbasedgamelib.model.LocationData;
 import com.slamcode.locationbasedgamelib.model.content.DisplayPictureElement;
 import com.slamcode.locationbasedgamelib.model.content.DisplayTextElement;
 import com.slamcode.locationbasedgamelib.model.content.LocationComparisonInputElement;
 import com.slamcode.locationbasedgamelib.model.content.TextComparisonInputElement;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Builder class facilitating creating complex game task elements
@@ -65,12 +68,17 @@ public class GameTaskBuilder {
         return this;
     }
 
-    public GameTaskBuilder withLocationComparisonElement(String commitMessage, float latitude, float longitude, float acceptanceDistanceMeters)
+
+    public GameTaskBuilder withLocationComparisonElement(String commitMessage, float latitude, float longitude, float acceptanceDistanceMeters, InputContent.OnInputCommittedListener<LocationData> listener)
     {
         GameTaskContent content = this.buildingTask.getGameTaskContent();
         if(content == null)
             this.buildingTask.setGameTaskContent((content = new GameTaskContent()));
         LocationComparisonInputElement comparisonElement = new LocationComparisonInputElement(new LocationData(latitude, longitude), acceptanceDistanceMeters, commitMessage);
+
+        if(listener != null)
+            comparisonElement.addOnInputCommittedListener(listener);
+
         content.addContentElement(comparisonElement);
         return this;
     }
@@ -91,5 +99,29 @@ public class GameTaskBuilder {
     public GameTaskData getTask()
     {
         return this.buildingTask;
+    }
+
+    public static void addLocationInputListener(GameTaskData data, InputContent.OnInputCommittedListener<LocationData> listener)
+    {
+        for(GameTaskContentElement element : data.getGameTaskContent().getContentElements())
+        {
+            if(element instanceof LocationComparisonInputElement)
+            {
+                LocationComparisonInputElement locationComparisonElement = (LocationComparisonInputElement)element;
+                locationComparisonElement.addOnInputCommittedListener(listener);
+            }
+        }
+    }
+
+    public static void addTextInputComparisonListener(GameTaskData data, InputContent.OnInputCommittedListener<String> listener)
+    {
+        for(GameTaskContentElement element : data.getGameTaskContent().getContentElements())
+        {
+            if(element instanceof TextComparisonInputElement)
+            {
+                TextComparisonInputElement textComparisonInputElement = (TextComparisonInputElement)element;
+                textComparisonInputElement.addOnInputCommittedListener(listener);
+            }
+        }
     }
 }
