@@ -7,8 +7,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.slamcode.locationbasedgamelib.model.GameTaskContentElement;
-import com.slamcode.locationbasedgamelib.model.content.ContentTypeToClassMatcher;
-import com.slamcode.locationbasedgamelib.model.content.RegisterBasedContentTypeToClassMatcher;
+import com.slamcode.locationbasedgamelib.persistence.ContentTypeToClassMatcher;
+import com.slamcode.locationbasedgamelib.persistence.RegisterBasedContentTypeToClassMatcher;
 
 import java.lang.reflect.Type;
 

@@ -1,7 +1,10 @@
-package com.slamcode.locationbasedgamelib.model.content;
+package com.slamcode.locationbasedgamelib.persistence;
 
-import com.slamcode.locationbasedgamelib.model.GameTaskContent;
 import com.slamcode.locationbasedgamelib.model.GameTaskContentElement;
+import com.slamcode.locationbasedgamelib.model.content.DisplayPictureElement;
+import com.slamcode.locationbasedgamelib.model.content.DisplayTextElement;
+import com.slamcode.locationbasedgamelib.model.content.LocationComparisonInputElement;
+import com.slamcode.locationbasedgamelib.model.content.TextComparisonInputElement;
 
 import java.util.HashMap;
 import java.util.Map;
