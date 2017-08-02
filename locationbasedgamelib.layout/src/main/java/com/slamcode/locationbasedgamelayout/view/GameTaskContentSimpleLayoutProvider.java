@@ -3,6 +3,7 @@ package com.slamcode.locationbasedgamelayout.view;
 import com.slamcode.locationbasedgamelayout.R;
 import com.slamcode.locationbasedgamelib.model.content.DisplayPictureElement;
 import com.slamcode.locationbasedgamelib.model.content.DisplayTextElement;
+import com.slamcode.locationbasedgamelib.model.content.LocationComparisonInputElement;
 import com.slamcode.locationbasedgamelib.model.content.TextComparisonInputElement;
 import com.slamcode.locationbasedgamelib.view.ContentLayoutProvider;
 
@@ -31,6 +32,8 @@ public final class GameTaskContentSimpleLayoutProvider implements ContentLayoutP
             return R.layout.picture_displayelement;
         if(contentTypeId == TextComparisonInputElement.CONTENT_TYPE_ID)
             return R.layout.textcomparison_inputelement;
+        if(contentTypeId == LocationComparisonInputElement.CONTENT_TYPE_ID)
+            return R.layout.locationcomparison_inputelement;
 
         return 0;
     }

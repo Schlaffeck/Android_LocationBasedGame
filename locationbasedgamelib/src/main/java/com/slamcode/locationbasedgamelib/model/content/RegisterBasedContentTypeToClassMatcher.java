@@ -20,6 +20,7 @@ public final class RegisterBasedContentTypeToClassMatcher implements ContentType
         this.register(DisplayPictureElement.class, DisplayPictureElement.CONTENT_TYPE);
         this.register(DisplayTextElement.class, DisplayTextElement.CONTENT_TYPE);
         this.register(TextComparisonInputElement.class, TextComparisonInputElement.CONTENT_TYPE);
+        this.register(LocationComparisonInputElement.class, LocationComparisonInputElement.CONTENT_TYPE);
     }
 
     @Override
