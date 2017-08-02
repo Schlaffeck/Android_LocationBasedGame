@@ -1,6 +1,7 @@
 package com.slamcode.locationbasedgamelib.model.builder;
 
 import android.content.Context;
+import android.net.Uri;
 
 import com.slamcode.locationbasedgamelib.model.GameTaskContent;
 import com.slamcode.locationbasedgamelib.model.GameTaskContentElement;
@@ -82,6 +83,19 @@ public class GameTaskBuilder {
             this.buildingTask.setGameTaskContent((content = new GameTaskContent()));
         DisplayAudioPlayerElement audioElement = new DisplayAudioPlayerElement();
         audioElement.setAudioFileResourceId(audioFileResourceId);
+        audioElement.setAudioTitle(audioTitleOptional);
+        audioElement.useAudioPlayer(audioPlayer);
+        content.addContentElement(audioElement);
+        return this;
+    }
+
+    public GameTaskBuilder withAudioPlayerElement(Uri audioFileUri, String audioTitleOptional, AudioPlayer audioPlayer)
+    {
+        GameTaskContent content = this.buildingTask.getGameTaskContent();
+        if(content == null)
+            this.buildingTask.setGameTaskContent((content = new GameTaskContent()));
+        DisplayAudioPlayerElement audioElement = new DisplayAudioPlayerElement();
+        audioElement.setAudioFileUri(audioFileUri);
         audioElement.setAudioTitle(audioTitleOptional);
         audioElement.useAudioPlayer(audioPlayer);
         content.addContentElement(audioElement);

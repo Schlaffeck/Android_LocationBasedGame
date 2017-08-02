@@ -1,5 +1,7 @@
 package com.slamcode.locationbasedgamelib.model.content;
 
+import android.net.Uri;
+
 import com.slamcode.locationbasedgamelib.multimedia.AudioPlayer;
 import com.slamcode.locationbasedgamelib.multimedia.NoMediaPlayerAttachedException;
 
@@ -18,6 +20,8 @@ public class DisplayAudioPlayerElement extends DisplayContentElementAbstract {
     private String audioTitle;
 
     private int audioFileResourceId;
+
+    private Uri audioFileUri;
 
     private AudioPlayer audioPlayer;
 
@@ -63,5 +67,13 @@ public class DisplayAudioPlayerElement extends DisplayContentElementAbstract {
             this.audioPlayer.stop();
 
         this.audioPlayer = audioPlayer;
+    }
+
+    public Uri getAudioFileUri() {
+        return audioFileUri;
+    }
+
+    public void setAudioFileUri(Uri audioFileUri) {
+        this.audioFileUri = audioFileUri;
     }
 }
