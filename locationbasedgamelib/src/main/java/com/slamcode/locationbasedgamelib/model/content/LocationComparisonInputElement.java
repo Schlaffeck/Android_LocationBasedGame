@@ -47,8 +47,10 @@ public final class LocationComparisonInputElement implements InputContent<Locati
 
     @Override
     public InputResult commitInput(LocationData currentLocation) {
-        InputResult result = new InputResult();
+        InputCommitParameters<LocationData> parameters = new InputCommitParameters<>(currentLocation);
+        this.onInputCommitting(parameters);
 
+        InputResult result = new InputResult();
         result.setInputCorrect(LocationDataHelper.isNearBy(this.targetLocation, currentLocation, this.acceptableDistanceMeters));
 
         this.onInputCommitted(result);
