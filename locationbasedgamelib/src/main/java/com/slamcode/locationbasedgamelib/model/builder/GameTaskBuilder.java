@@ -89,6 +89,12 @@ public class GameTaskBuilder {
         return this;
     }
 
+
+    public GameTaskBuilder withAudioPlayerElement(Uri audioFileUri, String audioTitleOptional, Context context)
+    {
+        return this.withAudioPlayerElement(audioFileUri, audioTitleOptional, new MediaServiceAudioPlayer(context, audioFileUri));
+    }
+
     public GameTaskBuilder withAudioPlayerElement(Uri audioFileUri, String audioTitleOptional, AudioPlayer audioPlayer)
     {
         GameTaskContent content = this.buildingTask.getGameTaskContent();
