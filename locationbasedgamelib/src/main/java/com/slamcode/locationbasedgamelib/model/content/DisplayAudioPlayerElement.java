@@ -47,9 +47,7 @@ public class DisplayAudioPlayerElement extends DisplayContentElementAbstract {
         this.audioFileResourceId = audioFileResourceId;
     }
 
-    public AudioPlayer getAudioPlayer() throws NoMediaPlayerAttachedException {
-        if(this.audioPlayer == null)
-            throw new NoMediaPlayerAttachedException();
+    public AudioPlayer getAudioPlayer() {
 
         return this.audioPlayer;
     }

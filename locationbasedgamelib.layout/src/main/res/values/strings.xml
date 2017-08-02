@@ -2,6 +2,8 @@
     <string name="app_name">Location Based Game Lib - Layout</string>
 
     <string name="inputElement_commitCommand_defaultText">Check</string>
+    <string name="displayAudio_play_defaultText">▶</string>
+    <string name="displayAudio_stop_defaultText">◼</string>
     <string name="displayElement_default_text">There is some text with game instructions.</string>
     <string name="headerElement_default_text">Game Task Name</string>
     <string name="status_default_text">Status: Pending</string>

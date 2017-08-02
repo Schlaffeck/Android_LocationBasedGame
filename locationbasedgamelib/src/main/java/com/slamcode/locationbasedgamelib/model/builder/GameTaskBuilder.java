@@ -70,25 +70,19 @@ public class GameTaskBuilder {
      * @param context
      * @return This builder to use further
      */
-    public GameTaskBuilder withAudioPlayerElement(int audioFileResourceId, Context context)
+    public GameTaskBuilder withAudioPlayerElement(int audioFileResourceId, String audioTitleOptional, Context context)
     {
-        GameTaskContent content = this.buildingTask.getGameTaskContent();
-        if(content == null)
-            this.buildingTask.setGameTaskContent((content = new GameTaskContent()));
-        DisplayAudioPlayerElement audioElement = new DisplayAudioPlayerElement();
-        audioElement.setAudioFileResourceId(audioFileResourceId);
-        audioElement.useAudioPlayer(new MediaServiceAudioPlayer(context, audioFileResourceId));
-        content.addContentElement(audioElement);
-        return this;
+        return this.withAudioPlayerElement(audioFileResourceId, audioTitleOptional, new MediaServiceAudioPlayer(context, audioFileResourceId));
     }
 
-    public GameTaskBuilder withAudioPlayerElement(int audioFileResourceId, AudioPlayer audioPlayer)
+    public GameTaskBuilder withAudioPlayerElement(int audioFileResourceId, String audioTitleOptional, AudioPlayer audioPlayer)
     {
         GameTaskContent content = this.buildingTask.getGameTaskContent();
         if(content == null)
             this.buildingTask.setGameTaskContent((content = new GameTaskContent()));
         DisplayAudioPlayerElement audioElement = new DisplayAudioPlayerElement();
         audioElement.setAudioFileResourceId(audioFileResourceId);
+        audioElement.setAudioTitle(audioTitleOptional);
         audioElement.useAudioPlayer(audioPlayer);
         content.addContentElement(audioElement);
         return this;

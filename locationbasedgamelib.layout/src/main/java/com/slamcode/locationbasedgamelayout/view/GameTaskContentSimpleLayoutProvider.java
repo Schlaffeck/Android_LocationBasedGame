@@ -1,6 +1,7 @@
 package com.slamcode.locationbasedgamelayout.view;
 
 import com.slamcode.locationbasedgamelayout.R;
+import com.slamcode.locationbasedgamelib.model.content.DisplayAudioPlayerElement;
 import com.slamcode.locationbasedgamelib.model.content.DisplayPictureElement;
 import com.slamcode.locationbasedgamelib.model.content.DisplayTextElement;
 import com.slamcode.locationbasedgamelib.model.content.LocationComparisonInputElement;
@@ -34,6 +35,8 @@ public final class GameTaskContentSimpleLayoutProvider implements ContentLayoutP
             return R.layout.textcomparison_inputelement;
         if(contentTypeId == LocationComparisonInputElement.CONTENT_TYPE_ID)
             return R.layout.locationcomparison_inputelement;
+        if(contentTypeId == DisplayAudioPlayerElement.CONTENT_TYPE_ID)
+            return R.layout.audioplayer_displayelement;
 
         return 0;
     }

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="vm"
+            type="com.slamcode.locationbasedgamelib.model.content.DisplayAudioPlayerElement"/>
+        <import type="com.slamcode.locationbasedgamelib.multimedia.AudioPlayer"/>
+    </data>
+    <LinearLayout
+        android:orientation="horizontal" android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/contentItem_margin"
+        android:gravity="center">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/header_font_size"
+            android:text="@string/displayAudio_play_defaultText"
+            android:onClick="@{(view) -> vm.audioPlayer.restart()}"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/header_font_size"
+            android:text="@string/displayAudio_stop_defaultText"
+            android:onClick="@{(view) -> vm.audioPlayer.stop()}"/>
+    </LinearLayout>
+</layout>
