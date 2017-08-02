@@ -4,13 +4,15 @@ package com.slamcode.locationbasedgamelib.model;
  * Represents input content simple interface data for task displayed to user with interaction
  */
 
-public interface InputContent<InputParameter> extends GameTaskContentElement {
+public interface InputContent<InputValue> extends GameTaskContentElement {
 
     /**
      * Commit given input status and return result
      * @return Input result
      */
-    InputResult commitInput(InputParameter parameter);
+    InputResult commitInput(InputValue inputValue);
+
+    void onInputCommitting(InputCommitParameters<InputValue> parameters);
 
     void onInputCommitted(InputResult result);
 
@@ -20,7 +22,9 @@ public interface InputContent<InputParameter> extends GameTaskContentElement {
 
     void clearOnInputCommittedListeners();
 
-    interface OnInputCommittedListener{
+    interface OnInputCommittedListener<InputValue>{
+
+        void inputCommitting(InputCommitParameters<InputValue> parameters);
 
         void inputCommitted(InputResult result);
     }

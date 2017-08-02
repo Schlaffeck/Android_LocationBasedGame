@@ -1,6 +1,7 @@
 package com.slamcode.locationbasedgamelib.model.content;
 
 import com.slamcode.locationbasedgamelib.location.LocationDataHelper;
+import com.slamcode.locationbasedgamelib.model.InputCommitParameters;
 import com.slamcode.locationbasedgamelib.model.InputContent;
 import com.slamcode.locationbasedgamelib.model.InputResult;
 import com.slamcode.locationbasedgamelib.model.LocationData;
@@ -52,6 +53,13 @@ public final class LocationComparisonInputElement implements InputContent<Locati
 
         this.onInputCommitted(result);
         return result;
+    }
+
+    @Override
+    public void onInputCommitting(InputCommitParameters<LocationData> parameters) {
+        for (OnInputCommittedListener listener : this.listeners) {
+            listener.inputCommitting(parameters);
+        }
     }
 
     @Override

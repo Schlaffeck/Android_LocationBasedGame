@@ -2,6 +2,7 @@ package com.slamcode.locationbasedgamelib.model.content;
 
 import com.slamcode.locationbasedgamelib.general.Configurable;
 import com.slamcode.locationbasedgamelib.general.ConfigurableAbstract;
+import com.slamcode.locationbasedgamelib.model.InputCommitParameters;
 import com.slamcode.locationbasedgamelib.model.InputContent;
 import com.slamcode.locationbasedgamelib.model.InputResult;
 
@@ -82,13 +83,23 @@ public final class TextComparisonInputElement implements InputContent<String> {
 
     @Override
     public InputResult commitInput(String inputParameter) {
+        InputCommitParameters<String> params = new InputCommitParameters<>(inputParameter);
+        this.onInputCommitting(params);
+
         InputResult result = new InputResult();
 
         for (int i = 0; i < this.acceptableInputValues.size() && !result.isInputCorrect(); i++)
-            result.setInputCorrect(this.comparator.compare(inputParameter, this.acceptableInputValues.get(i)) == 0);
+            result.setInputCorrect(this.comparator.compare(params.getValue(), this.acceptableInputValues.get(i)) == 0);
         
         this.onInputCommitted(result);
         return result;
+    }
+
+    @Override
+    public void onInputCommitting(InputCommitParameters<String> parameters) {
+        for (OnInputCommittedListener listener : this.listeners) {
+            listener.inputCommitting(parameters);
+        }
     }
 
     @Override
