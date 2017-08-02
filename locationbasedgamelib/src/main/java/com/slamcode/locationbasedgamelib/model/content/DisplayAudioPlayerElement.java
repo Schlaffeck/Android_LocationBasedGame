@@ -9,7 +9,7 @@ import com.slamcode.locationbasedgamelib.multimedia.NoMediaPlayerAttachedExcepti
 
 public class DisplayAudioPlayerElement extends DisplayContentElementAbstract {
 
-    public final static String CONTENT_TYPE = "DISPLAY_TEXT";
+    public final static String CONTENT_TYPE = "DISPLAY_AUDIO_PLAYER";
 
     public final static int CONTENT_TYPE_ID = CONTENT_TYPE.hashCode();
 
