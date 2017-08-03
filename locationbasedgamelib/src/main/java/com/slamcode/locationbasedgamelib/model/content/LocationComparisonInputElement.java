@@ -20,7 +20,7 @@ public final class LocationComparisonInputElement implements InputContent<Locati
     public final static int CONTENT_TYPE_ID = CONTENT_TYPE.hashCode();
 
     private String contentType = CONTENT_TYPE;
-    private List<OnInputCommittedListener> listeners = new ArrayList<>();
+    private transient List<OnInputCommittedListener> listeners = new ArrayList<>();
     private final LocationData targetLocation;
     private final float acceptableDistanceMeters;
     private final String commitCommandName;

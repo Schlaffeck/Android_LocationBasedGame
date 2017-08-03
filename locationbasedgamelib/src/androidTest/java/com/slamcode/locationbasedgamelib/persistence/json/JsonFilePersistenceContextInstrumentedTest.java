@@ -1,12 +1,20 @@
 package com.slamcode.locationbasedgamelib.persistence.json;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.google.gson.Gson;
+import com.slamcode.locationbasedgamelib.model.GameTaskContent;
+import com.slamcode.locationbasedgamelib.model.GameTaskContentElement;
 import com.slamcode.locationbasedgamelib.model.GameTaskData;
 import com.slamcode.locationbasedgamelib.model.builder.GameTaskBuilder;
+import com.slamcode.locationbasedgamelib.model.content.DisplayAudioPlayerElement;
+import com.slamcode.locationbasedgamelib.model.content.DisplayPictureElement;
+import com.slamcode.locationbasedgamelib.model.content.DisplayTextElement;
+import com.slamcode.locationbasedgamelib.model.content.LocationComparisonInputElement;
+import com.slamcode.locationbasedgamelib.model.content.TextComparisonInputElement;
 import com.slamcode.locationbasedgamelib.persistence.GameDataBundle;
 
 import org.junit.After;
@@ -14,11 +22,16 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -164,7 +177,6 @@ public class JsonFilePersistenceContextInstrumentedTest {
         assertEquals("Task 4", gameTaskDataList.get(3).getGameTaskHeader().getHeaderTitle());
     }
 
-
     @Test
     public void jsonFilePersistenceContext_changePersistRead_changeTasksTitles_test()
     {
@@ -196,5 +208,367 @@ public class JsonFilePersistenceContextInstrumentedTest {
         assertEquals("new header 1", gameTaskDataList.get(0).getGameTaskHeader().getHeaderTitle());
         assertEquals("new header 2", gameTaskDataList.get(1).getGameTaskHeader().getHeaderTitle());
         assertEquals("new header 3", gameTaskDataList.get(2).getGameTaskHeader().getHeaderTitle());
+    }
+
+    @Test
+    public void jsonFilePersistenceContext_saveRestoreChange_textElementContent_test() throws IOException {
+        final String testFileName = "sr_text.data";
+        final String testFilePath = this.appContext.getFilesDir() + "/" + testFileName;
+
+        try {
+            // setup bundle
+            JsonFilePersistenceContext persistenceContext = new JsonFilePersistenceContext(this.appContext, testFileName);
+            assertNull(persistenceContext.getData());
+            persistenceContext.initializePersistedData();
+
+            assertNotNull(persistenceContext.getData());
+            assertNotNull(persistenceContext.getData().getGameTasks());
+            assertEquals(0, persistenceContext.getData().getGameTasks().size());
+
+            // add game task with text element
+            persistenceContext.getData().getGameTasks().add(new GameTaskBuilder(1).withTitle("Text element task").withTextElement("Display text").getTask());
+            persistenceContext.persist();
+
+            // read again
+            JsonFilePersistenceContext newContext = new JsonFilePersistenceContext(this.appContext, testFileName);
+            newContext.initializePersistedData();
+
+            assertNotNull(newContext.getData());
+            assertNotNull(newContext.getData().getGameTasks());
+            assertEquals(1, newContext.getData().getGameTasks().size());
+
+            GameTaskData gameTaskData = newContext.getData().getGameTasks().get(0);
+            assertEquals(1, gameTaskData.getId());
+            assertEquals("Text element task", gameTaskData.getGameTaskHeader().getHeaderTitle());
+            List<GameTaskContentElement> gameTaskContentElements = gameTaskData.getGameTaskContent().getContentElements();
+            assertTrue(gameTaskContentElements.iterator().hasNext());
+            GameTaskContentElement element = gameTaskContentElements.get(0);
+            assertNotNull(element);
+            assertTrue(element instanceof DisplayTextElement);
+            DisplayTextElement typedElement = (DisplayTextElement) element;
+            assertEquals("Display text", typedElement.getText());
+
+            // change and save
+            typedElement.setText("Changed text to display");
+            newContext.persist();
+
+            // another context
+            JsonFilePersistenceContext thirdContext = new JsonFilePersistenceContext(this.appContext, testFileName);
+            thirdContext.initializePersistedData();
+
+            assertNotNull(thirdContext.getData());
+            assertNotNull(thirdContext.getData().getGameTasks());
+            assertEquals(1, thirdContext.getData().getGameTasks().size());
+
+            gameTaskData = thirdContext.getData().getGameTasks().get(0);
+            assertEquals(1, gameTaskData.getId());
+            assertEquals("Text element task", gameTaskData.getGameTaskHeader().getHeaderTitle());
+            gameTaskContentElements = gameTaskData.getGameTaskContent().getContentElements();
+            element = gameTaskContentElements.get(0);
+            assertNotNull(element);
+            assertTrue(element instanceof DisplayTextElement);
+            typedElement = (DisplayTextElement) element;
+            assertEquals("Changed text to display", typedElement.getText());
+
+        }
+        finally {
+            // cleanup
+            File bundleFile = new File(testFilePath);
+            if (bundleFile.exists()) {
+                bundleFile.delete();
+            }
+        }
+    }
+
+    @Test
+    public void jsonFilePersistenceContext_saveRestoreChange_pictureElementContent_test() throws IOException {
+        final String testFileName = "sr_pic.data";
+        final String testFilePath = this.appContext.getFilesDir() + "/" + testFileName;
+
+        try {
+            // setup bundle
+            JsonFilePersistenceContext persistenceContext = new JsonFilePersistenceContext(this.appContext, testFileName);
+            assertNull(persistenceContext.getData());
+            persistenceContext.initializePersistedData();
+
+            assertNotNull(persistenceContext.getData());
+            assertNotNull(persistenceContext.getData().getGameTasks());
+            assertEquals(0, persistenceContext.getData().getGameTasks().size());
+
+            // add game task with text element
+            persistenceContext.getData().getGameTasks().add(new GameTaskBuilder(1).withTitle("Pic element task").withPictureElement(38).getTask());
+            persistenceContext.persist();
+
+            // read again
+            JsonFilePersistenceContext newContext = new JsonFilePersistenceContext(this.appContext, testFileName);
+            newContext.initializePersistedData();
+
+            assertNotNull(newContext.getData());
+            assertNotNull(newContext.getData().getGameTasks());
+            assertEquals(1, newContext.getData().getGameTasks().size());
+
+            GameTaskData gameTaskData = newContext.getData().getGameTasks().get(0);
+            assertEquals(1, gameTaskData.getId());
+            assertEquals("Pic element task", gameTaskData.getGameTaskHeader().getHeaderTitle());
+            List<GameTaskContentElement> gameTaskContentElements = gameTaskData.getGameTaskContent().getContentElements();
+            assertTrue(gameTaskContentElements.iterator().hasNext());
+            GameTaskContentElement element = gameTaskContentElements.get(0);
+            assertNotNull(element);
+            assertTrue(element instanceof DisplayPictureElement);
+            DisplayPictureElement typedElement = (DisplayPictureElement) element;
+            assertEquals(38, typedElement.getPictureResourceId());
+            assertEquals(null, typedElement.getPicturePath());
+
+            // change and save
+            typedElement.setPicturePath("path");
+            typedElement.setPictureResourceId(33);
+            newContext.persist();
+
+            // another context
+            JsonFilePersistenceContext thirdContext = new JsonFilePersistenceContext(this.appContext, testFileName);
+            thirdContext.initializePersistedData();
+
+            assertNotNull(thirdContext.getData());
+            assertNotNull(thirdContext.getData().getGameTasks());
+            assertEquals(1, thirdContext.getData().getGameTasks().size());
+
+            gameTaskData = thirdContext.getData().getGameTasks().get(0);
+            assertEquals(1, gameTaskData.getId());
+            assertEquals("Pic element task", gameTaskData.getGameTaskHeader().getHeaderTitle());
+            gameTaskContentElements = gameTaskData.getGameTaskContent().getContentElements();
+            element = gameTaskContentElements.get(0);
+            assertNotNull(element);
+            assertTrue(element instanceof DisplayPictureElement);
+            typedElement = (DisplayPictureElement) element;
+            assertEquals(33, typedElement.getPictureResourceId());
+            assertEquals("path", typedElement.getPicturePath());
+
+        }
+        finally {
+            // cleanup
+            File bundleFile = new File(testFilePath);
+            if (bundleFile.exists()) {
+                bundleFile.delete();
+            }
+        }
+    }
+
+    @Test
+    public void jsonFilePersistenceContext_saveRestoreChange_textInputElementContent_test() throws IOException {
+        final String testFileName = "sr_textInput.data";
+        final String testFilePath = this.appContext.getFilesDir() + "/" + testFileName;
+
+        try {
+            // setup bundle
+            JsonFilePersistenceContext persistenceContext = new JsonFilePersistenceContext(this.appContext, testFileName);
+            assertNull(persistenceContext.getData());
+            persistenceContext.initializePersistedData();
+
+            assertNotNull(persistenceContext.getData());
+            assertNotNull(persistenceContext.getData().getGameTasks());
+            assertEquals(0, persistenceContext.getData().getGameTasks().size());
+
+            // add game task with text element
+            persistenceContext.getData().getGameTasks().add(new GameTaskBuilder(1).withTitle("text input element task")
+                    .withTextInputComparisonElement("Check value", "A1", "A2").getTask());
+            persistenceContext.persist();
+
+            // read again
+            JsonFilePersistenceContext newContext = new JsonFilePersistenceContext(this.appContext, testFileName);
+            newContext.initializePersistedData();
+
+            assertNotNull(newContext.getData());
+            assertNotNull(newContext.getData().getGameTasks());
+            assertEquals(1, newContext.getData().getGameTasks().size());
+
+            GameTaskData gameTaskData = newContext.getData().getGameTasks().get(0);
+            assertEquals(1, gameTaskData.getId());
+            assertEquals("text input element task", gameTaskData.getGameTaskHeader().getHeaderTitle());
+            List<GameTaskContentElement> gameTaskContentElements = gameTaskData.getGameTaskContent().getContentElements();
+            GameTaskContentElement element = gameTaskContentElements.get(0);
+            assertNotNull(element);
+            assertTrue(element instanceof TextComparisonInputElement);
+            TextComparisonInputElement typedElement = (TextComparisonInputElement) element;
+            assertEquals("Check value", typedElement.getCommitCommandName());
+            assertEquals(null, typedElement.getInputText());
+            Iterator<String> iterator = typedElement.getAcceptableInputValues().iterator();
+            assertEquals("A1", iterator.next());
+            assertEquals("A2", iterator.next());
+
+            // change and save
+            typedElement.setInputText("some input text");
+            newContext.persist();
+
+            // another context
+            JsonFilePersistenceContext thirdContext = new JsonFilePersistenceContext(this.appContext, testFileName);
+            thirdContext.initializePersistedData();
+
+            assertNotNull(thirdContext.getData());
+            assertNotNull(thirdContext.getData().getGameTasks());
+            assertEquals(1, thirdContext.getData().getGameTasks().size());
+
+            gameTaskData = thirdContext.getData().getGameTasks().get(0);
+            assertEquals(1, gameTaskData.getId());
+            assertEquals("text input element task", gameTaskData.getGameTaskHeader().getHeaderTitle());
+            gameTaskContentElements = gameTaskData.getGameTaskContent().getContentElements();
+            element = gameTaskContentElements.get(0);
+            assertNotNull(element);
+            assertTrue(element instanceof TextComparisonInputElement);
+            typedElement = (TextComparisonInputElement) element;
+            assertEquals("Check value", typedElement.getCommitCommandName());
+            assertEquals("some input text", typedElement.getInputText());
+            iterator = typedElement.getAcceptableInputValues().iterator();
+            assertEquals("A1", iterator.next());
+            assertEquals("A2", iterator.next());
+
+        }
+        finally {
+            // cleanup
+            File bundleFile = new File(testFilePath);
+            if (bundleFile.exists()) {
+                bundleFile.delete();
+            }
+        }
+    }
+
+    @Test
+    public void jsonFilePersistenceContext_saveRestore_locationComparisonElementContent_test() throws IOException {
+        final String testFileName = "sr_locationComp.data";
+        final String testFilePath = this.appContext.getFilesDir() + "/" + testFileName;
+
+        try {
+            // setup bundle
+            JsonFilePersistenceContext persistenceContext = new JsonFilePersistenceContext(this.appContext, testFileName);
+            assertNull(persistenceContext.getData());
+            persistenceContext.initializePersistedData();
+
+            assertNotNull(persistenceContext.getData());
+            assertNotNull(persistenceContext.getData().getGameTasks());
+            assertEquals(0, persistenceContext.getData().getGameTasks().size());
+
+            // add game task with text element
+            persistenceContext.getData().getGameTasks().add(new GameTaskBuilder(1).withTitle("location comparison element task")
+                    .withLocationComparisonElement("Check location", 53.00f, 17.00f, 20f, null).getTask());
+            persistenceContext.persist();
+
+            // read again
+            JsonFilePersistenceContext newContext = new JsonFilePersistenceContext(this.appContext, testFileName);
+            newContext.initializePersistedData();
+
+            assertNotNull(newContext.getData());
+            assertNotNull(newContext.getData().getGameTasks());
+            assertEquals(1, newContext.getData().getGameTasks().size());
+
+            GameTaskData gameTaskData = newContext.getData().getGameTasks().get(0);
+            assertEquals(1, gameTaskData.getId());
+            assertEquals("location comparison element task", gameTaskData.getGameTaskHeader().getHeaderTitle());
+            List<GameTaskContentElement> gameTaskContentElements = gameTaskData.getGameTaskContent().getContentElements();
+            GameTaskContentElement element = gameTaskContentElements.get(0);
+            assertNotNull(element);
+            assertTrue(element instanceof LocationComparisonInputElement);
+            LocationComparisonInputElement typedElement = (LocationComparisonInputElement) element;
+            assertEquals("Check location", typedElement.getCommitCommandName());
+
+        }
+        finally {
+            // cleanup
+            File bundleFile = new File(testFilePath);
+            if (bundleFile.exists()) {
+                bundleFile.delete();
+            }
+        }
+    }
+
+    @Test
+    public void jsonFilePersistenceContext_saveRestore_AudioPlayerElement_test() throws IOException {
+        final String testFileName = "sr_locationComp.data";
+        final String testFilePath = this.appContext.getFilesDir() + "/" + testFileName;
+
+        try {
+            // setup bundle
+            JsonFilePersistenceContext persistenceContext = new JsonFilePersistenceContext(this.appContext, testFileName);
+            assertNull(persistenceContext.getData());
+            persistenceContext.initializePersistedData();
+
+            assertNotNull(persistenceContext.getData());
+            assertNotNull(persistenceContext.getData().getGameTasks());
+            assertEquals(0, persistenceContext.getData().getGameTasks().size());
+
+            // add game task with text element
+            persistenceContext.getData().getGameTasks().add(new GameTaskBuilder(1).withTitle("Audio player element task")
+                    .withAudioPlayerElement(38, "Audio title", this.appContext).getTask());
+            persistenceContext.persist();
+
+            // read again
+            JsonFilePersistenceContext newContext = new JsonFilePersistenceContext(this.appContext, testFileName);
+            newContext.initializePersistedData();
+
+            assertNotNull(newContext.getData());
+            assertNotNull(newContext.getData().getGameTasks());
+            assertEquals(1, newContext.getData().getGameTasks().size());
+
+            GameTaskData gameTaskData = newContext.getData().getGameTasks().get(0);
+            assertEquals(1, gameTaskData.getId());
+            assertEquals("Audio player element task", gameTaskData.getGameTaskHeader().getHeaderTitle());
+            List<GameTaskContentElement> gameTaskContentElements = gameTaskData.getGameTaskContent().getContentElements();
+            GameTaskContentElement element = gameTaskContentElements.get(0);
+            assertNotNull(element);
+            assertTrue(element instanceof DisplayAudioPlayerElement);
+            DisplayAudioPlayerElement typedElement = (DisplayAudioPlayerElement) element;
+            assertEquals("Audio title", typedElement.getAudioTitle());
+            assertEquals(38, typedElement.getAudioFileResourceId());
+            assertEquals(null, typedElement.getAudioFileUriString());
+
+            // change
+            typedElement.setAudioFileUriString(testFilePath);
+            typedElement.setAudioTitle("New title");
+            typedElement.setAudioFileResourceId(34);
+            newContext.persist();
+
+            // read once again
+            JsonFilePersistenceContext thirdContext = new JsonFilePersistenceContext(this.appContext, testFileName);
+            thirdContext.initializePersistedData();
+
+            assertNotNull(thirdContext.getData());
+            assertNotNull(thirdContext.getData().getGameTasks());
+            assertEquals(1, thirdContext.getData().getGameTasks().size());
+
+            gameTaskData = newContext.getData().getGameTasks().get(0);
+            assertEquals(1, gameTaskData.getId());
+            assertEquals("Audio player element task", gameTaskData.getGameTaskHeader().getHeaderTitle());
+            gameTaskContentElements = gameTaskData.getGameTaskContent().getContentElements();
+            element = gameTaskContentElements.get(0);
+            assertNotNull(element);
+            assertTrue(element instanceof DisplayAudioPlayerElement);
+            typedElement = (DisplayAudioPlayerElement) element;
+            assertEquals("New title", typedElement.getAudioTitle());
+            assertEquals(34, typedElement.getAudioFileResourceId());
+            assertEquals(testFilePath, typedElement.getAudioFileUriString());
+        }
+        finally {
+            // cleanup
+            File bundleFile = new File(testFilePath);
+            if (bundleFile.exists()) {
+                bundleFile.delete();
+            }
+        }
+    }
+
+    private String readFile(String file) throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader (file));
+        String         line = null;
+        StringBuilder  stringBuilder = new StringBuilder();
+        String         ls = System.getProperty("line.separator");
+
+        try {
+            while((line = reader.readLine()) != null) {
+                stringBuilder.append(line);
+                stringBuilder.append(ls);
+            }
+
+            return stringBuilder.toString();
+        } finally {
+            reader.close();
+        }
     }
 }

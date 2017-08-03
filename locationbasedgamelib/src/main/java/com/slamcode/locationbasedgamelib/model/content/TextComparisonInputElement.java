@@ -26,7 +26,7 @@ public final class TextComparisonInputElement implements InputContent<String> {
     private final TextInputComparator comparator;
 
     private String commitCommandName;
-    private List<OnInputCommittedListener> listeners = new ArrayList<>();
+    private transient List<OnInputCommittedListener> listeners = new ArrayList<>();
     private String inputText;
     private List<String> acceptableInputValues = new ArrayList<>();
 

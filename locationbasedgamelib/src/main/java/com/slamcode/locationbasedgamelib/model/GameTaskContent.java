@@ -9,19 +9,16 @@ import java.util.List;
 
 public class GameTaskContent {
 
-    private List<GameTaskContentElement> contentElements = new ArrayList<>();
+    private List<GameTaskContentElement> contentElements;
 
-    public Iterable<GameTaskContentElement> getContentElements() {
+    public List<GameTaskContentElement> getContentElements() {
+        if(contentElements == null)
+            contentElements = new ArrayList<>();
+
         return contentElements;
     }
 
-    public void addContentElement(GameTaskContentElement element)
-    {
-        this.contentElements.add(element);
-    }
-
-    public void clearContentElements()
-    {
-        this.contentElements.clear();
+    public void setContentElements(List<GameTaskContentElement> contentElements) {
+        this.contentElements = contentElements;
     }
 }

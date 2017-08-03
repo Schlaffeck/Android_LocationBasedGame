@@ -49,7 +49,7 @@ public class GameTaskBuilder {
             this.buildingTask.setGameTaskContent((content = new GameTaskContent()));
         DisplayTextElement textElement = new DisplayTextElement();
         textElement.setText(displayText);
-        content.addContentElement(textElement);
+        content.getContentElements().add(textElement);
         return this;
     }
 
@@ -60,7 +60,7 @@ public class GameTaskBuilder {
             this.buildingTask.setGameTaskContent((content = new GameTaskContent()));
         DisplayPictureElement pictureElement = new DisplayPictureElement();
         pictureElement.setPictureResourceId(pictureResourceId);
-        content.addContentElement(pictureElement);
+        content.getContentElements().add(pictureElement);
         return this;
     }
 
@@ -85,10 +85,9 @@ public class GameTaskBuilder {
         audioElement.setAudioFileResourceId(audioFileResourceId);
         audioElement.setAudioTitle(audioTitleOptional);
         audioElement.useAudioPlayer(audioPlayer);
-        content.addContentElement(audioElement);
+        content.getContentElements().add(audioElement);
         return this;
     }
-
 
     public GameTaskBuilder withAudioPlayerElement(Uri audioFileUri, String audioTitleOptional, Context context)
     {
@@ -101,10 +100,10 @@ public class GameTaskBuilder {
         if(content == null)
             this.buildingTask.setGameTaskContent((content = new GameTaskContent()));
         DisplayAudioPlayerElement audioElement = new DisplayAudioPlayerElement();
-        audioElement.setAudioFileUri(audioFileUri);
+        audioElement.setAudioFileUriString(audioFileUri.toString());
         audioElement.setAudioTitle(audioTitleOptional);
         audioElement.useAudioPlayer(audioPlayer);
-        content.addContentElement(audioElement);
+        content.getContentElements().add(audioElement);
         return this;
     }
 
@@ -114,7 +113,7 @@ public class GameTaskBuilder {
         if(content == null)
             this.buildingTask.setGameTaskContent((content = new GameTaskContent()));
         TextComparisonInputElement comparisonElement = new TextComparisonInputElement(Arrays.asList(acceptableInputValues), commitMessage);
-        content.addContentElement(comparisonElement);
+        content.getContentElements().add(comparisonElement);
         return this;
     }
 
@@ -128,7 +127,7 @@ public class GameTaskBuilder {
         if(listener != null)
             comparisonElement.addOnInputCommittedListener(listener);
 
-        content.addContentElement(comparisonElement);
+        content.getContentElements().add(comparisonElement);
         return this;
     }
 
@@ -137,7 +136,7 @@ public class GameTaskBuilder {
         GameTaskContent content = this.buildingTask.getGameTaskContent();
         if(content == null)
             this.buildingTask.setGameTaskContent((content = new GameTaskContent()));
-        content.addContentElement(element);
+        content.getContentElements().add(element);
         return this;
     }
 

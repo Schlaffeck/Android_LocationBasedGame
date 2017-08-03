@@ -57,7 +57,7 @@ public class JsonFilePersistenceContext implements PersistenceContext {
         FileOutputStream fileStream;
         try{
             Gson gson = new GsonBuilder()
-                    .registerTypeAdapter(GameTaskContentElement.class, new GameTaskContentElementJsonDeserializer())
+                    .registerTypeHierarchyAdapter(GameTaskContentElement.class, new GameTaskContentElementJsonDeserializer())
                     .create();
             fileStream = this.applicationContext.openFileOutput(this.fileName, Context.MODE_PRIVATE);
             fileStream.write(gson.toJson(this.data, GameDataBundle.class).getBytes());

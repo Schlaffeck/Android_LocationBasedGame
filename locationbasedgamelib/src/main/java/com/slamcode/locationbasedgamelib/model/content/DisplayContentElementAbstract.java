@@ -11,7 +11,7 @@ import java.util.List;
 
 public abstract class DisplayContentElementAbstract implements DisplayContent {
 
-    private List<OnDisplayContentChangedListener> listeners = new ArrayList<>();
+    private transient List<OnDisplayContentChangedListener> listeners = new ArrayList<>();
 
     @Override
     public void onDisplayContentChanged() {

@@ -21,9 +21,9 @@ public class DisplayAudioPlayerElement extends DisplayContentElementAbstract {
 
     private int audioFileResourceId;
 
-    private Uri audioFileUri;
+    private String audioFileUriString;
 
-    private AudioPlayer audioPlayer;
+    private transient AudioPlayer audioPlayer;
 
     @Override
     public String getContentType() {
@@ -69,11 +69,11 @@ public class DisplayAudioPlayerElement extends DisplayContentElementAbstract {
         this.audioPlayer = audioPlayer;
     }
 
-    public Uri getAudioFileUri() {
-        return audioFileUri;
+    public String getAudioFileUriString() {
+        return audioFileUriString;
     }
 
-    public void setAudioFileUri(Uri audioFileUri) {
-        this.audioFileUri = audioFileUri;
+    public void setAudioFileUriString(String audioFileUriString) {
+        this.audioFileUriString = audioFileUriString;
     }
 }
