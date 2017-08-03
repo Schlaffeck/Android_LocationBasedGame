@@ -46,12 +46,16 @@ public final class MediaServiceAudioPlayer implements AudioPlayer {
 
     @Override
     public void pause() {
+        if(mediaPlayer == null)
+            return;
         this.mediaPlayer.pause();
         this.status = AudioStatus.Paused;
     }
 
     @Override
     public void stop() {
+        if(mediaPlayer == null)
+            return;
         if(this.mediaPlayer.isPlaying())
             this.mediaPlayer.pause();
 
