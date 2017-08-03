@@ -46,12 +46,18 @@ public final class LocationComparisonInputElement implements InputContent<Locati
     }
 
     @Override
-    public InputResult commitInput(LocationData currentLocation) {
+    public LocationComparisonResult commitInput(LocationData currentLocation) {
         InputCommitParameters<LocationData> parameters = new InputCommitParameters<>(currentLocation);
         this.onInputCommitting(parameters);
 
-        InputResult result = new InputResult();
-        result.setInputCorrect(LocationDataHelper.isNearBy(this.targetLocation, currentLocation, this.acceptableDistanceMeters));
+        LocationComparisonResult result = new LocationComparisonResult();
+        if(currentLocation != null) {
+            result.setInputCorrect(LocationDataHelper.isNearBy(this.targetLocation, currentLocation, this.acceptableDistanceMeters));
+            result.setCurrentLocationAvailable(true);
+            result.setDistanceFromTargetMeters(LocationDataHelper.countDistanceFrom(currentLocation, this.targetLocation));
+        }
+        else
+            result.setCurrentLocationAvailable(false);
 
         this.onInputCommitted(result);
         return result;
@@ -86,4 +92,29 @@ public final class LocationComparisonInputElement implements InputContent<Locati
         this.listeners.clear();
     }
 
+    /**
+     * Extends input result by additional location related data
+     */
+    public class LocationComparisonResult extends InputResult
+    {
+        private boolean currentLocationAvailable;
+
+        private float distanceFromTargetMeters;
+
+        public float getDistanceFromTargetMeters() {
+            return distanceFromTargetMeters;
+        }
+
+        void setDistanceFromTargetMeters(float distanceFromTargetMeters) {
+            this.distanceFromTargetMeters = distanceFromTargetMeters;
+        }
+
+        public boolean isCurrentLocationAvailable() {
+            return currentLocationAvailable;
+        }
+
+        void setCurrentLocationAvailable(boolean currentLocationAvailable) {
+            this.currentLocationAvailable = currentLocationAvailable;
+        }
+    }
 }
