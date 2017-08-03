@@ -4,6 +4,7 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.provider.MediaStore;
 
 /**
  * Audio player utilizing android media service to play audio files
@@ -17,8 +18,6 @@ public final class MediaServiceAudioPlayer implements AudioPlayer {
     public MediaServiceAudioPlayer(Context context, int fileResourceId)
     {
         this.mediaPlayer = MediaPlayer.create(context, fileResourceId);
-//        AudioManager manager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-//        manager.setStreamVolume(AudioManager.STREAM_MUSIC, 20, 0);
     }
 
     public MediaServiceAudioPlayer(Context context, Uri filePathUri)
@@ -47,13 +46,20 @@ public final class MediaServiceAudioPlayer implements AudioPlayer {
 
     @Override
     public void stop() {
-        this.mediaPlayer.stop();
+        if(this.mediaPlayer.isPlaying())
+            this.mediaPlayer.pause();
+
+        this.mediaPlayer.seekTo(0);
+
         this.status = AudioStatus.NotStarted;
     }
 
     @Override
     public void restart() {
-        this.mediaPlayer.stop();
+        if(this.mediaPlayer.isPlaying())
+            this.mediaPlayer.pause();
+
+        this.mediaPlayer.seekTo(0);
         this.mediaPlayer.start();
         this.status = AudioStatus.Playing;
     }
