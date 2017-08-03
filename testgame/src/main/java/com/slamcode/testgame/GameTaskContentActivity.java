@@ -51,10 +51,19 @@ public class GameTaskContentActivity extends AppCompatActivity implements Permis
 
             @Override
             public void inputCommitted(InputResult result) {
+                LocationComparisonInputElement.LocationComparisonResult locationComparisonResult
+                        = (LocationComparisonInputElement.LocationComparisonResult)result;
                 if(result.isInputCorrect())
-                    Toast.makeText(getApplicationContext(), "You made it, great!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "You made it, great!", Toast.LENGTH_SHORT).show();
                 else
-                    Toast.makeText(getApplicationContext(), "Not quite there yet :(", Toast.LENGTH_LONG).show();
+                    if(locationComparisonResult.isCurrentLocationAvailable())
+                    Toast.makeText(getApplicationContext(),
+                            String.format("Not quite there yet. You are about %f meters from the target", locationComparisonResult.getDistanceFromTargetMeters()),
+                            Toast.LENGTH_LONG).show();
+                else
+                        Toast.makeText(getApplicationContext(),
+                                "No location available. Check your GPS settings and try again",
+                                Toast.LENGTH_LONG).show();
             }
         };
 
