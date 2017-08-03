@@ -1,7 +1,6 @@
 package com.slamcode.locationbasedgamelib.multimedia;
 
 import android.content.Context;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 
@@ -11,21 +10,25 @@ import android.net.Uri;
 
 public final class MediaServiceAudioPlayer implements AudioPlayer {
 
-    private final MediaPlayer mediaPlayer;
-    private AudioStatus status;
+    private final Context context;
+    private final int fileResourceId;
+    private final Uri filePathUri;
+
+    private MediaPlayer mediaPlayer;
+    private AudioStatus status = AudioStatus.NotStarted;
 
     public MediaServiceAudioPlayer(Context context, int fileResourceId)
     {
-        this.mediaPlayer = MediaPlayer.create(context, fileResourceId);
-//        AudioManager manager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-//        manager.setStreamVolume(AudioManager.STREAM_MUSIC, 20, 0);
+        this.context = context;
+        this.fileResourceId = fileResourceId;
+        this.filePathUri = null;
     }
 
     public MediaServiceAudioPlayer(Context context, Uri filePathUri)
     {
-        this.mediaPlayer = MediaPlayer.create(context, filePathUri);
-//        AudioManager manager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-//        manager.setStreamVolume(AudioManager.STREAM_MUSIC, 20, 0);
+        this.context = context;
+        this.fileResourceId = 0;
+        this.filePathUri = filePathUri;
     }
 
     @Override
@@ -35,6 +38,8 @@ public final class MediaServiceAudioPlayer implements AudioPlayer {
 
     @Override
     public void start() {
+        if(this.mediaPlayer == null)
+            this.initializePlayer();
         this.mediaPlayer.start();
         this.status = AudioStatus.Playing;
     }
@@ -47,14 +52,56 @@ public final class MediaServiceAudioPlayer implements AudioPlayer {
 
     @Override
     public void stop() {
-        this.mediaPlayer.stop();
+        if(this.mediaPlayer.isPlaying())
+            this.mediaPlayer.pause();
+
+        this.mediaPlayer.seekTo(0);
+        this.releasePlayer();
+
         this.status = AudioStatus.NotStarted;
     }
 
     @Override
     public void restart() {
-        this.mediaPlayer.stop();
+
+        if(this.mediaPlayer == null)
+            this.initializePlayer();
+
+        if(this.mediaPlayer.isPlaying())
+            this.mediaPlayer.pause();
+
+        this.mediaPlayer.seekTo(0);
         this.mediaPlayer.start();
         this.status = AudioStatus.Playing;
+    }
+
+    private void initializePlayer()
+    {
+        if(this.fileResourceId != 0)
+        {
+            this.mediaPlayer = MediaPlayer.create(this.context, this.fileResourceId);
+        }
+        else if(this.filePathUri != null)
+        {
+            this.mediaPlayer = MediaPlayer.create(this.context, this.filePathUri);
+        }
+
+        if(this.mediaPlayer != null)
+            this.mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    releasePlayer();
+                }
+            });
+    }
+
+    private void releasePlayer()
+    {
+        if(this.mediaPlayer == null)
+            return;
+
+        this.mediaPlayer.reset();
+        this.mediaPlayer.release();
+        this.mediaPlayer = null;
     }
 }
