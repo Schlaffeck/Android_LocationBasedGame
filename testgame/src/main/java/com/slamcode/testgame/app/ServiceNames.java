@@ -1,0 +1,13 @@
+package com.slamcode.testgame.app;
+
+/**
+ * Created by smoriak on 04/08/2017.
+ */
+
+public final class ServiceNames {
+
+    public final static String PERSISTENCE_CONTEXT = "PersistenceContext";
+    public final static String LOCATION_TRACKER = "LocationTracker";
+    public final static String PERMISSION_REQUESTOR_PROVIDER = "PermissionRequestorProvider";
+    public final static String CONTENT_LAYOUT_PROVIDER = "ContentLayoutProvider";
+}

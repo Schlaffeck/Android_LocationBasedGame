@@ -1,47 +1,39 @@
 package com.slamcode.testgame;
 
-import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.slamcode.locationbasedgamelayout.view.GameTaskContentSimpleLayoutProvider;
 import com.slamcode.locationbasedgamelayout.view.binding.Bindings;
-import com.slamcode.locationbasedgamelib.location.LocationDataProvider;
 import com.slamcode.locationbasedgamelib.location.LocationTracker;
-import com.slamcode.locationbasedgamelib.location.LocationTrackerConfiguration;
 import com.slamcode.locationbasedgamelib.model.*;
 import com.slamcode.locationbasedgamelib.model.builder.*;
 import com.slamcode.locationbasedgamelib.model.content.LocationComparisonInputElement;
-import com.slamcode.locationbasedgamelib.permission.PermissionRequestor;
 import com.slamcode.locationbasedgamelib.persistence.PersistenceContext;
 import com.slamcode.locationbasedgamelib.view.ContentLayoutProvider;
-import com.slamcode.testgame.data.PersistenceContextContainer;
+import com.slamcode.testgame.app.ServiceNames;
+import com.slamcode.testgame.app.ServiceRegistryAppCompatActivity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class GameTaskContentActivity extends AppCompatActivity implements PermissionRequestor {
+public class GameTaskContentActivity extends ServiceRegistryAppCompatActivity{
 
     private GameTaskData sampleGameTask;
     private ContentLayoutProvider layoutProvider;
-    private List<RequestListener> requestListeners = new ArrayList<>();
     private InputContent.OnInputCommittedListener<LocationData> locationDataOnInputCommittedListener;
     private InputContent.OnInputCommittedListener<String> textOnInputCommittedListener;
     private LocationTracker locationTracker;
+    private PersistenceContext persistenceContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_task_content);
-        this.layoutProvider = new GameTaskContentSimpleLayoutProvider();
-        this.locationTracker = new LocationTracker(this, new LocationTrackerConfiguration(1, 1_000), this);
+
+        this.layoutProvider = (ContentLayoutProvider) this.getServiceRegistryApplication().getRegistry().provideService(ServiceNames.CONTENT_LAYOUT_PROVIDER);
+        this.locationTracker = (LocationTracker) this.getServiceRegistryApplication().getRegistry().provideService(ServiceNames.LOCATION_TRACKER);
+        this.persistenceContext = (PersistenceContext) this.getServiceRegistryApplication().getRegistry().provideService(ServiceNames.PERSISTENCE_CONTEXT);
+
         this.locationDataOnInputCommittedListener = new InputContent.OnInputCommittedListener<LocationData>() {
             @Override
             public void inputCommitting(InputCommitParameters<LocationData> parameters) {
@@ -88,9 +80,10 @@ public class GameTaskContentActivity extends AppCompatActivity implements Permis
         super.onStart();
         int taskId = this.getIntent().getIntExtra(GameTaskData.ID_FIELD_NAME, 0);
 
-        for(int i =0; i < PersistenceContextContainer.getCurrentContext().getData().getGameTasks().size() && this.sampleGameTask == null; i++)
+
+        for(int i =0; i < persistenceContext.getData().getGameTasks().size() && this.sampleGameTask == null; i++)
         {
-            GameTaskData data = PersistenceContextContainer.getCurrentContext().getData().getGameTasks().get(i);
+            GameTaskData data = persistenceContext.getData().getGameTasks().get(i);
             if(data.getId() == taskId)
                 this.sampleGameTask = data;
         }
@@ -110,35 +103,7 @@ public class GameTaskContentActivity extends AppCompatActivity implements Permis
     @Override
     protected void onStop() {
         super.onStop();
-        PersistenceContextContainer.getCurrentContext().persist();
+        this.persistenceContext.persist();
     }
 
-
-    @Override
-    public void requestPermissions(PermissionRequest request) {
-        ActivityCompat.requestPermissions(this, request.getPermissions(), request.getPermissionRequestCode());
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        for (RequestListener listener : this.requestListeners) {
-            listener.requestFinished(requestCode, grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED);
-        }
-    }
-
-    @Override
-    public void addRequestListener(RequestListener listener) {
-        this.requestListeners.add(listener);
-    }
-
-    @Override
-    public void removeRequestListener(RequestListener listener) {
-        this.requestListeners.remove(listener);
-    }
-
-    @Override
-    public void clearRequestListeners() {
-        this.requestListeners.clear();
-    }
 }

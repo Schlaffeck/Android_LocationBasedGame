@@ -1,28 +1,20 @@
 package com.slamcode.testgame;
 
-import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.slamcode.locationbasedgamelib.location.LocationTracker;
-import com.slamcode.locationbasedgamelib.location.LocationTrackerConfiguration;
 import com.slamcode.locationbasedgamelib.model.LocationData;
-import com.slamcode.locationbasedgamelib.permission.PermissionRequestor;
+import com.slamcode.testgame.app.ServiceNames;
+import com.slamcode.testgame.app.ServiceRegistryAppCompatActivity;
 import com.slamcode.testgame.databinding.ActivityTrackerBinding;
 import com.slamcode.testgame.databinding.TrackerDataViewBinding;
 import com.slamcode.testgame.viewmodels.TrackerDataViewModel;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class TrackerActivity extends AppCompatActivity implements PermissionRequestor{
+public class TrackerActivity extends ServiceRegistryAppCompatActivity{
 
     private LocationTracker locationTracker;
-    private List<RequestListener> requestListeners = new ArrayList<>();
     private TrackerDataViewModel viewModel;
 
 
@@ -35,38 +27,10 @@ public class TrackerActivity extends AppCompatActivity implements PermissionRequ
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        this.locationTracker = new LocationTracker(this, new LocationTrackerConfiguration(1, 3_000), this);
+        this.locationTracker = (LocationTracker) this.getServiceRegistryApplication().getRegistry().provideService(ServiceNames.LOCATION_TRACKER);
         this.viewModel = new TrackerDataViewModel(this.locationTracker, new LocationData(51.070847, 16.996699));
         binding.setVm(this.viewModel);
         trackerDataViewBinding.setVm(this.viewModel);
-    }
-
-    @Override
-    public void requestPermissions(PermissionRequest request) {
-        ActivityCompat.requestPermissions(this, request.getPermissions(), request.getPermissionRequestCode());
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        for (RequestListener listener : this.requestListeners) {
-            listener.requestFinished(requestCode, grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED);
-        }
-    }
-
-    @Override
-    public void addRequestListener(RequestListener listener) {
-        this.requestListeners.add(listener);
-    }
-
-    @Override
-    public void removeRequestListener(RequestListener listener) {
-        this.requestListeners.remove(listener);
-    }
-
-    @Override
-    public void clearRequestListeners() {
-        this.requestListeners.clear();
     }
 
 }

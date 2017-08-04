@@ -1,22 +1,19 @@
 package com.slamcode.testgame;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.slamcode.locationbasedgamelayout.view.GameTaskContentSimpleLayoutProvider;
 import com.slamcode.locationbasedgamelayout.view.OnAdapterItemClickListener;
 import com.slamcode.locationbasedgamelayout.view.binding.BindableTasksListRecyclerViewAdapter;
 import com.slamcode.locationbasedgamelib.model.GameTaskData;
-import com.slamcode.locationbasedgamelib.model.builder.GameTaskBuilder;
 import com.slamcode.locationbasedgamelib.persistence.PersistenceContext;
-import com.slamcode.testgame.data.PersistenceContextContainer;
+import com.slamcode.locationbasedgamelib.view.ContentLayoutProvider;
+import com.slamcode.testgame.app.ServiceNames;
+import com.slamcode.testgame.app.ServiceRegistryAppCompatActivity;
 
-import java.util.Arrays;
-
-public class GameTasksListActivity extends AppCompatActivity {
+public class GameTasksListActivity extends ServiceRegistryAppCompatActivity  {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +30,7 @@ public class GameTasksListActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        PersistenceContextContainer.getCurrentContext().persist();
+        ((PersistenceContext)this.getServiceRegistryApplication().getRegistry().provideService(ServiceNames.PERSISTENCE_CONTEXT)).persist();
     }
 
     private void goToGameTaskContent(GameTaskData gameTask)
@@ -45,10 +42,12 @@ public class GameTasksListActivity extends AppCompatActivity {
 
     private void setupTasksList()
     {
-        final PersistenceContext persistenceContext = PersistenceContextContainer.initializePersistenceContext(this);
+        final PersistenceContext persistenceContext
+                = (PersistenceContext) this.getServiceRegistryApplication().getRegistry().provideService(ServiceNames.PERSISTENCE_CONTEXT);
 
         RecyclerView recyclerView = (RecyclerView) this.findViewById(R.id.testGame_tasksList_recyclerView);
-        BindableTasksListRecyclerViewAdapter adapter = new BindableTasksListRecyclerViewAdapter(persistenceContext.getData().getGameTasks(), new GameTaskContentSimpleLayoutProvider());
+        BindableTasksListRecyclerViewAdapter adapter = new BindableTasksListRecyclerViewAdapter(persistenceContext.getData().getGameTasks(),
+                (ContentLayoutProvider) this.getServiceRegistryApplication().getRegistry().provideService(ServiceNames.CONTENT_LAYOUT_PROVIDER));
         adapter.addOnAdapterItemClickListener(new OnAdapterItemClickListener() {
             @Override
             public void onItemClick(RecyclerView.Adapter adapter, View itemView, int itemPosition) {
