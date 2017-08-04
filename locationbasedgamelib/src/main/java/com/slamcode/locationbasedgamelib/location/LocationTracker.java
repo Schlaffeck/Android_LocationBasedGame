@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 
 import com.slamcode.locationbasedgamelib.general.Configurable;
 import com.slamcode.locationbasedgamelib.model.LocationData;
@@ -28,6 +29,7 @@ import java.util.List;
 
 public final class LocationTracker extends Service implements LocationListener, LocationDataProvider, Configurable<LocationTrackerConfiguration>, PermissionRequestor.RequestListener {
 
+    private static final String LOG_TAG = "LBG_LocTr";
     private Location lastKnownLocation;
     private Context mContext;
     private final PermissionRequestor permissionRequestor;
@@ -65,6 +67,8 @@ public final class LocationTracker extends Service implements LocationListener, 
 
     @Override
     public void onLocationChanged(Location location) {
+
+        Log.i(LOG_TAG, String.format("Location changed to: %f x %f", location.getLatitude(), location.getLongitude()));
         this.lastKnownLocation = location;
         for(LocationListener locationListener : this.locationListeners)
             locationListener.onLocationChanged(location);
@@ -79,6 +83,7 @@ public final class LocationTracker extends Service implements LocationListener, 
     @Override
     public void onProviderEnabled(String provider) {
 
+        Log.i(LOG_TAG, String.format("'%s' provider enabled", provider));
         for(LocationListener locationListener : this.locationListeners)
             locationListener.onProviderEnabled(provider);
     }
@@ -86,6 +91,7 @@ public final class LocationTracker extends Service implements LocationListener, 
     @Override
     public void onProviderDisabled(String provider) {
 
+        Log.i(LOG_TAG, String.format("'%s' provider disabled", provider));
         for(LocationListener locationListener : this.locationListeners)
             locationListener.onProviderDisabled(provider);
     }
@@ -130,6 +136,8 @@ public final class LocationTracker extends Service implements LocationListener, 
     @Override
     public void requestFinished(int requestCode, boolean permissionGranted) {
         if(requestCode == PermissionRequestCodes.LOCATION_ACCESS_CODE && permissionGranted) {
+
+            Log.i(LOG_TAG, "Permission granted");
             this.getLocation();
         }
     }
@@ -157,6 +165,9 @@ public final class LocationTracker extends Service implements LocationListener, 
     }
 
     private void setupLocationProviderUpdates(String providerName) {
+
+        Log.i(LOG_TAG, String.format("'%s' provider - Setting up updates", providerName));
+
         boolean fineLocationGranted = ContextCompat.checkSelfPermission(this.mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED;
         boolean coarseLocationGranted = ContextCompat.checkSelfPermission(this.mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED;
         if (!fineLocationGranted && !coarseLocationGranted) {
@@ -167,10 +178,13 @@ public final class LocationTracker extends Service implements LocationListener, 
                 this.configuration.getMinimalTimeBetweenUpdatesMillis(),
                 this.configuration.getMinimalDistanceToUpdateLocationMeters(),
                 this);
+
+        Log.i(LOG_TAG, String.format("'%s' provider - Set up", providerName));
     }
 
     private void requestLocationPermissions()
     {
+        Log.w(LOG_TAG, "Permissions needed");
         this.permissionRequestor.requestPermissions(PermissionRequestCodes.LOCATION_PERMISSION_REQUEST);
     }
 
