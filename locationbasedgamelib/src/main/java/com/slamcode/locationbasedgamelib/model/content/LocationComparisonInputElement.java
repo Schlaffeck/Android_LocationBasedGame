@@ -13,14 +13,13 @@ import java.util.List;
  * Game task content element comparing current with given location within acceptable radius
  */
 
-public final class LocationComparisonInputElement implements InputContent<LocationData> {
+public final class LocationComparisonInputElement extends InputContentElementAbstract<LocationData> {
 
     public static final String CONTENT_TYPE = "LOCATION_COMPARISON_INPUT";
 
     public final static int CONTENT_TYPE_ID = CONTENT_TYPE.hashCode();
 
     private String contentType = CONTENT_TYPE;
-    private transient List<OnInputCommittedListener> listeners = new ArrayList<>();
     private final LocationData targetLocation;
     private final float acceptableDistanceMeters;
     private final String commitCommandName;
@@ -61,35 +60,6 @@ public final class LocationComparisonInputElement implements InputContent<Locati
 
         this.onInputCommitted(result);
         return result;
-    }
-
-    @Override
-    public void onInputCommitting(InputCommitParameters<LocationData> parameters) {
-        for (OnInputCommittedListener listener : this.listeners) {
-            listener.inputCommitting(parameters);
-        }
-    }
-
-    @Override
-    public void onInputCommitted(InputResult result) {
-        for (OnInputCommittedListener listener : this.listeners) {
-            listener.inputCommitted(result);
-        }
-    }
-
-    @Override
-    public void addOnInputCommittedListener(OnInputCommittedListener listener) {
-        this.listeners.add(listener);
-    }
-
-    @Override
-    public void removeOnInputCommittedListener(OnInputCommittedListener listener) {
-        this.listeners.remove(listener);
-    }
-
-    @Override
-    public void clearOnInputCommittedListeners() {
-        this.listeners.clear();
     }
 
     /**

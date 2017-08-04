@@ -17,7 +17,7 @@ import java.util.Objects;
  * text and compare it with the expected one
  */
 
-public final class TextComparisonInputElement implements InputContent<String> {
+public final class TextComparisonInputElement extends InputContentElementAbstract<String> {
 
     public final static TextInputComparator IgnoreAllComparator = new TextInputComparator(new TextComparisonConfiguration(true, true));
     public static final String CONTENT_TYPE = "TEXT_COMPARISON_INPUT";
@@ -93,30 +93,6 @@ public final class TextComparisonInputElement implements InputContent<String> {
         
         this.onInputCommitted(result);
         return result;
-    }
-
-    @Override
-    public void onInputCommitting(InputCommitParameters<String> parameters) {
-        for (OnInputCommittedListener listener : this.listeners) {
-            listener.inputCommitting(parameters);
-        }
-    }
-
-    @Override
-    public void onInputCommitted(InputResult result) {
-        for (OnInputCommittedListener listener : this.listeners) {
-            listener.inputCommitted(result);
-        }
-    }
-
-    @Override
-    public void addOnInputCommittedListener(OnInputCommittedListener listener) {
-        this.listeners.add(listener);
-    }
-
-    @Override
-    public void removeOnInputCommittedListener(OnInputCommittedListener listener) {
-        this.listeners.remove(listener);
     }
 
     @Override

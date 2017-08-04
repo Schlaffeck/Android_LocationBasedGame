@@ -15,6 +15,7 @@ public abstract class DisplayContentElementAbstract implements DisplayContent {
 
     @Override
     public void onDisplayContentChanged() {
+        this.validateListeners();
         for (OnDisplayContentChangedListener listener : this.listeners) {
             listener.onDisplayContentChanged();
         }
@@ -22,16 +23,25 @@ public abstract class DisplayContentElementAbstract implements DisplayContent {
 
     @Override
     public void addOnDisplayChangedListener(OnDisplayContentChangedListener listener) {
+        this.validateListeners();
         listeners.add(listener);
     }
 
     @Override
     public void removeOnDisplayChangedListener(OnDisplayContentChangedListener listener) {
+        this.validateListeners();
         listeners.remove(listener);
     }
 
     @Override
     public void clearOnDisplayChangedListeners() {
+        this.validateListeners();
         this.listeners.clear();
+    }
+
+    private void validateListeners()
+    {
+        if(this.listeners == null)
+            this.listeners = new ArrayList<>();
     }
 }
