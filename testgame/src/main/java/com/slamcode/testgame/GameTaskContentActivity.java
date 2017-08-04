@@ -1,7 +1,13 @@
 package com.slamcode.testgame;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
+import android.location.Location;
+import android.location.LocationListener;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.ViewGroup;
@@ -37,6 +43,37 @@ public class GameTaskContentActivity extends ServiceRegistryAppCompatActivity im
         this.locationTracker = (LocationTracker) this.getServiceRegistryApplication().getRegistry().provideService(ServiceNames.LOCATION_TRACKER);
         this.persistenceContext = (PersistenceContext) this.getServiceRegistryApplication().getRegistry().provideService(ServiceNames.PERSISTENCE_CONTEXT);
 
+        this.locationTracker.addLocationListener(new LocationListener() {
+            boolean locationDetermined = false;
+            @Override
+            public void onLocationChanged(Location location) {
+                if(location != null && !locationDetermined) {
+                    Toast.makeText(getApplicationContext(), String.format("Location changed: %s", location.toString()), Toast.LENGTH_SHORT).show();
+                    locationDetermined = true;
+                }
+                else if(locationDetermined)
+                {
+                    Toast.makeText(getApplicationContext(), "Location lost", Toast.LENGTH_SHORT).show();
+                    locationDetermined = false;
+                }
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+                Toast.makeText(getApplicationContext(), String.format("'%s' provider status changed to %d", provider, status), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+                Toast.makeText(getApplicationContext(), String.format("'%s' provider enabled", provider), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+                Toast.makeText(getApplicationContext(), String.format("'%s' provider disabled", provider), Toast.LENGTH_SHORT).show();
+            }
+        });
+
         this.locationDataOnInputCommittedListener = new InputContent.OnInputCommittedListener<LocationData>() {
             @Override
             public void inputCommitting(InputCommitParameters<LocationData> parameters) {
@@ -49,16 +86,36 @@ public class GameTaskContentActivity extends ServiceRegistryAppCompatActivity im
                 LocationComparisonInputElement.LocationComparisonResult locationComparisonResult
                         = (LocationComparisonInputElement.LocationComparisonResult)result;
                 if(result.isInputCorrect())
-                    Toast.makeText(getApplicationContext(), "You made it, great!", Toast.LENGTH_SHORT).show();
+                    new AlertDialog.Builder(getServiceRegistryApplication().getCurrentActivity())
+                            .setMessage("You made it, great!")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .create().show();
                 else
                     if(locationComparisonResult.isCurrentLocationAvailable())
-                    Toast.makeText(getApplicationContext(),
-                            String.format("Not quite there yet. You are about %f meters from the target", locationComparisonResult.getDistanceFromTargetMeters()),
-                            Toast.LENGTH_LONG).show();
+                        new AlertDialog.Builder(getServiceRegistryApplication().getCurrentActivity())
+                                .setMessage(String.format("Not quite there yet. You are about %f meters from the target", locationComparisonResult.getDistanceFromTargetMeters()))
+                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .create().show();
                 else
-                        Toast.makeText(getApplicationContext(),
-                                "No location available. Check your GPS settings and try again",
-                                Toast.LENGTH_LONG).show();
+                        new AlertDialog.Builder(getServiceRegistryApplication().getCurrentActivity())
+                                .setMessage(String.format("No location available. Check your GPS settings and try again", locationComparisonResult.getDistanceFromTargetMeters()))
+                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .create().show();
             }
         };
 
