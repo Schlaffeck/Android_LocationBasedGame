@@ -41,7 +41,7 @@ public final class PersistenceContextContainer {
 
     private static void addSampleTasks(Context applicationContext)
     {
-        //if(currentContext.getData().getGameTasks() == null || currentContext.getData().getGameTasks().isEmpty()) {
+        if(currentContext.getData().getGameTasks() == null || currentContext.getData().getGameTasks().isEmpty()) {
             GameTaskData[] tasksList = new GameTaskData[]
                     {
                             new GameTaskBuilder(1).withTitle("Simple task 1").withTextElement("Test text message")
@@ -60,6 +60,6 @@ public final class PersistenceContextContainer {
                     };
 
             currentContext.getData().setGameTasks(Arrays.asList(tasksList));
-        //}
+        }
     }
 }

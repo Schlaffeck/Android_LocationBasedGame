@@ -2,6 +2,7 @@ package com.slamcode.testgame;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -11,12 +12,14 @@ import com.slamcode.locationbasedgamelib.location.LocationTracker;
 import com.slamcode.locationbasedgamelib.model.*;
 import com.slamcode.locationbasedgamelib.model.builder.*;
 import com.slamcode.locationbasedgamelib.model.content.LocationComparisonInputElement;
+import com.slamcode.locationbasedgamelib.multimedia.AudioPlayer;
+import com.slamcode.locationbasedgamelib.multimedia.MediaServiceAudioPlayer;
 import com.slamcode.locationbasedgamelib.persistence.PersistenceContext;
 import com.slamcode.locationbasedgamelib.view.ContentLayoutProvider;
 import com.slamcode.testgame.app.ServiceNames;
 import com.slamcode.testgame.app.ServiceRegistryAppCompatActivity;
 
-public class GameTaskContentActivity extends ServiceRegistryAppCompatActivity{
+public class GameTaskContentActivity extends ServiceRegistryAppCompatActivity implements AudioPlayer.Provider{
 
     private GameTaskData sampleGameTask;
     private ContentLayoutProvider layoutProvider;
@@ -88,9 +91,11 @@ public class GameTaskContentActivity extends ServiceRegistryAppCompatActivity{
                 this.sampleGameTask = data;
         }
 
-        if(this.sampleGameTask != null)
+        if(this.sampleGameTask != null) {
             GameTaskBuilder.addLocationInputListener(this.sampleGameTask, this.locationDataOnInputCommittedListener);
             GameTaskBuilder.addTextInputComparisonListener(this.sampleGameTask, this.textOnInputCommittedListener);
+            GameTaskBuilder.addAudioPlayers(this.sampleGameTask, this);
+        }
 
         ViewGroup mainContent = (ViewGroup) this.findViewById(android.R.id.content);
         if(mainContent != null)
@@ -106,4 +111,13 @@ public class GameTaskContentActivity extends ServiceRegistryAppCompatActivity{
         this.persistenceContext.persist();
     }
 
+    @Override
+    public AudioPlayer provideAudioPlayer(int audioResourceId) {
+        return new MediaServiceAudioPlayer(this, audioResourceId);
+    }
+
+    @Override
+    public AudioPlayer provideAudioPlayer(String audioFilePathUri) {
+        return new MediaServiceAudioPlayer(this, Uri.parse(audioFilePathUri));
+    }
 }
