@@ -32,7 +32,7 @@ public final class LocationTracker extends Service implements LocationListener, 
     private static final String LOG_TAG = "LBG_LocTr";
     private Location lastKnownLocation;
     private Context mContext;
-    private final PermissionRequestor permissionRequestor;
+    private final PermissionRequestor.Provider permissionRequestorProvider;
     private LocationManager manager;
     private LocationTrackerConfiguration configuration;
 
@@ -40,13 +40,12 @@ public final class LocationTracker extends Service implements LocationListener, 
 
     private Collection<ConfigurationChangedListener<LocationTrackerConfiguration>> configurationChangedListeners = new ArrayList<>();
 
-    public LocationTracker(Context context, LocationTrackerConfiguration configuration, PermissionRequestor permissionRequestor) {
+    public LocationTracker(Context context, LocationTrackerConfiguration configuration, PermissionRequestor.Provider permissionRequestorProvider) {
         this.mContext = context;
-        this.permissionRequestor = permissionRequestor;
+        this.permissionRequestorProvider = permissionRequestorProvider;
         this.configure(configuration);
         this.setupServices();
         this.lastKnownLocation = this.getLocation();
-        this.permissionRequestor.addRequestListener(this);
     }
 
     public Location getLocation() {
@@ -185,7 +184,9 @@ public final class LocationTracker extends Service implements LocationListener, 
     private void requestLocationPermissions()
     {
         Log.w(LOG_TAG, "Permissions needed");
-        this.permissionRequestor.requestPermissions(PermissionRequestCodes.LOCATION_PERMISSION_REQUEST);
+        PermissionRequestor requestor = this.permissionRequestorProvider.getPermissionRequestor();
+        requestor.addRequestListener(this);
+        requestor.requestPermissions(PermissionRequestCodes.LOCATION_PERMISSION_REQUEST);
     }
 
     private Location getBestLocation()

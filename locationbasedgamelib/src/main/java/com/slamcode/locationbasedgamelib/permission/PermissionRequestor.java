@@ -34,8 +34,14 @@ public interface PermissionRequestor {
             return permissionRequestCode;
         }
     }
+
     interface RequestListener{
 
         void requestFinished(int requestCode, boolean permissionGranted);
+    }
+
+    public interface Provider
+    {
+        PermissionRequestor getPermissionRequestor();
     }
 }
