@@ -1,5 +1,9 @@
 package com.slamcode.locationbasedgamelib.multimedia;
 
+import android.content.Context;
+
+import com.slamcode.locationbasedgamelib.permission.PermissionRequestor;
+
 /**
  * Interface for simple audio player interaction
  */
@@ -22,5 +26,12 @@ public interface AudioPlayer {
         Playing,
         Paused,
         Finished,
+    }
+
+    interface Provider{
+
+        AudioPlayer provideAudioPlayer(int audioResourceId);
+
+        AudioPlayer provideAudioPlayer(String audioFilePathUri);
     }
 }

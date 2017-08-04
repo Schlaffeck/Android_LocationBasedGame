@@ -172,4 +172,20 @@ public class GameTaskBuilder {
             }
         }
     }
+
+    public static void addAudioPlayers(GameTaskData data, AudioPlayer.Provider audioPlayerProvider)
+    {
+        for(GameTaskContentElement element : data.getGameTaskContent().getContentElements())
+        {
+            if(element instanceof DisplayAudioPlayerElement)
+            {
+                DisplayAudioPlayerElement typedElement = (DisplayAudioPlayerElement)element;
+                AudioPlayer player = audioPlayerProvider.provideAudioPlayer(typedElement.getAudioFileResourceId());
+                if(player == null)
+                    player = audioPlayerProvider.provideAudioPlayer(typedElement.getAudioFileUriString());
+
+                typedElement.useAudioPlayer(player);
+            }
+        }
+    }
 }
