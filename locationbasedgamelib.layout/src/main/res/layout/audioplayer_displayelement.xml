@@ -11,17 +11,22 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/contentItem_margin"
         android:gravity="center">
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:textSize="@dimen/header_font_size"
-            android:text="@string/displayAudio_play_defaultText"
+        <ImageButton
+            android:layout_width="35dp"
+            android:layout_height="25dp"
+            android:scaleType="fitCenter"
+            android:background="@null"
+            android:src="@drawable/ic_play_arrow_white_24dp"
+            android:tint="@android:color/black"
             android:onClick="@{(view) -> vm.audioPlayer.restart()}"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:textSize="@dimen/header_font_size"
-            android:text="@string/displayAudio_stop_defaultText"
+        <ImageButton
+            android:padding="5dp"
+            android:layout_width="35dp"
+            android:layout_height="25dp"
+            android:scaleType="fitCenter"
+            android:background="@null"
+            android:src="@drawable/ic_stop_white_24dp"
+            android:tint="@android:color/black"
             android:onClick="@{(view) -> vm.audioPlayer.stop()}"/>
     </LinearLayout>
 </layout>
