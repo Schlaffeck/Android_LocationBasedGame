@@ -26,11 +26,11 @@ public class GameTaskContent {
     {
         List<InputContentElement> result = new ArrayList<>();
 
-        for (GameTaskContentElement element : this.contentElements)
-        {
-            if(element instanceof InputContentElement)
-            {
-                result.add((InputContentElement)element);
+        if(this.contentElements != null) {
+            for (GameTaskContentElement element : this.contentElements) {
+                if (element instanceof InputContentElement) {
+                    result.add((InputContentElement) element);
+                }
             }
         }
 

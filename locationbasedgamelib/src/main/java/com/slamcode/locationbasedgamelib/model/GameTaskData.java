@@ -1,5 +1,6 @@
 package com.slamcode.locationbasedgamelib.model;
 
+import com.slamcode.locationbasedgamelib.general.Initializable;
 import com.slamcode.locationbasedgamelib.utils.IterableUtils;
 
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.UUID;
 /**
  * Represents general information about task to do in the game
  */
-public class GameTaskData {
+public class GameTaskData implements Initializable {
 
     public final static String ID_FIELD_NAME = "id";
 
@@ -21,7 +22,7 @@ public class GameTaskData {
 
     private GameTaskContent gameTaskContent;
 
-    private GameTaskInputCommittedListener inputResultListener = new GameTaskInputCommittedListener();
+    private transient GameTaskInputCommittedListener inputResultListener = new GameTaskInputCommittedListener();
 
     private transient List<StatusChangedListener> statusChangedListeners = new ArrayList<>();
 
@@ -89,6 +90,14 @@ public class GameTaskData {
         this.statusChangedListeners.clear();
     }
 
+    public void intialize()
+    {
+        if(this.inputResultListener == null)
+            this.inputResultListener = new GameTaskInputCommittedListener();
+
+        this.inputResultListener.taskData = this;
+    }
+
     private void validateListeners()
     {
         if(this.statusChangedListeners == null)
@@ -115,13 +124,23 @@ public class GameTaskData {
 
     private void addInputListeners()
     {
+        if(this.gameTaskContent == null)
+            return;
+
         if(this.inputResultListener == null)
             this.inputResultListener = new GameTaskInputCommittedListener();
+
+        this.inputResultListener.taskData = this;
 
         for(InputContentElement element : this.gameTaskContent.getInputContentElements())
         {
             element.addOnInputCommittedListener(this.inputResultListener);
         }
+    }
+
+    @Override
+    public void initialize() {
+        this.addInputListeners();
     }
 
     public interface StatusChangedListener
@@ -133,14 +152,7 @@ public class GameTaskData {
     {
         private List<InputContentElement> successfulInputElements;
         private int totalInputElementsNumber;
-
-        private GameTaskInputCommittedListener()
-        {
-            if(getGameTaskContent() != null)
-            {
-                totalInputElementsNumber = IterableUtils.count(getGameTaskContent().getInputContentElements());
-            }
-        }
+        private GameTaskData taskData;
 
         @Override
         public void inputCommitting(InputContentElement element, InputCommitParameters parameters) {
@@ -149,16 +161,23 @@ public class GameTaskData {
 
         @Override
         public void inputCommitted(InputContentElement element, InputResult result) {
+
+            if(successfulInputElements == null)
+                this.successfulInputElements =  new ArrayList<>();
+
+            if(this.totalInputElementsNumber == 0 && this.taskData.getGameTaskContent() != null)
+                totalInputElementsNumber = IterableUtils.count(getGameTaskContent().getInputContentElements());
+
             if(result.isInputCorrect())
                 this.successfulInputElements.add(element);
             else
                 this.successfulInputElements.remove(element);
 
             if(this.successfulInputElements.size() == this.totalInputElementsNumber)
-                setStatus(GameTaskStatus.Success);
+                this.taskData.setStatus(GameTaskStatus.Success);
 
             else if(this.successfulInputElements.size() < this.totalInputElementsNumber)
-                setStatus(GameTaskStatus.Ongoing);
+                this.taskData.setStatus(GameTaskStatus.Ongoing);
         }
     }
 

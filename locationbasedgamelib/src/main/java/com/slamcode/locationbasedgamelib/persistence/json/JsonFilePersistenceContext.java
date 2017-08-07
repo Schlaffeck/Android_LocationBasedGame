@@ -45,6 +45,8 @@ public class JsonFilePersistenceContext implements PersistenceContext {
             {
                 this.data = new GameDataBundle();
             }
+
+            this.data.initialize();
         }
         catch(Exception exception)
         {
