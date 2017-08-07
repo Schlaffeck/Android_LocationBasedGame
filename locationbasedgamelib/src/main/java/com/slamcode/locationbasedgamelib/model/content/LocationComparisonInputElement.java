@@ -51,7 +51,7 @@ public final class LocationComparisonInputElement extends InputContentElementAbs
 
         currentLocation = parameters.getValue();
         LocationComparisonResult result = new LocationComparisonResult();
-        if(currentLocation != null) {
+        if(currentLocation != null && currentLocation.isDetermined()) {
             result.setInputCorrect(LocationDataHelper.isNearBy(this.targetLocation, currentLocation, this.acceptableDistanceMeters));
             result.setCurrentLocationAvailable(true);
             result.setDistanceFromTargetMeters(LocationDataHelper.countDistanceFrom(currentLocation, this.targetLocation));
