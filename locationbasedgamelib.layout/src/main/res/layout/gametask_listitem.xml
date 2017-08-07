@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
             name="vm"
@@ -24,12 +25,16 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/gameTask_listItem_header_textView"
         android:text='@{String.format("Status: %s", vm.status), default=@string/status_default_text}'/>
-    <CheckBox
+    <ImageView
+        android:maxWidth="50dp"
+        android:maxHeight="50dp"
+        android:scaleType="center"
+        android:tint="@android:color/darker_gray"
         android:gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="false"
         android:layout_alignRight="@id/gameTask_listItem_header_textView"
-        android:checked="@{vm.status == GameTaskStatus.Success}"/>
+        bind:gameTaskStatusImage="@{vm}"/>
 </RelativeLayout>
 </layout>
