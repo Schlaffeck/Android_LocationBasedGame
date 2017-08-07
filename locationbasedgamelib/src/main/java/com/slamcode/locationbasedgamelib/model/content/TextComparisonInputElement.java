@@ -1,16 +1,13 @@
 package com.slamcode.locationbasedgamelib.model.content;
 
-import com.slamcode.locationbasedgamelib.general.Configurable;
 import com.slamcode.locationbasedgamelib.general.ConfigurableAbstract;
 import com.slamcode.locationbasedgamelib.model.InputCommitParameters;
-import com.slamcode.locationbasedgamelib.model.InputContent;
 import com.slamcode.locationbasedgamelib.model.InputResult;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Represents input used with text field to input by user and button or other action item to commit the

@@ -7,7 +7,7 @@ import com.slamcode.locationbasedgamelib.model.GameTaskContent;
 import com.slamcode.locationbasedgamelib.model.GameTaskContentElement;
 import com.slamcode.locationbasedgamelib.model.GameTaskData;
 import com.slamcode.locationbasedgamelib.model.GameTaskHeader;
-import com.slamcode.locationbasedgamelib.model.InputContent;
+import com.slamcode.locationbasedgamelib.model.InputContentElement;
 import com.slamcode.locationbasedgamelib.model.LocationData;
 import com.slamcode.locationbasedgamelib.model.content.DisplayAudioPlayerElement;
 import com.slamcode.locationbasedgamelib.model.content.DisplayPictureElement;
@@ -17,9 +17,7 @@ import com.slamcode.locationbasedgamelib.model.content.TextComparisonInputElemen
 import com.slamcode.locationbasedgamelib.multimedia.AudioPlayer;
 import com.slamcode.locationbasedgamelib.multimedia.MediaServiceAudioPlayer;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Builder class facilitating creating complex game task elements
@@ -117,7 +115,7 @@ public class GameTaskBuilder {
         return this;
     }
 
-    public GameTaskBuilder withLocationComparisonElement(String commitMessage, float latitude, float longitude, float acceptanceDistanceMeters, InputContent.OnInputCommittedListener<LocationData> listener)
+    public GameTaskBuilder withLocationComparisonElement(String commitMessage, float latitude, float longitude, float acceptanceDistanceMeters, InputContentElement.OnInputCommittedListener<LocationData> listener)
     {
         GameTaskContent content = this.buildingTask.getGameTaskContent();
         if(content == null)
@@ -149,7 +147,7 @@ public class GameTaskBuilder {
         return this.buildingTask;
     }
 
-    public static void addLocationInputListener(GameTaskData data, InputContent.OnInputCommittedListener<LocationData> listener)
+    public static void addLocationInputListener(GameTaskData data, InputContentElement.OnInputCommittedListener<LocationData> listener)
     {
         for(GameTaskContentElement element : data.getGameTaskContent().getContentElements())
         {
@@ -161,7 +159,7 @@ public class GameTaskBuilder {
         }
     }
 
-    public static void addTextInputComparisonListener(GameTaskData data, InputContent.OnInputCommittedListener<String> listener)
+    public static void addTextInputComparisonListener(GameTaskData data, InputContentElement.OnInputCommittedListener<String> listener)
     {
         for(GameTaskContentElement element : data.getGameTaskContent().getContentElements())
         {

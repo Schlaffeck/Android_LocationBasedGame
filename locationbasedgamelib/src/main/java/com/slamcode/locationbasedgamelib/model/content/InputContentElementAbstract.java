@@ -1,9 +1,8 @@
 package com.slamcode.locationbasedgamelib.model.content;
 
 import com.slamcode.locationbasedgamelib.model.InputCommitParameters;
-import com.slamcode.locationbasedgamelib.model.InputContent;
+import com.slamcode.locationbasedgamelib.model.InputContentElement;
 import com.slamcode.locationbasedgamelib.model.InputResult;
-import com.slamcode.locationbasedgamelib.model.LocationData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,15 +11,15 @@ import java.util.List;
  * Created by smoriak on 04/08/2017.
  */
 
-public abstract class InputContentElementAbstract<InputValue> implements InputContent<InputValue> {
+public abstract class InputContentElementAbstract<InputValue> implements InputContentElement<InputValue> {
 
-    private transient List<OnInputCommittedListener> listeners = new ArrayList<>();
+    private transient List<OnInputCommittedListener<InputValue>> listeners = new ArrayList<>();
 
     @Override
     public void onInputCommitting(InputCommitParameters<InputValue> parameters) {
         this.validateListeners();
         for (OnInputCommittedListener listener : this.listeners) {
-            listener.inputCommitting(parameters);
+            listener.inputCommitting(this, parameters);
         }
     }
 
@@ -28,18 +27,18 @@ public abstract class InputContentElementAbstract<InputValue> implements InputCo
     public void onInputCommitted(InputResult result) {
         this.validateListeners();
         for (OnInputCommittedListener listener : this.listeners) {
-            listener.inputCommitted(result);
+            listener.inputCommitted(this, result);
         }
     }
 
     @Override
-    public void addOnInputCommittedListener(OnInputCommittedListener listener) {
+    public void addOnInputCommittedListener(OnInputCommittedListener<InputValue> listener) {
         this.validateListeners();
         this.listeners.add(listener);
     }
 
     @Override
-    public void removeOnInputCommittedListener(OnInputCommittedListener listener) {
+    public void removeOnInputCommittedListener(OnInputCommittedListener<InputValue> listener) {
         this.validateListeners();
         this.listeners.remove(listener);
     }

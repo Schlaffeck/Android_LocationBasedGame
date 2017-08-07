@@ -2,12 +2,8 @@ package com.slamcode.locationbasedgamelib.model.content;
 
 import com.slamcode.locationbasedgamelib.location.LocationDataHelper;
 import com.slamcode.locationbasedgamelib.model.InputCommitParameters;
-import com.slamcode.locationbasedgamelib.model.InputContent;
 import com.slamcode.locationbasedgamelib.model.InputResult;
 import com.slamcode.locationbasedgamelib.model.LocationData;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Game task content element comparing current with given location within acceptable radius
@@ -24,7 +20,7 @@ public final class LocationComparisonInputElement extends InputContentElementAbs
     private final float acceptableDistanceMeters;
     private final String commitCommandName;
 
-    public LocationComparisonInputElement(LocationData targetLocation,  float acceptableDistanceMeters, String commitCommandName) {
+    public LocationComparisonInputElement(LocationData targetLocation, float acceptableDistanceMeters, String commitCommandName) {
         this.targetLocation = targetLocation;
         this.acceptableDistanceMeters = acceptableDistanceMeters;
         this.commitCommandName = commitCommandName;
