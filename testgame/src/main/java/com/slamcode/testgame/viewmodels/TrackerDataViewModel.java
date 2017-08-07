@@ -25,7 +25,6 @@ import java.util.Date;
 public class TrackerDataViewModel extends BaseObservable {
 
     private LocationTracker locationTracker;
-    private LocationData currentLocation;
     private final LocationData targetLocation;
     private String lastLog;
 
@@ -37,15 +36,7 @@ public class TrackerDataViewModel extends BaseObservable {
 
     @Bindable
     public LocationData getLocation() {
-        this.currentLocation = new LocationData();
-        Location location = this.locationTracker.getLocation();
-        if(location == null)
-            location = this.locationTracker.getLastKnownLocation();
-
-        if (location != null)
-            this.currentLocation = new LocationData(location.getLatitude(), location.getLongitude());
-
-        return this.currentLocation;
+        return this.locationTracker.getLocationData();
     }
 
     public void refreshLocation()
@@ -57,7 +48,7 @@ public class TrackerDataViewModel extends BaseObservable {
     @Bindable
     public float getDistance()
     {
-        return LocationDataHelper.countDistanceFrom(this.targetLocation, this.currentLocation);
+        return LocationDataHelper.countDistanceFrom(this.targetLocation, this.getLocation());
     }
 
     @Bindable
