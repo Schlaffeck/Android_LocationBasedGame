@@ -49,6 +49,7 @@ public final class LocationComparisonInputElement extends InputContentElementAbs
         InputCommitParameters<LocationData> parameters = new InputCommitParameters<>(currentLocation);
         this.onInputCommitting(parameters);
 
+        currentLocation = parameters.getValue();
         LocationComparisonResult result = new LocationComparisonResult();
         if(currentLocation != null) {
             result.setInputCorrect(LocationDataHelper.isNearBy(this.targetLocation, currentLocation, this.acceptableDistanceMeters));
