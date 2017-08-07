@@ -225,6 +225,6 @@ public final class LocationTracker extends Service implements LocationListener, 
         if (location != null)
             return new LocationData(location.getLatitude(), location.getLongitude());
 
-        return null;
+        return new LocationData();
     }
 }
