@@ -2,6 +2,8 @@ package com.slamcode.locationbasedgamelayout.view.binding;
 
 import android.databinding.BindingAdapter;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -46,11 +48,15 @@ public class Bindings {
             @Override
             public void onStatusChanged(GameTaskStatus newStatus) {
                 if(newStatus == GameTaskStatus.Success) {
-                    imageView.setImageResource(R.drawable.ic_done_white_24dp);
-                    imageView.setColorFilter(android.R.color.holo_green_dark);
+                    Drawable drawable = ContextCompat.getDrawable(imageView.getContext(), R.drawable.ic_done_white_24dp);
+                    drawable.setColorFilter(ContextCompat.getColor(imageView.getContext(), android.R.color.holo_green_dark), PorterDuff.Mode.MULTIPLY);
+                    imageView.setImageDrawable(drawable);
                 }
-                else if(newStatus == GameTaskStatus.Ongoing)
-                    imageView.setImageResource(R.drawable.ic_arrow_forward_white_24dp);
+                else if(newStatus == GameTaskStatus.Ongoing) {
+                    Drawable drawable = ContextCompat.getDrawable(imageView.getContext(), R.drawable.ic_arrow_forward_white_24dp);
+                    drawable.setColorFilter(ContextCompat.getColor(imageView.getContext(), android.R.color.black), PorterDuff.Mode.MULTIPLY);
+                    imageView.setImageDrawable(drawable);
+                }
                 else
                     imageView.setImageDrawable(null);
             }

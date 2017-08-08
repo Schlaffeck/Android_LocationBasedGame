@@ -26,15 +26,15 @@
         android:layout_below="@id/gameTask_listItem_header_textView"
         android:text='@{String.format("Status: %s", vm.status), default=@string/status_default_text}'/>
     <ImageView
-        android:maxWidth="50dp"
-        android:maxHeight="50dp"
+        android:minWidth="50dp"
+        android:minHeight="50dp"
         android:scaleType="center"
         android:tint="@android:color/darker_gray"
         android:gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="false"
-        android:layout_alignRight="@id/gameTask_listItem_header_textView"
-        bind:gameTaskStatusImage="@{vm}"/>
+        android:src="@{vm.status == GameTaskStatus.Ongoing ? @drawable/ic_arrow_forward_white_24dp : ( vm.status == GameTaskStatus.Success ? @drawable/ic_done_white_24dp : null)}"
+        android:layout_alignRight="@id/gameTask_listItem_header_textView"/>
 </RelativeLayout>
 </layout>
