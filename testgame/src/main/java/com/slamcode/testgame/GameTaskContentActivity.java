@@ -1,8 +1,6 @@
 package com.slamcode.testgame;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
@@ -29,8 +27,8 @@ public class GameTaskContentActivity extends ServiceRegistryAppCompatActivity im
 
     private GameTaskData sampleGameTask;
     private ContentLayoutProvider layoutProvider;
-    private InputContent.OnInputCommittedListener<LocationData> locationDataOnInputCommittedListener;
-    private InputContent.OnInputCommittedListener<String> textOnInputCommittedListener;
+    private InputContentElement.OnInputCommittedListener<LocationData> locationDataOnInputCommittedListener;
+    private InputContentElement.OnInputCommittedListener<String> textOnInputCommittedListener;
     private LocationTracker locationTracker;
     private PersistenceContext persistenceContext;
 
@@ -74,15 +72,15 @@ public class GameTaskContentActivity extends ServiceRegistryAppCompatActivity im
             }
         });
 
-        this.locationDataOnInputCommittedListener = new InputContent.OnInputCommittedListener<LocationData>() {
+        this.locationDataOnInputCommittedListener = new InputContentElement.OnInputCommittedListener<LocationData>() {
             @Override
-            public void inputCommitting(InputCommitParameters<LocationData> parameters) {
+            public void inputCommitting(InputContentElement<LocationData> element, InputCommitParameters<LocationData> parameters) {
                 // intercept location data
                 parameters.setValue(locationTracker.getLocationData());
             }
 
             @Override
-            public void inputCommitted(InputResult result) {
+            public void inputCommitted(InputContentElement<LocationData> element, InputResult result) {
                 LocationComparisonInputElement.LocationComparisonResult locationComparisonResult
                         = (LocationComparisonInputElement.LocationComparisonResult)result;
                 if(result.isInputCorrect())
@@ -119,14 +117,14 @@ public class GameTaskContentActivity extends ServiceRegistryAppCompatActivity im
             }
         };
 
-        this.textOnInputCommittedListener = new InputContent.OnInputCommittedListener<String>() {
+        this.textOnInputCommittedListener = new InputContentElement.OnInputCommittedListener<String>() {
             @Override
-            public void inputCommitting(InputCommitParameters<String> parameters) {
+            public void inputCommitting(InputContentElement<String> element, InputCommitParameters<String> parameters) {
 
             }
 
             @Override
-            public void inputCommitted(InputResult result) {
+            public void inputCommitted(InputContentElement<String> element, InputResult result) {
                 if(result.isInputCorrect())
                     Toast.makeText(getApplicationContext(), "Answer is correct :)", Toast.LENGTH_LONG).show();
                 else
@@ -152,6 +150,21 @@ public class GameTaskContentActivity extends ServiceRegistryAppCompatActivity im
             GameTaskBuilder.addLocationInputListener(this.sampleGameTask, this.locationDataOnInputCommittedListener);
             GameTaskBuilder.addTextInputComparisonListener(this.sampleGameTask, this.textOnInputCommittedListener);
             GameTaskBuilder.addAudioPlayers(this.sampleGameTask, this);
+            this.sampleGameTask.addStatusChangedListener(new GameTaskData.StatusChangedListener() {
+                @Override
+                public void onStatusChanged(GameTaskStatus newStatus) {
+                    if(newStatus == GameTaskStatus.Success)
+                        new AlertDialog.Builder(getServiceRegistryApplication().getCurrentActivity())
+                                .setMessage("Task is finished move to the next one :)")
+                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .create().show();
+                }
+            });
         }
 
         ViewGroup mainContent = (ViewGroup) this.findViewById(android.R.id.content);

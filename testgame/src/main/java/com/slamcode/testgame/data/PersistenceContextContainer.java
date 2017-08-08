@@ -56,7 +56,10 @@ public final class PersistenceContextContainer {
                             new GameTaskBuilder(5).withTitle("Audio task 5")
                                     .withTextElement("Play some sound!")
                                     .withAudioPlayerElement(R.raw.vengeance, "Music", applicationContext)
-                                    .getTask()
+                                    .getTask(),
+                            new GameTaskBuilder(6).withTitle("Home location task 4")
+                                    .withTextElement("Go home now")
+                                    .withLocationComparisonElement("Are you home?", 51.070847f, 16.996699f, 15f, null).getTask(),
                     };
 
             currentContext.getData().setGameTasks(Arrays.asList(tasksList));
