@@ -31,6 +31,7 @@ public class GameTaskContentActivity extends ServiceRegistryAppCompatActivity im
     private InputContentElement.OnInputCommittedListener<String> textOnInputCommittedListener;
     private LocationTracker locationTracker;
     private PersistenceContext persistenceContext;
+    private GameTaskData.StatusChangedListener taskStatusChangedListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,6 +132,22 @@ public class GameTaskContentActivity extends ServiceRegistryAppCompatActivity im
                     Toast.makeText(getApplicationContext(), "Incorrect answer, try again", Toast.LENGTH_LONG).show();
             }
         };
+
+        this.taskStatusChangedListener = new GameTaskData.StatusChangedListener() {
+            @Override
+            public void onStatusChanged(GameTaskStatus newStatus) {
+                if(newStatus == GameTaskStatus.Success)
+                    new AlertDialog.Builder(getServiceRegistryApplication().getCurrentActivity())
+                            .setMessage("Task is finished move to the next one :)")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .create().show();
+            }
+        };
     }
 
     @Override
@@ -150,21 +167,7 @@ public class GameTaskContentActivity extends ServiceRegistryAppCompatActivity im
             GameTaskBuilder.addLocationInputListener(this.sampleGameTask, this.locationDataOnInputCommittedListener);
             GameTaskBuilder.addTextInputComparisonListener(this.sampleGameTask, this.textOnInputCommittedListener);
             GameTaskBuilder.addAudioPlayers(this.sampleGameTask, this);
-            this.sampleGameTask.addStatusChangedListener(new GameTaskData.StatusChangedListener() {
-                @Override
-                public void onStatusChanged(GameTaskStatus newStatus) {
-                    if(newStatus == GameTaskStatus.Success)
-                        new AlertDialog.Builder(getServiceRegistryApplication().getCurrentActivity())
-                                .setMessage("Task is finished move to the next one :)")
-                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                })
-                                .create().show();
-                }
-            });
+            this.sampleGameTask.addStatusChangedListener(this.taskStatusChangedListener);
         }
 
         ViewGroup mainContent = (ViewGroup) this.findViewById(android.R.id.content);
@@ -178,6 +181,12 @@ public class GameTaskContentActivity extends ServiceRegistryAppCompatActivity im
     @Override
     protected void onStop() {
         super.onStop();
+        if(this.sampleGameTask != null)
+        {
+            GameTaskBuilder.removeLocationInputListener(this.sampleGameTask, this.locationDataOnInputCommittedListener);
+            GameTaskBuilder.removeTextInputComparisonListener(this.sampleGameTask, this.textOnInputCommittedListener);
+            this.sampleGameTask.removeStatusChangedListener(this.taskStatusChangedListener);
+        }
         this.persistenceContext.persist();
     }
 
