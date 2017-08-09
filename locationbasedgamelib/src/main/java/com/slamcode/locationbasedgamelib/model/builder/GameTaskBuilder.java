@@ -159,6 +159,18 @@ public class GameTaskBuilder {
         }
     }
 
+    public static void removeLocationInputListener(GameTaskData data, InputContentElement.OnInputCommittedListener<LocationData> listener)
+    {
+        for(GameTaskContentElement element : data.getGameTaskContent().getContentElements())
+        {
+            if(element instanceof LocationComparisonInputElement)
+            {
+                LocationComparisonInputElement locationComparisonElement = (LocationComparisonInputElement)element;
+                locationComparisonElement.removeOnInputCommittedListener(listener);
+            }
+        }
+    }
+
     public static void addTextInputComparisonListener(GameTaskData data, InputContentElement.OnInputCommittedListener<String> listener)
     {
         for(GameTaskContentElement element : data.getGameTaskContent().getContentElements())
@@ -167,6 +179,18 @@ public class GameTaskBuilder {
             {
                 TextComparisonInputElement textComparisonInputElement = (TextComparisonInputElement)element;
                 textComparisonInputElement.addOnInputCommittedListener(listener);
+            }
+        }
+    }
+
+    public static void removeTextInputComparisonListener(GameTaskData data, InputContentElement.OnInputCommittedListener<String> listener)
+    {
+        for(GameTaskContentElement element : data.getGameTaskContent().getContentElements())
+        {
+            if(element instanceof TextComparisonInputElement)
+            {
+                TextComparisonInputElement textComparisonInputElement = (TextComparisonInputElement)element;
+                textComparisonInputElement.removeOnInputCommittedListener(listener);
             }
         }
     }
