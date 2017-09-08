@@ -13,10 +13,15 @@ import com.android.databinding.library.baseAdapters.BR;
 import com.slamcode.locationbasedgamelib.location.LocationDataHelper;
 import com.slamcode.locationbasedgamelib.location.LocationTracker;
 import com.slamcode.locationbasedgamelib.model.LocationData;
+import com.slamcode.testgame.data.model.PlaceData;
+import com.slamcode.testgame.view.dialog.AddNewPlaceDialogFragment;
+import com.slamcode.testgame.view.dialog.base.ModelBasedDialog;
 
 import java.security.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by smoriak on 20/07/2017.
@@ -27,6 +32,8 @@ public class TrackerDataViewModel extends BaseObservable {
     private LocationTracker locationTracker;
     private final LocationData targetLocation;
     private String lastLog;
+
+    private List<PlaceDataViewModel> placeList = new ArrayList<>();
 
     public TrackerDataViewModel(LocationTracker locationTracker, LocationData targetLocation) {
         this.locationTracker = locationTracker;
@@ -59,6 +66,28 @@ public class TrackerDataViewModel extends BaseObservable {
     private void setLastLog(String lastLog) {
         this.lastLog = lastLog;
         notifyPropertyChanged(BR.lastLog);
+    }
+
+    @Bindable
+    public List<PlaceDataViewModel> getPlaceList() {
+        return placeList;
+    }
+
+    public void showAddNewPlaceDialog()
+    {
+        final AddNewPlaceDialogFragment dialog = new AddNewPlaceDialogFragment();
+        PlaceData model = new PlaceData();
+        model.setLocationData(this.getLocation());
+        final PlaceDataViewModel newPlaceViewModel = new PlaceDataViewModel(model);
+        dialog.setDialogStateChangedListener(new ModelBasedDialog.DialogStateChangedListener() {
+            @Override
+            public void onDialogClosed(boolean confirmed) {
+                if(confirmed)
+                {
+                    placeList.add(newPlaceViewModel);
+                }
+            }
+        });
     }
 
     private class TrackerLocationListener implements LocationListener{

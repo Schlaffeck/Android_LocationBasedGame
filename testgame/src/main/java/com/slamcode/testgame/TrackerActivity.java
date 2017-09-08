@@ -17,7 +17,6 @@ public class TrackerActivity extends ServiceRegistryAppCompatActivity{
     private LocationTracker locationTracker;
     private TrackerDataViewModel viewModel;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
