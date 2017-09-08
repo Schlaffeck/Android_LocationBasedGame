@@ -2,10 +2,8 @@ package com.slamcode.testgame.viewmodels;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
-import android.databinding.DataBindingUtil;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
-import android.icu.util.Calendar;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
@@ -15,13 +13,11 @@ import com.slamcode.locationbasedgamelib.location.LocationDataHelper;
 import com.slamcode.locationbasedgamelib.location.LocationTracker;
 import com.slamcode.locationbasedgamelib.model.LocationData;
 import com.slamcode.testgame.DialogService;
-import com.slamcode.testgame.data.model.PlaceData;
+import com.slamcode.locationbasedgamelib.model.PlaceData;
 import com.slamcode.testgame.view.dialog.AddNewPlaceDialogFragment;
 import com.slamcode.testgame.view.dialog.base.ModelBasedDialog;
 
-import java.security.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -34,14 +30,21 @@ public class TrackerDataViewModel extends BaseObservable {
     private LocationTracker locationTracker;
     private final LocationData targetLocation;
     private final DialogService dialogService;
+    private final List<PlaceData> placeDataList;
     private String lastLog;
 
     private ObservableList<PlaceDataViewModel> placeList = new ObservableArrayList<>();
 
-    public TrackerDataViewModel(LocationTracker locationTracker, LocationData targetLocation, DialogService dialogService) {
+    public TrackerDataViewModel(LocationTracker locationTracker, LocationData targetLocation, DialogService dialogService, List<PlaceData> placeDataList) {
         this.locationTracker = locationTracker;
         this.targetLocation = targetLocation;
         this.dialogService = dialogService;
+        this.placeDataList = placeDataList;
+        if(placeDataList != null)
+        {
+            for(PlaceData placeData : placeDataList)
+                placeList.add(new PlaceDataViewModel(placeData));
+        }
         this.locationTracker.addLocationListener(new TrackerLocationListener());
     }
 
@@ -80,7 +83,7 @@ public class TrackerDataViewModel extends BaseObservable {
     public void showAddNewPlaceDialog()
     {
         final AddNewPlaceDialogFragment dialog = new AddNewPlaceDialogFragment();
-        PlaceData model = new PlaceData();
+        final PlaceData model = new PlaceData();
         model.setLocationData(this.getLocation());
         final PlaceDataViewModel newPlaceViewModel = new PlaceDataViewModel(model);
         dialog.setModel(newPlaceViewModel);
@@ -90,6 +93,7 @@ public class TrackerDataViewModel extends BaseObservable {
                 if(confirmed)
                 {
                     placeList.add(newPlaceViewModel);
+                    placeDataList.add(model);
                 }
             }
         });

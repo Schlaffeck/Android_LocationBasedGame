@@ -1,7 +1,7 @@
 package com.slamcode.locationbasedgamelib.persistence;
 
 import com.slamcode.locationbasedgamelib.general.Initializable;
-import com.slamcode.locationbasedgamelib.model.GameTaskData;
+import com.slamcode.locationbasedgamelib.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +13,7 @@ import java.util.List;
 public class GameDataBundle implements Initializable {
 
     private List<GameTaskData> gameTaskDataList = new ArrayList<>();
+    private List<PlaceData> placeList = new ArrayList<>();
 
     public List<GameTaskData> getGameTasks() {
         return this.gameTaskDataList;
@@ -28,5 +29,9 @@ public class GameDataBundle implements Initializable {
                 this.gameTaskDataList) {
                 task.initialize();
         }
+    }
+
+    public List<PlaceData> getPlaceList() {
+        return this.placeList;
     }
 }

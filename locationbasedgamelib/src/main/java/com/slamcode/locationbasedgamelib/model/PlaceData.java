@@ -1,4 +1,4 @@
-package com.slamcode.testgame.data.model;
+package com.slamcode.locationbasedgamelib.model;
 
 import com.slamcode.locationbasedgamelib.model.LocationData;
 

@@ -5,7 +5,7 @@ import android.databinding.Bindable;
 
 import com.slamcode.locationbasedgamelib.model.LocationData;
 import com.slamcode.testgame.BR;
-import com.slamcode.testgame.data.model.PlaceData;
+import com.slamcode.locationbasedgamelib.model.PlaceData;
 
 public class PlaceDataViewModel extends BaseObservable {
 
