@@ -24,7 +24,7 @@ public final class BindableViewHolder<Model> extends ModelBasedViewHolder<Model>
     @Override
     public void bindToModel(Model model) {
 
-            ViewDataBinding binding = DataBindingUtil.findBinding(this.itemView);
+            ViewDataBinding binding = DataBindingUtil.bind(this.itemView);
             if(binding == null)
                 binding = DataBindingUtil.bind(this.itemView);
 

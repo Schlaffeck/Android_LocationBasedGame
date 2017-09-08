@@ -7,6 +7,7 @@
             type="com.slamcode.testgame.viewmodels.TrackerDataViewModel"/>
     </data>
 <LinearLayout
+    android:id="@+id/tracker_view_location_list_layout"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="@dimen/fab_margin">
@@ -14,6 +15,8 @@
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:placeDataListSource="@{vm.placeList}"/>
+        app:placeDataListSource="@{vm.placeList}"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+        android:orientation="vertical"/>
 </LinearLayout>
     </layout>

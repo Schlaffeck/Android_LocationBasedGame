@@ -1,6 +1,8 @@
 package com.slamcode.testgame;
 
+import android.app.DialogFragment;
 import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
@@ -12,7 +14,7 @@ import com.slamcode.testgame.databinding.ActivityTrackerBinding;
 import com.slamcode.testgame.databinding.TrackerDataViewBinding;
 import com.slamcode.testgame.viewmodels.TrackerDataViewModel;
 
-public class TrackerActivity extends ServiceRegistryAppCompatActivity{
+public class TrackerActivity extends ServiceRegistryAppCompatActivity implements DialogService{
 
     private LocationTracker locationTracker;
     private TrackerDataViewModel viewModel;
@@ -23,13 +25,19 @@ public class TrackerActivity extends ServiceRegistryAppCompatActivity{
         setContentView(R.layout.activity_tracker);
         ActivityTrackerBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_tracker);
         TrackerDataViewBinding trackerDataViewBinding = DataBindingUtil.findBinding(findViewById(R.id.tracker_data_view));
+        ViewDataBinding locationListBinding = DataBindingUtil.findBinding(findViewById(R.id.tracker_view_location_list_layout));
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         this.locationTracker = (LocationTracker) this.getServiceRegistryApplication().getRegistry().provideService(ServiceNames.LOCATION_TRACKER);
-        this.viewModel = new TrackerDataViewModel(this.locationTracker, new LocationData(51.070847, 16.996699));
+        this.viewModel = new TrackerDataViewModel(this.locationTracker, new LocationData(51.070847, 16.996699), this);
         binding.setVm(this.viewModel);
         trackerDataViewBinding.setVm(this.viewModel);
+        locationListBinding.setVariable(BR.vm, this.viewModel);
     }
 
+    @Override
+    public void showDialog(DialogFragment dialogFragment) {
+        dialogFragment.show(this.getFragmentManager(), null);
+    }
 }

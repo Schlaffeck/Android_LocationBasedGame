@@ -27,7 +27,10 @@ public class AddNewPlaceDialogFragment extends ModelBasedDialog<PlaceDataViewMod
 
     private void updateViewBinding(View view)
     {
-        ViewDataBinding binding = DataBindingUtil.findBinding(view);
+        if(view == null)
+            return;
+
+        ViewDataBinding binding = DataBindingUtil.bind(view);
         binding.setVariable(BR.vm, this.getModel());
         binding.setVariable(BR.presenter, this);
     }

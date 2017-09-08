@@ -14,16 +14,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <!--<activity-->
-            <!--android:name=".TrackerActivity"-->
-            <!--android:label="@string/title_activity_tracker"-->
-            <!--android:theme="@style/AppTheme.NoActionBar">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
+        <activity
+            android:name=".TrackerActivity"
+            android:label="@string/title_activity_tracker"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-            <!--</activity>-->
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            </activity>
 
         <activity android:name=".GameTasksListActivity">
             <intent-filter>

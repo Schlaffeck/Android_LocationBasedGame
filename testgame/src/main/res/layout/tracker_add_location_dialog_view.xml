@@ -21,7 +21,8 @@
     <EditText
         android:layout_margin="@dimen/fab_margin"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="@={vm.name}"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -32,14 +33,14 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="cancel"
-            android:onClick="@{(view) -> presenter.cancelChanges()}"/>
-
+            android:text="save"
+            android:onClick="@{(view) -> presenter.commitChanges()}"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="save"
-            android:onClick="@{(view) -> presenter.commitChanges()}"/>
+            android:text="cancel"
+            android:onClick="@{(view) -> presenter.cancelChanges()}"/>
+
     </LinearLayout>
 </LinearLayout>
     </layout>

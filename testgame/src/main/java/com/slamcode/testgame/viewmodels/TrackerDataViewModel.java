@@ -4,6 +4,7 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableArrayList;
+import android.databinding.ObservableList;
 import android.icu.util.Calendar;
 import android.location.Location;
 import android.location.LocationListener;
@@ -13,6 +14,7 @@ import com.android.databinding.library.baseAdapters.BR;
 import com.slamcode.locationbasedgamelib.location.LocationDataHelper;
 import com.slamcode.locationbasedgamelib.location.LocationTracker;
 import com.slamcode.locationbasedgamelib.model.LocationData;
+import com.slamcode.testgame.DialogService;
 import com.slamcode.testgame.data.model.PlaceData;
 import com.slamcode.testgame.view.dialog.AddNewPlaceDialogFragment;
 import com.slamcode.testgame.view.dialog.base.ModelBasedDialog;
@@ -31,13 +33,15 @@ public class TrackerDataViewModel extends BaseObservable {
 
     private LocationTracker locationTracker;
     private final LocationData targetLocation;
+    private final DialogService dialogService;
     private String lastLog;
 
-    private List<PlaceDataViewModel> placeList = new ArrayList<>();
+    private ObservableList<PlaceDataViewModel> placeList = new ObservableArrayList<>();
 
-    public TrackerDataViewModel(LocationTracker locationTracker, LocationData targetLocation) {
+    public TrackerDataViewModel(LocationTracker locationTracker, LocationData targetLocation, DialogService dialogService) {
         this.locationTracker = locationTracker;
         this.targetLocation = targetLocation;
+        this.dialogService = dialogService;
         this.locationTracker.addLocationListener(new TrackerLocationListener());
     }
 
@@ -69,7 +73,7 @@ public class TrackerDataViewModel extends BaseObservable {
     }
 
     @Bindable
-    public List<PlaceDataViewModel> getPlaceList() {
+    public ObservableList<PlaceDataViewModel> getPlaceList() {
         return placeList;
     }
 
@@ -79,6 +83,7 @@ public class TrackerDataViewModel extends BaseObservable {
         PlaceData model = new PlaceData();
         model.setLocationData(this.getLocation());
         final PlaceDataViewModel newPlaceViewModel = new PlaceDataViewModel(model);
+        dialog.setModel(newPlaceViewModel);
         dialog.setDialogStateChangedListener(new ModelBasedDialog.DialogStateChangedListener() {
             @Override
             public void onDialogClosed(boolean confirmed) {
@@ -88,6 +93,8 @@ public class TrackerDataViewModel extends BaseObservable {
                 }
             }
         });
+
+        this.dialogService.showDialog(dialog);
     }
 
     private class TrackerLocationListener implements LocationListener{

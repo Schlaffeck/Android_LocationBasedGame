@@ -35,4 +35,10 @@ public class LocationData {
     public boolean isDetermined() {
         return determined;
     }
+
+    @Override
+    public String toString() {
+
+        return !determined ? "Undetermined" : String.format("%f; %f", latitude, longitude);
+    }
 }
