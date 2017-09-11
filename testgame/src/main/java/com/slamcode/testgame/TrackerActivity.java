@@ -11,6 +11,7 @@ import com.slamcode.locationbasedgamelib.model.LocationData;
 import com.slamcode.locationbasedgamelib.persistence.PersistenceContext;
 import com.slamcode.testgame.app.ServiceNames;
 import com.slamcode.testgame.app.ServiceRegistryAppCompatActivity;
+import com.slamcode.testgame.data.TestGameDataBundle;
 import com.slamcode.testgame.databinding.ActivityTrackerBinding;
 import com.slamcode.testgame.databinding.TrackerDataViewBinding;
 import com.slamcode.testgame.viewmodels.TrackerDataViewModel;
@@ -19,7 +20,7 @@ public class TrackerActivity extends ServiceRegistryAppCompatActivity implements
 
     private LocationTracker locationTracker;
     private TrackerDataViewModel viewModel;
-    private PersistenceContext persistenceContext;
+    private PersistenceContext<TestGameDataBundle> persistenceContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +34,7 @@ public class TrackerActivity extends ServiceRegistryAppCompatActivity implements
 
         this.locationTracker = (LocationTracker) this.getServiceRegistryApplication().getRegistry().provideService(ServiceNames.LOCATION_TRACKER);
 
-        this.persistenceContext = (PersistenceContext) this.getServiceRegistryApplication().getRegistry().provideService(ServiceNames.PERSISTENCE_CONTEXT);
+        this.persistenceContext = (PersistenceContext<TestGameDataBundle>) this.getServiceRegistryApplication().getRegistry().provideService(ServiceNames.PERSISTENCE_CONTEXT);
 
         this.viewModel = new TrackerDataViewModel(this.locationTracker, new LocationData(51.070847, 16.996699), this, (persistenceContext.getData()).getPlaceList());
         binding.setVm(this.viewModel);

@@ -12,6 +12,7 @@ import com.slamcode.locationbasedgamelib.persistence.PersistenceContext;
 import com.slamcode.locationbasedgamelib.view.ContentLayoutProvider;
 import com.slamcode.testgame.app.ServiceNames;
 import com.slamcode.testgame.app.ServiceRegistryAppCompatActivity;
+import com.slamcode.testgame.data.TestGameDataBundle;
 
 public class GameTasksListActivity extends ServiceRegistryAppCompatActivity  {
 
@@ -42,8 +43,8 @@ public class GameTasksListActivity extends ServiceRegistryAppCompatActivity  {
 
     private void setupTasksList()
     {
-        final PersistenceContext persistenceContext
-                = (PersistenceContext) this.getServiceRegistryApplication().getRegistry().provideService(ServiceNames.PERSISTENCE_CONTEXT);
+        final PersistenceContext<TestGameDataBundle> persistenceContext
+                = (PersistenceContext<TestGameDataBundle>) this.getServiceRegistryApplication().getRegistry().provideService(ServiceNames.PERSISTENCE_CONTEXT);
 
         RecyclerView recyclerView = (RecyclerView) this.findViewById(R.id.testGame_tasksList_recyclerView);
         BindableTasksListRecyclerViewAdapter adapter = new BindableTasksListRecyclerViewAdapter(persistenceContext.getData().getGameTasks(),

@@ -22,6 +22,7 @@ import com.slamcode.locationbasedgamelib.persistence.PersistenceContext;
 import com.slamcode.locationbasedgamelib.view.ContentLayoutProvider;
 import com.slamcode.testgame.app.ServiceNames;
 import com.slamcode.testgame.app.ServiceRegistryAppCompatActivity;
+import com.slamcode.testgame.data.TestGameDataBundle;
 
 public class GameTaskContentActivity extends ServiceRegistryAppCompatActivity implements AudioPlayer.Provider{
 
@@ -30,7 +31,7 @@ public class GameTaskContentActivity extends ServiceRegistryAppCompatActivity im
     private InputContentElement.OnInputCommittedListener<LocationData> locationDataOnInputCommittedListener;
     private InputContentElement.OnInputCommittedListener<String> textOnInputCommittedListener;
     private LocationTracker locationTracker;
-    private PersistenceContext persistenceContext;
+    private PersistenceContext<TestGameDataBundle> persistenceContext;
     private GameTaskData.StatusChangedListener taskStatusChangedListener;
 
     @Override
@@ -40,7 +41,7 @@ public class GameTaskContentActivity extends ServiceRegistryAppCompatActivity im
 
         this.layoutProvider = (ContentLayoutProvider) this.getServiceRegistryApplication().getRegistry().provideService(ServiceNames.CONTENT_LAYOUT_PROVIDER);
         this.locationTracker = (LocationTracker) this.getServiceRegistryApplication().getRegistry().provideService(ServiceNames.LOCATION_TRACKER);
-        this.persistenceContext = (PersistenceContext) this.getServiceRegistryApplication().getRegistry().provideService(ServiceNames.PERSISTENCE_CONTEXT);
+        this.persistenceContext = (PersistenceContext<TestGameDataBundle>) this.getServiceRegistryApplication().getRegistry().provideService(ServiceNames.PERSISTENCE_CONTEXT);
 
         this.locationTracker.addLocationListener(new LocationListener() {
             boolean locationDetermined = false;
