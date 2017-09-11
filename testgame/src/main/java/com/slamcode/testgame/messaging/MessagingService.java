@@ -4,9 +4,9 @@ package com.slamcode.testgame.messaging;
  * Simple abstraction for service sending messages over concrete channel
  */
 
-public interface MessagingService<MessageParameters extends MessagingService.MessageParameters> {
+public interface MessagingService<SpecificMessageParameters extends MessagingService.MessageParameters> {
 
-    MessageSendResult sendMessage(MessageParameters parameters);
+    MessageSendResult sendMessage(SpecificMessageParameters parameters);
 
     class MessageParameters{
 
@@ -21,7 +21,7 @@ public interface MessagingService<MessageParameters extends MessagingService.Mes
         }
     }
 
-    public class MessageSendResult
+    class MessageSendResult
     {
         public static final int RESULT_SENT = 1;
         public static final int RESULT_FAILURE = 111;

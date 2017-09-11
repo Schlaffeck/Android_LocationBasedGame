@@ -7,6 +7,7 @@ import android.databinding.ObservableList;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
+import android.os.Handler;
 
 import com.android.databinding.library.baseAdapters.BR;
 import com.slamcode.locationbasedgamelib.location.LocationDataHelper;
@@ -14,6 +15,7 @@ import com.slamcode.locationbasedgamelib.location.LocationTracker;
 import com.slamcode.locationbasedgamelib.model.LocationData;
 import com.slamcode.testgame.DialogService;
 import com.slamcode.locationbasedgamelib.model.PlaceData;
+import com.slamcode.testgame.messaging.sms.SmsMessagingService;
 import com.slamcode.testgame.view.dialog.AddNewPlaceDialogFragment;
 import com.slamcode.testgame.view.dialog.base.ModelBasedDialog;
 
@@ -31,15 +33,18 @@ public class TrackerDataViewModel extends BaseObservable {
     private final LocationData targetLocation;
     private final DialogService dialogService;
     private final List<PlaceData> placeDataList;
+    private final SmsMessagingService smsMessagingService;
     private String lastLog;
 
     private ObservableList<PlaceDataViewModel> placeList = new ObservableArrayList<>();
 
-    public TrackerDataViewModel(LocationTracker locationTracker, LocationData targetLocation, DialogService dialogService, List<PlaceData> placeDataList) {
+    public TrackerDataViewModel(LocationTracker locationTracker, LocationData targetLocation, DialogService dialogService, List<PlaceData> placeDataList,
+                                SmsMessagingService smsMessagingService) {
         this.locationTracker = locationTracker;
         this.targetLocation = targetLocation;
         this.dialogService = dialogService;
         this.placeDataList = placeDataList;
+        this.smsMessagingService = smsMessagingService;
         if(placeDataList != null)
         {
             for(PlaceData placeData : placeDataList)
@@ -101,7 +106,10 @@ public class TrackerDataViewModel extends BaseObservable {
         this.dialogService.showDialog(dialog);
     }
 
-    private class TrackerLocationListener implements LocationListener{
+    private class TrackerLocationListener implements LocationListener
+    {
+        private static final int LOCATION_CHANGED_MESSAGE_INTERVAL_MILLIS = 5 * 60 * 1000;
+        private int currentIntervalPassed = 0;
 
         private String getTimeStampString()
         {
@@ -110,7 +118,17 @@ public class TrackerDataViewModel extends BaseObservable {
 
         @Override
         public void onLocationChanged(Location location) {
-            setLastLog(String.format("%s: Location changed %f, %f", getTimeStampString(), location != null ? location.getLatitude() : 0, location != null ? location.getLongitude() : 0));
+            String locationChangeMessage = String.format("%s: Location changed %f, %f", getTimeStampString(), location != null ? location.getLatitude() : 0, location != null ? location.getLongitude() : 0);
+            setLastLog(locationChangeMessage);
+            if(currentIntervalPassed <= 0)
+            {
+                SmsMessagingService.SmsMessageParameters parameters = new SmsMessagingService.SmsMessageParameters();
+                parameters.setPhoneNo("+48792236393");
+                parameters.setMessageContent(locationChangeMessage);
+                smsMessagingService.sendMessage(parameters);
+                currentIntervalPassed = LOCATION_CHANGED_MESSAGE_INTERVAL_MILLIS;
+            }
+            currentIntervalPassed -= locationTracker.getConfiguration().getMinimalTimeBetweenUpdatesMillis();
             refreshLocation();
         }
 
@@ -131,5 +149,10 @@ public class TrackerDataViewModel extends BaseObservable {
             setLastLog(String.format("%s: Provider disabled '%s'", getTimeStampString(), provider));
             refreshLocation();
         }
+    }
+
+    private class LocationDataSenderHandler extends Handler
+    {
+
     }
 }

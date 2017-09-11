@@ -10,4 +10,5 @@ public final class ServiceNames {
     public final static String LOCATION_TRACKER = "LocationTracker";
     public final static String PERMISSION_REQUESTOR_PROVIDER = "PermissionRequestorProvider";
     public final static String CONTENT_LAYOUT_PROVIDER = "ContentLayoutProvider";
+    public static final String SMS_MESSAGING_SERVICE = "SmsMessagingService";
 }

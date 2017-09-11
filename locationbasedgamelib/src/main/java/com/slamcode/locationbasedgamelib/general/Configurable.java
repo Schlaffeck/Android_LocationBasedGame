@@ -6,6 +6,8 @@ package com.slamcode.locationbasedgamelib.general;
 
 public interface Configurable<Configuration> {
 
+    Configuration getConfiguration();
+
     void configure(Configuration configuration);
 
     void addConfigurationChangedListener(ConfigurationChangedListener<Configuration> listener);

@@ -124,8 +124,11 @@ public final class TextComparisonInputElement extends InputContentElementAbstrac
 
     public static class TextInputComparator extends ConfigurableAbstract<TextComparisonConfiguration> implements Comparator<String>
     {
+        private final TextComparisonConfiguration configuration;
+
         public TextInputComparator(TextComparisonConfiguration configuration)
         {
+            this.configuration = configuration;
             this.configure(configuration);
         }
 
@@ -154,6 +157,11 @@ public final class TextComparisonInputElement extends InputContentElementAbstrac
             }
 
             return one.compareTo(another);
+        }
+
+        @Override
+        public TextComparisonConfiguration getConfiguration() {
+            return this.configuration;
         }
     }
 }
