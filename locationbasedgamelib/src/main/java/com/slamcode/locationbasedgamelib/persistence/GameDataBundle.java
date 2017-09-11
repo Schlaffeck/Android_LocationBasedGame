@@ -13,7 +13,6 @@ import java.util.List;
 public class GameDataBundle implements Initializable {
 
     private List<GameTaskData> gameTaskDataList = new ArrayList<>();
-    private List<PlaceData> placeList = new ArrayList<>();
 
     public List<GameTaskData> getGameTasks() {
         return this.gameTaskDataList;
@@ -31,7 +30,16 @@ public class GameDataBundle implements Initializable {
         }
     }
 
-    public List<PlaceData> getPlaceList() {
-        return this.placeList;
+    public static class Provider implements GameDataBundleProvider<GameDataBundle>
+    {
+        @Override
+        public GameDataBundle getDefaultBundleInstance() {
+            return new GameDataBundle();
+        }
+
+        @Override
+        public Class<GameDataBundle> getBundleClassType() {
+            return GameDataBundle.class;
+        }
     }
 }

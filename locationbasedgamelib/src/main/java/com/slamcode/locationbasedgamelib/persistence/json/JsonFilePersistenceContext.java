@@ -5,6 +5,7 @@ import android.content.Context;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.slamcode.locationbasedgamelib.model.GameTaskContentElement;
+import com.slamcode.locationbasedgamelib.persistence.GameDataBundleProvider;
 import com.slamcode.locationbasedgamelib.persistence.PersistenceContext;
 import com.slamcode.locationbasedgamelib.persistence.GameDataBundle;
 
@@ -16,16 +17,18 @@ import java.io.FileReader;
  * Context persisting data bundle in json formatted file in application private resources
  */
 
-public class JsonFilePersistenceContext implements PersistenceContext {
+public class JsonFilePersistenceContext<DataBundle extends GameDataBundle> implements PersistenceContext<DataBundle> {
 
     private final Context applicationContext;
     private final String fileName;
-    private GameDataBundle data;
+    private final GameDataBundleProvider<DataBundle> dataBundleProvider;
+    private DataBundle data;
 
-    public JsonFilePersistenceContext(Context applicationContext, String fileName)
+    public JsonFilePersistenceContext(Context applicationContext, String fileName, GameDataBundleProvider<DataBundle> dataBundleProvider)
     {
         this.applicationContext = applicationContext;
         this.fileName = fileName;
+        this.dataBundleProvider = dataBundleProvider;
     }
 
     @Override
@@ -38,15 +41,14 @@ public class JsonFilePersistenceContext implements PersistenceContext {
                 Gson gson = new GsonBuilder()
                         .registerTypeAdapter(GameTaskContentElement.class, new GameTaskContentElementJsonDeserializer())
                         .create();
-                this.data = gson.fromJson(fileReader, GameDataBundle.class);
+                this.data = gson.fromJson(fileReader, this.dataBundleProvider.getBundleClassType());
             }
 
             if(this.data == null)
-            {
-                this.data = new GameDataBundle();
-            }
+                this.data = this.dataBundleProvider.getDefaultBundleInstance();
 
-            this.data.initialize();
+            if(this.data != null)
+                this.data.initialize();
         }
         catch(Exception exception)
         {
@@ -62,7 +64,7 @@ public class JsonFilePersistenceContext implements PersistenceContext {
                     .registerTypeHierarchyAdapter(GameTaskContentElement.class, new GameTaskContentElementJsonDeserializer())
                     .create();
             fileStream = this.applicationContext.openFileOutput(this.fileName, Context.MODE_PRIVATE);
-            fileStream.write(gson.toJson(this.data, GameDataBundle.class).getBytes());
+            fileStream.write(gson.toJson(this.data, this.dataBundleProvider.getBundleClassType()).getBytes());
             fileStream.close();
         }
         catch(Exception exception)
@@ -72,7 +74,7 @@ public class JsonFilePersistenceContext implements PersistenceContext {
     }
 
     @Override
-    public GameDataBundle getData() {
+    public DataBundle getData() {
         return data;
     }
 

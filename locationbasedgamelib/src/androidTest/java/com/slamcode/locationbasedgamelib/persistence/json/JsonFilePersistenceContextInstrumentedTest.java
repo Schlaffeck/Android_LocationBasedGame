@@ -75,7 +75,7 @@ public class JsonFilePersistenceContextInstrumentedTest {
         bundleFile.delete();
         assertFalse(bundleFile.exists());
 
-        JsonFilePersistenceContext context = new JsonFilePersistenceContext(this.appContext, BUNDLE_FILE_NAME);
+        JsonFilePersistenceContext context = new JsonFilePersistenceContext<>(this.appContext, BUNDLE_FILE_NAME, new GameDataBundle.Provider());
         assertNull(context.getData());
 
         context.initializePersistedData();
@@ -91,7 +91,7 @@ public class JsonFilePersistenceContextInstrumentedTest {
         writer.write(new char[0]);
         writer.close();
 
-        JsonFilePersistenceContext context = new JsonFilePersistenceContext(this.appContext, BUNDLE_FILE_NAME);
+        JsonFilePersistenceContext context = new JsonFilePersistenceContext<>(this.appContext, BUNDLE_FILE_NAME, new GameDataBundle.Provider());
         assertNull(context.getData());
 
         context.initializePersistedData();
@@ -103,7 +103,7 @@ public class JsonFilePersistenceContextInstrumentedTest {
     @Test
     public void jsonFilePersistenceContext_initialize_test()
     {
-        JsonFilePersistenceContext context = new JsonFilePersistenceContext(this.appContext, BUNDLE_FILE_NAME);
+        JsonFilePersistenceContext context = new JsonFilePersistenceContext<>(this.appContext, BUNDLE_FILE_NAME, new GameDataBundle.Provider());;
         assertNull(context.getData());
 
         context.initializePersistedData();
@@ -113,7 +113,7 @@ public class JsonFilePersistenceContextInstrumentedTest {
     @Test
     public void jsonFilePersistenceContext_changePersistRead_removeTask_test()
     {
-        JsonFilePersistenceContext primalContext = new JsonFilePersistenceContext(this.appContext, BUNDLE_FILE_NAME);
+        JsonFilePersistenceContext primalContext = new JsonFilePersistenceContext<>(this.appContext, BUNDLE_FILE_NAME, new GameDataBundle.Provider());;
         assertNull(primalContext.getData());
 
         primalContext.initializePersistedData();
@@ -130,7 +130,7 @@ public class JsonFilePersistenceContextInstrumentedTest {
         primalContext.persist();
 
         // read again
-        JsonFilePersistenceContext newContext = new JsonFilePersistenceContext(this.appContext, BUNDLE_FILE_NAME);
+        JsonFilePersistenceContext newContext = new JsonFilePersistenceContext<>(this.appContext, BUNDLE_FILE_NAME, new GameDataBundle.Provider());;
         assertNull(newContext.getData());
 
         newContext.initializePersistedData();
@@ -144,7 +144,7 @@ public class JsonFilePersistenceContextInstrumentedTest {
     @Test
     public void jsonFilePersistenceContext_changePersistRead_addTask_test()
     {
-        JsonFilePersistenceContext primalContext = new JsonFilePersistenceContext(this.appContext, BUNDLE_FILE_NAME);
+        JsonFilePersistenceContext primalContext = new JsonFilePersistenceContext<>(this.appContext, BUNDLE_FILE_NAME, new GameDataBundle.Provider());;
         assertNull(primalContext.getData());
 
         primalContext.initializePersistedData();
@@ -160,7 +160,7 @@ public class JsonFilePersistenceContextInstrumentedTest {
         primalContext.persist();
 
         // read again
-        JsonFilePersistenceContext newContext = new JsonFilePersistenceContext(this.appContext, BUNDLE_FILE_NAME);
+        JsonFilePersistenceContext newContext = new JsonFilePersistenceContext<>(this.appContext, BUNDLE_FILE_NAME, new GameDataBundle.Provider());;
         assertNull(newContext.getData());
 
         newContext.initializePersistedData();
@@ -176,7 +176,7 @@ public class JsonFilePersistenceContextInstrumentedTest {
     @Test
     public void jsonFilePersistenceContext_changePersistRead_changeTasksTitles_test()
     {
-        JsonFilePersistenceContext primalContext = new JsonFilePersistenceContext(this.appContext, BUNDLE_FILE_NAME);
+        JsonFilePersistenceContext primalContext = new JsonFilePersistenceContext<>(this.appContext, BUNDLE_FILE_NAME, new GameDataBundle.Provider());;
         assertNull(primalContext.getData());
 
         primalContext.initializePersistedData();
@@ -194,7 +194,7 @@ public class JsonFilePersistenceContextInstrumentedTest {
         primalContext.persist();
 
         // read again
-        JsonFilePersistenceContext newContext = new JsonFilePersistenceContext(this.appContext, BUNDLE_FILE_NAME);
+        JsonFilePersistenceContext newContext = new JsonFilePersistenceContext<>(this.appContext, BUNDLE_FILE_NAME, new GameDataBundle.Provider());;
         assertNull(newContext.getData());
 
         newContext.initializePersistedData();
@@ -213,7 +213,7 @@ public class JsonFilePersistenceContextInstrumentedTest {
 
         try {
             // setup bundle
-            JsonFilePersistenceContext persistenceContext = new JsonFilePersistenceContext(this.appContext, testFileName);
+            JsonFilePersistenceContext persistenceContext = new JsonFilePersistenceContext<>(this.appContext, testFileName, new GameDataBundle.Provider());;
             assertNull(persistenceContext.getData());
             persistenceContext.initializePersistedData();
 
@@ -226,7 +226,7 @@ public class JsonFilePersistenceContextInstrumentedTest {
             persistenceContext.persist();
 
             // read again
-            JsonFilePersistenceContext newContext = new JsonFilePersistenceContext(this.appContext, testFileName);
+            JsonFilePersistenceContext newContext = new JsonFilePersistenceContext<>(this.appContext, testFileName, new GameDataBundle.Provider());;
             newContext.initializePersistedData();
 
             assertNotNull(newContext.getData());
@@ -249,7 +249,7 @@ public class JsonFilePersistenceContextInstrumentedTest {
             newContext.persist();
 
             // another context
-            JsonFilePersistenceContext thirdContext = new JsonFilePersistenceContext(this.appContext, testFileName);
+            JsonFilePersistenceContext thirdContext = new JsonFilePersistenceContext<>(this.appContext, testFileName, new GameDataBundle.Provider());;
             thirdContext.initializePersistedData();
 
             assertNotNull(thirdContext.getData());
@@ -283,7 +283,7 @@ public class JsonFilePersistenceContextInstrumentedTest {
 
         try {
             // setup bundle
-            JsonFilePersistenceContext persistenceContext = new JsonFilePersistenceContext(this.appContext, testFileName);
+            JsonFilePersistenceContext persistenceContext = new JsonFilePersistenceContext<>(this.appContext, testFileName, new GameDataBundle.Provider());;
             assertNull(persistenceContext.getData());
             persistenceContext.initializePersistedData();
 
@@ -296,7 +296,7 @@ public class JsonFilePersistenceContextInstrumentedTest {
             persistenceContext.persist();
 
             // read again
-            JsonFilePersistenceContext newContext = new JsonFilePersistenceContext(this.appContext, testFileName);
+            JsonFilePersistenceContext newContext = new JsonFilePersistenceContext<>(this.appContext, testFileName, new GameDataBundle.Provider());;
             newContext.initializePersistedData();
 
             assertNotNull(newContext.getData());
@@ -321,7 +321,7 @@ public class JsonFilePersistenceContextInstrumentedTest {
             newContext.persist();
 
             // another context
-            JsonFilePersistenceContext thirdContext = new JsonFilePersistenceContext(this.appContext, testFileName);
+            JsonFilePersistenceContext thirdContext = new JsonFilePersistenceContext<>(this.appContext, testFileName, new GameDataBundle.Provider());;
             thirdContext.initializePersistedData();
 
             assertNotNull(thirdContext.getData());
@@ -356,7 +356,7 @@ public class JsonFilePersistenceContextInstrumentedTest {
 
         try {
             // setup bundle
-            JsonFilePersistenceContext persistenceContext = new JsonFilePersistenceContext(this.appContext, testFileName);
+            JsonFilePersistenceContext persistenceContext = new JsonFilePersistenceContext<>(this.appContext, testFileName, new GameDataBundle.Provider());;
             assertNull(persistenceContext.getData());
             persistenceContext.initializePersistedData();
 
@@ -370,7 +370,7 @@ public class JsonFilePersistenceContextInstrumentedTest {
             persistenceContext.persist();
 
             // read again
-            JsonFilePersistenceContext newContext = new JsonFilePersistenceContext(this.appContext, testFileName);
+            JsonFilePersistenceContext newContext = new JsonFilePersistenceContext<>(this.appContext, testFileName, new GameDataBundle.Provider());;
             newContext.initializePersistedData();
 
             assertNotNull(newContext.getData());
@@ -396,7 +396,7 @@ public class JsonFilePersistenceContextInstrumentedTest {
             newContext.persist();
 
             // another context
-            JsonFilePersistenceContext thirdContext = new JsonFilePersistenceContext(this.appContext, testFileName);
+            JsonFilePersistenceContext thirdContext = new JsonFilePersistenceContext<>(this.appContext, testFileName, new GameDataBundle.Provider());;
             thirdContext.initializePersistedData();
 
             assertNotNull(thirdContext.getData());
@@ -434,7 +434,7 @@ public class JsonFilePersistenceContextInstrumentedTest {
 
         try {
             // setup bundle
-            JsonFilePersistenceContext persistenceContext = new JsonFilePersistenceContext(this.appContext, testFileName);
+            JsonFilePersistenceContext persistenceContext = new JsonFilePersistenceContext<>(this.appContext, testFileName, new GameDataBundle.Provider());;
             assertNull(persistenceContext.getData());
             persistenceContext.initializePersistedData();
 
@@ -448,7 +448,7 @@ public class JsonFilePersistenceContextInstrumentedTest {
             persistenceContext.persist();
 
             // read again
-            JsonFilePersistenceContext newContext = new JsonFilePersistenceContext(this.appContext, testFileName);
+            JsonFilePersistenceContext newContext = new JsonFilePersistenceContext<>(this.appContext, testFileName, new GameDataBundle.Provider());;
             newContext.initializePersistedData();
 
             assertNotNull(newContext.getData());
@@ -482,7 +482,7 @@ public class JsonFilePersistenceContextInstrumentedTest {
 
         try {
             // setup bundle
-            JsonFilePersistenceContext persistenceContext = new JsonFilePersistenceContext(this.appContext, testFileName);
+            JsonFilePersistenceContext persistenceContext = new JsonFilePersistenceContext<>(this.appContext, testFileName, new GameDataBundle.Provider());;
             assertNull(persistenceContext.getData());
             persistenceContext.initializePersistedData();
 
@@ -496,7 +496,7 @@ public class JsonFilePersistenceContextInstrumentedTest {
             persistenceContext.persist();
 
             // read again
-            JsonFilePersistenceContext newContext = new JsonFilePersistenceContext(this.appContext, testFileName);
+            JsonFilePersistenceContext newContext = new JsonFilePersistenceContext<>(this.appContext, testFileName, new GameDataBundle.Provider());;
             newContext.initializePersistedData();
 
             assertNotNull(newContext.getData());
@@ -522,7 +522,7 @@ public class JsonFilePersistenceContextInstrumentedTest {
             newContext.persist();
 
             // read once again
-            JsonFilePersistenceContext thirdContext = new JsonFilePersistenceContext(this.appContext, testFileName);
+            JsonFilePersistenceContext thirdContext = new JsonFilePersistenceContext<>(this.appContext, testFileName, new GameDataBundle.Provider());;
             thirdContext.initializePersistedData();
 
             assertNotNull(thirdContext.getData());
