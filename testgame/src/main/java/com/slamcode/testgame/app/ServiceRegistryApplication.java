@@ -38,6 +38,7 @@ public final class ServiceRegistryApplication extends Application implements Ser
         registry.registerServiceFactory(ServiceNames.LOCATION_TRACKER, this, true);
         registry.registerService(ServiceNames.CONTENT_LAYOUT_PROVIDER, new GameTaskContentSimpleLayoutProvider());
         registry.registerService(ServiceNames.SMS_MESSAGING_SERVICE, new SmsMessagingService(this.getApplicationContext()));
+        registry.registerService(ServiceNames.SMS_MESSAGE_PHONE_NO, "+48792236393");
     }
 
     public Activity getCurrentActivity()

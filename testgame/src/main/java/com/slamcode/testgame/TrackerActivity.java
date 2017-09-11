@@ -4,6 +4,7 @@ import android.app.DialogFragment;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.Toolbar;
 
 import com.slamcode.locationbasedgamelib.location.LocationTracker;
@@ -42,6 +43,13 @@ public class TrackerActivity extends ServiceRegistryAppCompatActivity implements
         binding.setVm(this.viewModel);
         trackerDataViewBinding.setVm(this.viewModel);
         locationListBinding.setVariable(BR.vm, this.viewModel);
+
+        this.startLocationUpdateMessaging();
+    }
+    @Override
+    protected void onStop() {
+        persistenceContext.persist();
+        super.onStop();
     }
 
     @Override
@@ -49,9 +57,24 @@ public class TrackerActivity extends ServiceRegistryAppCompatActivity implements
         dialogFragment.show(this.getFragmentManager(), null);
     }
 
-    @Override
-    protected void onStop() {
-        persistenceContext.persist();
-        super.onStop();
+    private void startLocationUpdateMessaging()
+    {
+        final int sendMessageIntervalMillis = 5 * 60 * 1000;
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                sendSmsMessageToDefaultNumber("Location changed: " + locationTracker.getLocationData());
+                handler.postDelayed(this, sendMessageIntervalMillis);
+            }
+        }, 10000);
+    }
+
+    private void sendSmsMessageToDefaultNumber(String message)
+    {
+        SmsMessagingService.SmsMessageParameters smsMessage = new SmsMessagingService.SmsMessageParameters();
+        smsMessage.setPhoneNo((String) this.getServiceRegistryApplication().getRegistry().provideService(ServiceNames.SMS_MESSAGE_PHONE_NO));
+        smsMessage.setMessageContent(message);
+        this.smsMessagingService.sendMessage(smsMessage);
     }
 }

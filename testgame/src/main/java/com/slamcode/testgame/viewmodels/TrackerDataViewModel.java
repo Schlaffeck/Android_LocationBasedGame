@@ -108,9 +108,6 @@ public class TrackerDataViewModel extends BaseObservable {
 
     private class TrackerLocationListener implements LocationListener
     {
-        private static final int LOCATION_CHANGED_MESSAGE_INTERVAL_MILLIS = 5 * 60 * 1000;
-        private int currentIntervalPassed = 0;
-
         private String getTimeStampString()
         {
             return new SimpleDateFormat("HH:mm:ss").format(new Date());
@@ -120,15 +117,6 @@ public class TrackerDataViewModel extends BaseObservable {
         public void onLocationChanged(Location location) {
             String locationChangeMessage = String.format("%s: Location changed %f, %f", getTimeStampString(), location != null ? location.getLatitude() : 0, location != null ? location.getLongitude() : 0);
             setLastLog(locationChangeMessage);
-            if(currentIntervalPassed <= 0)
-            {
-                SmsMessagingService.SmsMessageParameters parameters = new SmsMessagingService.SmsMessageParameters();
-                parameters.setPhoneNo("+48792236393");
-                parameters.setMessageContent(locationChangeMessage);
-                smsMessagingService.sendMessage(parameters);
-                currentIntervalPassed = LOCATION_CHANGED_MESSAGE_INTERVAL_MILLIS;
-            }
-            currentIntervalPassed -= locationTracker.getConfiguration().getMinimalTimeBetweenUpdatesMillis();
             refreshLocation();
         }
 
