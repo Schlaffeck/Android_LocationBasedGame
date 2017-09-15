@@ -12,6 +12,7 @@ import com.slamcode.testgame.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 
 /**
  * Created by smoriak on 27/07/2017.
@@ -27,7 +28,7 @@ public final class PersistenceContextContainer {
     {
         if(currentContext == null)
         {
-            currentContext = new JsonFilePersistenceContext<>(applicationContext, FILE_NAME, new GameDataBundleProvider<TestGameDataBundle>() {
+            GameDataBundleProvider<TestGameDataBundle> bundleProvider = new GameDataBundleProvider<TestGameDataBundle>() {
                 @Override
                 public TestGameDataBundle getDefaultBundleInstance() {
                     TestGameDataBundle result = new TestGameDataBundle();
@@ -41,24 +42,51 @@ public final class PersistenceContextContainer {
                                     new GameTaskBuilder(4).withTitle("Location input task 4")
                                             .withTextElement("Some test upper text input")
                                             .withTextElement("Go to 'Feniks DH' on old market square and try the button")
-                                            .withLocationComparisonElement("Are you there yet?", 51.109460f, 17.033041f, 15f, null).getTask(),
+                                            .withLocationComparisonElement("Are you there yet?", 51.109651f, 17.033557f, 15f, null).getTask(),
                                     new GameTaskBuilder(5).withTitle("Audio task 5")
                                             .withTextElement("Play some sound!")
                                             .withAudioPlayerElement(R.raw.sound, "Music", applicationContext)
                                             .getTask(),
                                     new GameTaskBuilder(6).withTitle("Home location task 4")
                                             .withTextElement("Go home now")
-                                            .withLocationComparisonElement("Are you home?", 51.070847f, 16.996699f, 15f, null).getTask(),
+                                            .withLocationComparisonElement("Are you home?", 51.070847f, 16.996691f, 15f, null).getTask(),
+                                    new GameTaskBuilder(7).withTitle("Task with tips")
+                                            .withTextElement("Try different answers to see tips.")
+                                            .withTextElement("For example: 'dog', 'cat, 'whatever' other or empty answer")
+                                            .withTextInputComparisonElement("Check", "answer", "1234", "password")
+                                            .withTipForPreviousTextInputElement("Don't know about this one, try something else. Don't give up!")
+                                            .withTipForPreviousTextInputElement("Nope, that's not the case. Keep on trying!")
+                                            .withTipForPreviousTextInputElement("dog", "Dogs are nice, they like to wipe their tail.")
+                                            .withTipForPreviousTextInputElement("cat", "Cats are good domestic pets.")
+                                            .withTipForPreviousTextInputElement("", "You did not type anything.")
+                                            .withTipForPreviousTextInputElement(null, "You did not type anything.")
+                                            .withTipForPreviousTextInputElement("whatever", "So do you have enough of this game or what?")
+                                            .getTask(),
                             };
-                            result.setGameTasks(Arrays.asList(tasksList));
+                    result.setGameTasks(Arrays.asList(tasksList));
                     return result;
+                }
+
+                @Override
+                public void updateBundle(TestGameDataBundle dataBundle) {
+                    TestGameDataBundle defaultBundle = getDefaultBundleInstance();
+                    if(defaultBundle.getGameTasks().size() > dataBundle.getGameTasks().size()) {
+
+                        Collection<GameTaskData> newTasks = defaultBundle.getGameTasks().subList(
+                                dataBundle.getGameTasks().size(),
+                                defaultBundle.getGameTasks().size());
+
+                        dataBundle.getGameTasks().addAll(newTasks);
+                    }
                 }
 
                 @Override
                 public Class<TestGameDataBundle> getBundleClassType() {
                     return TestGameDataBundle.class;
                 }
-            });
+            };
+
+            currentContext = new JsonFilePersistenceContext<>(applicationContext, FILE_NAME, bundleProvider);
 
             currentContext.initializePersistedData();
         }
