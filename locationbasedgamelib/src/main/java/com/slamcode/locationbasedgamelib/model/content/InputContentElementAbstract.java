@@ -59,6 +59,7 @@ public abstract class InputContentElementAbstract<InputValue> implements InputCo
             this.listeners = new ArrayList<>();
     }
 
+    @Override
     public List<InputTip<InputValue>> getInputTips() {
         if(this.inputTips == null)
             this.inputTips = new ArrayList<>();

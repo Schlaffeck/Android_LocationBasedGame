@@ -19,6 +19,7 @@ public final class LocationComparisonInputElement extends InputContentElementAbs
     private final LocationData targetLocation;
     private final float acceptableDistanceMeters;
     private final String commitCommandName;
+    private LocationData inputLocation;
 
     public LocationComparisonInputElement(LocationData targetLocation, float acceptableDistanceMeters, String commitCommandName) {
         this.targetLocation = targetLocation;
@@ -41,6 +42,11 @@ public final class LocationComparisonInputElement extends InputContentElementAbs
     }
 
     @Override
+    public LocationData getInputValue() {
+        return this.inputLocation;
+    }
+
+    @Override
     public LocationComparisonResult commitInput(LocationData currentLocation) {
         InputCommitParameters<LocationData> parameters = new InputCommitParameters<>(currentLocation);
         this.onInputCommitting(parameters);
@@ -55,6 +61,7 @@ public final class LocationComparisonInputElement extends InputContentElementAbs
         else
             result.setCurrentLocationAvailable(false);
 
+        this.inputLocation = currentLocation;
         this.onInputCommitted(result);
         return result;
     }

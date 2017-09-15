@@ -386,13 +386,13 @@ public class JsonFilePersistenceContextInstrumentedTest {
             assertTrue(element instanceof TextComparisonInputElement);
             TextComparisonInputElement typedElement = (TextComparisonInputElement) element;
             assertEquals("Check value", typedElement.getCommitCommandName());
-            assertEquals(null, typedElement.getInputText());
+            assertEquals(null, typedElement.getInputValue());
             Iterator<String> iterator = typedElement.getAcceptableInputValues().iterator();
             assertEquals("A1", iterator.next());
             assertEquals("A2", iterator.next());
 
             // change and save
-            typedElement.setInputText("some input text");
+            typedElement.setInputValue("some input text");
             newContext.persist();
 
             // another context
@@ -412,7 +412,7 @@ public class JsonFilePersistenceContextInstrumentedTest {
             assertTrue(element instanceof TextComparisonInputElement);
             typedElement = (TextComparisonInputElement) element;
             assertEquals("Check value", typedElement.getCommitCommandName());
-            assertEquals("some input text", typedElement.getInputText());
+            assertEquals("some input text", typedElement.getInputValue());
             iterator = typedElement.getAcceptableInputValues().iterator();
             assertEquals("A1", iterator.next());
             assertEquals("A2", iterator.next());

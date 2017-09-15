@@ -63,11 +63,12 @@ public final class TextComparisonInputElement extends InputContentElementAbstrac
         return CONTENT_TYPE_ID;
     }
 
-    public String getInputText() {
+    @Override
+    public String getInputValue() {
         return inputText;
     }
 
-    public void setInputText(String inputText) {
+    public void setInputValue(String inputText) {
         if(this.inputText == inputText)
             return;
         this.inputText = inputText;
