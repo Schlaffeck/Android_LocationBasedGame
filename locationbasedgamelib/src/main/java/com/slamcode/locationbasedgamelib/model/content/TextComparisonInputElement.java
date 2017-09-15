@@ -3,6 +3,7 @@ package com.slamcode.locationbasedgamelib.model.content;
 import com.slamcode.locationbasedgamelib.general.ConfigurableAbstract;
 import com.slamcode.locationbasedgamelib.model.InputCommitParameters;
 import com.slamcode.locationbasedgamelib.model.InputResult;
+import com.slamcode.locationbasedgamelib.model.InputTip;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -164,5 +165,24 @@ public final class TextComparisonInputElement extends InputContentElementAbstrac
         public TextComparisonConfiguration getConfiguration() {
             return this.configuration;
         }
+
+        public String findFirstMatchingOrNull(Collection<String> inputCollection, String inputToMatch)
+        {
+            for(String inputInList : inputCollection)
+                if(this.compare(inputInList, inputToMatch) == 0)
+                    return inputInList;
+
+            return null;
+        }
+
+        public InputTip<String> findFirstMatchingTipOrNull(Collection<InputTip<String>> inputCollection, String inputToMatch)
+        {
+            for(InputTip<String> inputInList : inputCollection)
+                if(this.compare(inputInList.getInputValue(), inputToMatch) == 0)
+                    return inputInList;
+
+            return null;
+        }
+
     }
 }
