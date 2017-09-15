@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
+import java.util.regex.Matcher;
 
 /**
  * Represents input used with text field to input by user and button or other action item to commit the
@@ -177,11 +179,16 @@ public final class TextComparisonInputElement extends InputContentElementAbstrac
 
         public InputTip<String> findFirstMatchingTipOrNull(Collection<InputTip<String>> inputCollection, String inputToMatch)
         {
-            for(InputTip<String> inputInList : inputCollection)
-                if(this.compare(inputInList.getInputValue(), inputToMatch) == 0)
-                    return inputInList;
+            List<InputTip<String>> generalTips = new ArrayList<>();
 
-            return null;
+            for(InputTip<String> inputInList : inputCollection) {
+                if (!inputInList.isInputValueAssigned())
+                    generalTips.add(inputInList);
+                else if (this.compare(inputInList.getInputValue(), inputToMatch) == 0)
+                    return inputInList;
+            }
+
+            return generalTips.size() > 0 ? generalTips.get(new Random().nextInt(generalTips.size())) : null;
         }
 
     }
