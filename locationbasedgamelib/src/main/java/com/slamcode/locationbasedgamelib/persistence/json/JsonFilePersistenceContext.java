@@ -47,6 +47,7 @@ public class JsonFilePersistenceContext<DataBundle extends GameDataBundle> imple
             if(this.data == null)
                 this.data = this.dataBundleProvider.getDefaultBundleInstance();
 
+            this.dataBundleProvider.updateBundle(this.data);
             if(this.data != null)
                 this.data.initialize();
         }

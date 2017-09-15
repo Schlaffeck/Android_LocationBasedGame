@@ -38,6 +38,9 @@ public class GameDataBundle implements Initializable {
         }
 
         @Override
+        public void updateBundle(GameDataBundle dataBundle) {}
+
+        @Override
         public Class<GameDataBundle> getBundleClassType() {
             return GameDataBundle.class;
         }
