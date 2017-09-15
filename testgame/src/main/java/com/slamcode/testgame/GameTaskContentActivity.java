@@ -1,6 +1,7 @@
 package com.slamcode.testgame;
 
 import android.app.AlertDialog;
+import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
@@ -16,6 +17,7 @@ import com.slamcode.locationbasedgamelib.location.LocationTracker;
 import com.slamcode.locationbasedgamelib.model.*;
 import com.slamcode.locationbasedgamelib.model.builder.*;
 import com.slamcode.locationbasedgamelib.model.content.LocationComparisonInputElement;
+import com.slamcode.locationbasedgamelib.model.content.TextComparisonInputElement;
 import com.slamcode.locationbasedgamelib.multimedia.AudioPlayer;
 import com.slamcode.locationbasedgamelib.multimedia.MediaServiceAudioPlayer;
 import com.slamcode.locationbasedgamelib.persistence.PersistenceContext;
@@ -128,9 +130,14 @@ public class GameTaskContentActivity extends ServiceRegistryAppCompatActivity im
             @Override
             public void inputCommitted(InputContentElement<String> element, InputResult result) {
                 if(result.isInputCorrect())
-                    Toast.makeText(getApplicationContext(), "Answer is correct :)", Toast.LENGTH_LONG).show();
-                else
-                    Toast.makeText(getApplicationContext(), "Incorrect answer, try again", Toast.LENGTH_LONG).show();
+                    showSimpleMessageDialog(null, "Answer is correct :)");
+                else {
+                    InputTip tip = TextComparisonInputElement.IgnoreAllComparator.findFirstMatchingTipOrNull(element.getInputTips(), element.getInputValue());
+                    if(tip != null)
+                        showSimpleMessageDialog(null, tip.getTipMessage());
+                    else
+                        showSimpleMessageDialog(null, "Incorrect answer, try again");
+                }
             }
         };
 
@@ -138,15 +145,7 @@ public class GameTaskContentActivity extends ServiceRegistryAppCompatActivity im
             @Override
             public void onStatusChanged(GameTaskStatus newStatus) {
                 if(newStatus == GameTaskStatus.Success)
-                    new AlertDialog.Builder(getServiceRegistryApplication().getCurrentActivity())
-                            .setMessage("Task is finished move to the next one :)")
-                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            })
-                            .create().show();
+                   showSimpleMessageDialog("GREAT", "Task is finished move to the next one :)");
             }
         };
     }
@@ -199,5 +198,19 @@ public class GameTaskContentActivity extends ServiceRegistryAppCompatActivity im
     @Override
     public AudioPlayer provideAudioPlayer(String audioFilePathUri) {
         return new MediaServiceAudioPlayer(this, Uri.parse(audioFilePathUri));
+    }
+
+    private void showSimpleMessageDialog(String title, String message)
+    {
+        new AlertDialog.Builder(getServiceRegistryApplication().getCurrentActivity())
+                .setMessage(message)
+                .setTitle(title)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create().show();
     }
 }

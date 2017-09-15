@@ -56,8 +56,8 @@ public final class PersistenceContextContainer {
                                             .withTextInputComparisonElement("Check", "answer", "1234", "password")
                                             .withTipForPreviousTextInputElement("Don't know about this one, try something else. Don't give up!")
                                             .withTipForPreviousTextInputElement("Nope, that's not the case. Keep on trying!")
-                                            .withTipForPreviousTextInputElement("dog", "Dogs are nice, they like to wipe their tail.")
-                                            .withTipForPreviousTextInputElement("cat", "Cats are good domestic pets.")
+                                            .withTipForPreviousTextInputElement("dog", "Dogs are nice, they like to wipe their tail.\nBut that's not the answer.")
+                                            .withTipForPreviousTextInputElement("cat", "Cats are good domestic pets.\nHowever it is not the answer.")
                                             .withTipForPreviousTextInputElement("", "You did not type anything.")
                                             .withTipForPreviousTextInputElement(null, "You did not type anything.")
                                             .withTipForPreviousTextInputElement("whatever", "So do you have enough of this game or what?")
@@ -70,6 +70,7 @@ public final class PersistenceContextContainer {
                 @Override
                 public void updateBundle(TestGameDataBundle dataBundle) {
                     TestGameDataBundle defaultBundle = getDefaultBundleInstance();
+//                    dataBundle.setGameTasks(defaultBundle.getGameTasks());
                     if(defaultBundle.getGameTasks().size() > dataBundle.getGameTasks().size()) {
 
                         Collection<GameTaskData> newTasks = defaultBundle.getGameTasks().subList(
