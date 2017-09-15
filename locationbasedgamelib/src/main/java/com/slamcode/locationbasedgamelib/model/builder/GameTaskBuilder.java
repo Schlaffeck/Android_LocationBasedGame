@@ -128,6 +128,7 @@ public class GameTaskBuilder {
         tip.setInputValue(input);
         tip.setInputValueAssigned(true);
         tip.setTipMessage(tipMessage);
+        textComparisonInputElement.getInputTips().add(tip);
 
         return this;
     }
@@ -142,6 +143,7 @@ public class GameTaskBuilder {
         InputTip<String> tip = new InputTip<>();
         tip.setInputValueAssigned(false);
         tip.setTipMessage(generalTipMessage);
+        textComparisonInputElement.getInputTips().add(tip);
 
         return this;
     }
