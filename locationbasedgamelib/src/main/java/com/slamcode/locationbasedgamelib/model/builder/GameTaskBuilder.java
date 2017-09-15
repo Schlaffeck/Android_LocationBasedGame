@@ -8,6 +8,7 @@ import com.slamcode.locationbasedgamelib.model.GameTaskContentElement;
 import com.slamcode.locationbasedgamelib.model.GameTaskData;
 import com.slamcode.locationbasedgamelib.model.GameTaskHeader;
 import com.slamcode.locationbasedgamelib.model.InputContentElement;
+import com.slamcode.locationbasedgamelib.model.InputTip;
 import com.slamcode.locationbasedgamelib.model.LocationData;
 import com.slamcode.locationbasedgamelib.model.content.DisplayAudioPlayerElement;
 import com.slamcode.locationbasedgamelib.model.content.DisplayPictureElement;
@@ -18,6 +19,7 @@ import com.slamcode.locationbasedgamelib.multimedia.AudioPlayer;
 import com.slamcode.locationbasedgamelib.multimedia.MediaServiceAudioPlayer;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Builder class facilitating creating complex game task elements
@@ -115,6 +117,35 @@ public class GameTaskBuilder {
         return this;
     }
 
+    public GameTaskBuilder withTipForPreviousTextInputElement(String input, String tipMessage)
+    {
+        TextComparisonInputElement textComparisonInputElement = findLastTextComparisonInputElementOrNull(this.buildingTask.getGameTaskContent());
+
+        if(textComparisonInputElement == null)
+            return this;
+
+        InputTip<String> tip = new InputTip<>();
+        tip.setInputValue(input);
+        tip.setInputValueAssigned(true);
+        tip.setTipMessage(tipMessage);
+
+        return this;
+    }
+
+    public GameTaskBuilder withTipForPreviousTextInputElement(String generalTipMessage)
+    {
+        TextComparisonInputElement textComparisonInputElement = findLastTextComparisonInputElementOrNull(this.buildingTask.getGameTaskContent());
+
+        if(textComparisonInputElement == null)
+            return this;
+
+        InputTip<String> tip = new InputTip<>();
+        tip.setInputValueAssigned(false);
+        tip.setTipMessage(generalTipMessage);
+
+        return this;
+    }
+
     public GameTaskBuilder withLocationComparisonElement(String commitMessage, float latitude, float longitude, float acceptanceDistanceMeters, InputContentElement.OnInputCommittedListener<LocationData> listener)
     {
         GameTaskContent content = this.buildingTask.getGameTaskContent();
@@ -209,5 +240,17 @@ public class GameTaskBuilder {
                 typedElement.useAudioPlayer(player);
             }
         }
+    }
+
+    private TextComparisonInputElement findLastTextComparisonInputElementOrNull(GameTaskContent gameTaskContent)
+    {
+        for(int i = gameTaskContent.getContentElements().size() - 1; i >= 0; i--)
+        {
+            GameTaskContentElement element = gameTaskContent.getContentElements().get(i);
+            if(element instanceof TextComparisonInputElement)
+                return (TextComparisonInputElement) element;
+        }
+
+        return null;
     }
 }
