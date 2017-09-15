@@ -26,6 +26,8 @@ import com.slamcode.testgame.app.ServiceNames;
 import com.slamcode.testgame.app.ServiceRegistryAppCompatActivity;
 import com.slamcode.testgame.data.TestGameDataBundle;
 
+import java.util.Locale;
+
 public class GameTaskContentActivity extends ServiceRegistryAppCompatActivity implements AudioPlayer.Provider{
 
     private GameTaskData sampleGameTask;
@@ -88,36 +90,12 @@ public class GameTaskContentActivity extends ServiceRegistryAppCompatActivity im
                 LocationComparisonInputElement.LocationComparisonResult locationComparisonResult
                         = (LocationComparisonInputElement.LocationComparisonResult)result;
                 if(result.isInputCorrect())
-                    new AlertDialog.Builder(getServiceRegistryApplication().getCurrentActivity())
-                            .setMessage("You made it, great!")
-                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            })
-                            .create().show();
+                    showSimpleMessageDialog(null, "You made it, great!");
                 else
                     if(locationComparisonResult.isCurrentLocationAvailable())
-                        new AlertDialog.Builder(getServiceRegistryApplication().getCurrentActivity())
-                                .setMessage(String.format("Not quite there yet. You are about %f meters from the target", locationComparisonResult.getDistanceFromTargetMeters()))
-                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                })
-                                .create().show();
+                    showSimpleMessageDialog(null, String.format(Locale.getDefault(), "Not quite there yet. You are about %f meters from the target", locationComparisonResult.getDistanceFromTargetMeters()));
                 else
-                        new AlertDialog.Builder(getServiceRegistryApplication().getCurrentActivity())
-                                .setMessage(String.format("No location available. Check your GPS settings and try again", locationComparisonResult.getDistanceFromTargetMeters()))
-                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                })
-                                .create().show();
+                    showSimpleMessageDialog(null, "No location available. Check your GPS settings and try again");
             }
         };
 
