@@ -1,7 +1,6 @@
 package com.slamcode.testgame;
 
 import android.app.AlertDialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
@@ -25,18 +24,20 @@ import com.slamcode.locationbasedgamelib.view.ContentLayoutProvider;
 import com.slamcode.testgame.app.ServiceNames;
 import com.slamcode.testgame.app.ServiceRegistryAppCompatActivity;
 import com.slamcode.testgame.data.TestGameDataBundle;
+import com.slamcode.testgame.messaging.sms.SmsMessagingService;
 
 import java.util.Locale;
 
 public class GameTaskContentActivity extends ServiceRegistryAppCompatActivity implements AudioPlayer.Provider{
 
-    private GameTaskData sampleGameTask;
+    private GameTaskData taskData;
     private ContentLayoutProvider layoutProvider;
     private InputContentElement.OnInputCommittedListener<LocationData> locationDataOnInputCommittedListener;
     private InputContentElement.OnInputCommittedListener<String> textOnInputCommittedListener;
     private LocationTracker locationTracker;
     private PersistenceContext<TestGameDataBundle> persistenceContext;
     private GameTaskData.StatusChangedListener taskStatusChangedListener;
+    private SmsMessagingService smsMessagingService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +45,9 @@ public class GameTaskContentActivity extends ServiceRegistryAppCompatActivity im
         setContentView(R.layout.activity_game_task_content);
 
         this.layoutProvider = (ContentLayoutProvider) this.getServiceRegistryApplication().getRegistry().provideService(ServiceNames.CONTENT_LAYOUT_PROVIDER);
-        this.locationTracker = (LocationTracker) this.getServiceRegistryApplication().getRegistry().provideService(ServiceNames.LOCATION_TRACKER);
-        this.persistenceContext = (PersistenceContext<TestGameDataBundle>) this.getServiceRegistryApplication().getRegistry().provideService(ServiceNames.PERSISTENCE_CONTEXT);
+        this.locationTracker = provideServiceFromRegistry(ServiceNames.LOCATION_TRACKER);
+        this.persistenceContext = provideServiceFromRegistry(ServiceNames.PERSISTENCE_CONTEXT);
+        this.smsMessagingService = provideServiceFromRegistry(ServiceNames.SMS_MESSAGING_SERVICE);
 
         this.locationTracker.addLocationListener(new LocationListener() {
             boolean locationDetermined = false;
@@ -122,8 +124,10 @@ public class GameTaskContentActivity extends ServiceRegistryAppCompatActivity im
         this.taskStatusChangedListener = new GameTaskData.StatusChangedListener() {
             @Override
             public void onStatusChanged(GameTaskStatus newStatus) {
-                if(newStatus == GameTaskStatus.Success)
-                   showSimpleMessageDialog("GREAT", "Task is finished move to the next one :)");
+                if(newStatus == GameTaskStatus.Success) {
+                    showSimpleMessageDialog("GREAT", "Task is finished move to the next one :)");
+                    sendSmsMessageToDefaultNumber(String.format(Locale.ENGLISH, "Done task %d: %s", taskData.getId(), taskData.getGameTaskHeader().getHeaderTitle()));
+                }
             }
         };
     }
@@ -134,36 +138,36 @@ public class GameTaskContentActivity extends ServiceRegistryAppCompatActivity im
         int taskId = this.getIntent().getIntExtra(GameTaskData.ID_FIELD_NAME, 0);
 
 
-        for(int i =0; i < persistenceContext.getData().getGameTasks().size() && this.sampleGameTask == null; i++)
+        for(int i = 0; i < persistenceContext.getData().getGameTasks().size() && this.taskData == null; i++)
         {
             GameTaskData data = persistenceContext.getData().getGameTasks().get(i);
             if(data.getId() == taskId)
-                this.sampleGameTask = data;
+                this.taskData = data;
         }
 
-        if(this.sampleGameTask != null) {
-            GameTaskBuilder.addLocationInputListener(this.sampleGameTask, this.locationDataOnInputCommittedListener);
-            GameTaskBuilder.addTextInputComparisonListener(this.sampleGameTask, this.textOnInputCommittedListener);
-            GameTaskBuilder.addAudioPlayers(this.sampleGameTask, this);
-            this.sampleGameTask.addStatusChangedListener(this.taskStatusChangedListener);
+        if(this.taskData != null) {
+            GameTaskBuilder.addLocationInputListener(this.taskData, this.locationDataOnInputCommittedListener);
+            GameTaskBuilder.addTextInputComparisonListener(this.taskData, this.textOnInputCommittedListener);
+            GameTaskBuilder.addAudioPlayers(this.taskData, this);
+            this.taskData.addStatusChangedListener(this.taskStatusChangedListener);
         }
 
         ViewGroup mainContent = (ViewGroup) this.findViewById(android.R.id.content);
         if(mainContent != null)
         {
             ViewDataBinding taskContentView = DataBindingUtil.inflate(this.getLayoutInflater(), this.layoutProvider.getGameTaskDataLayoutId(), mainContent, true);
-            taskContentView.setVariable(Bindings.VIEW_MODEL_BINDING_VARIABLE_ID, this.sampleGameTask);
+            taskContentView.setVariable(Bindings.VIEW_MODEL_BINDING_VARIABLE_ID, this.taskData);
         }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        if(this.sampleGameTask != null)
+        if(this.taskData != null)
         {
-            GameTaskBuilder.removeLocationInputListener(this.sampleGameTask, this.locationDataOnInputCommittedListener);
-            GameTaskBuilder.removeTextInputComparisonListener(this.sampleGameTask, this.textOnInputCommittedListener);
-            this.sampleGameTask.removeStatusChangedListener(this.taskStatusChangedListener);
+            GameTaskBuilder.removeLocationInputListener(this.taskData, this.locationDataOnInputCommittedListener);
+            GameTaskBuilder.removeTextInputComparisonListener(this.taskData, this.textOnInputCommittedListener);
+            this.taskData.removeStatusChangedListener(this.taskStatusChangedListener);
         }
         this.persistenceContext.persist();
     }
@@ -190,5 +194,13 @@ public class GameTaskContentActivity extends ServiceRegistryAppCompatActivity im
                     }
                 })
                 .create().show();
+    }
+
+    private void sendSmsMessageToDefaultNumber(String message)
+    {
+        SmsMessagingService.SmsMessageParameters smsMessage = new SmsMessagingService.SmsMessageParameters();
+        smsMessage.setPhoneNo((String)provideServiceFromRegistry(ServiceNames.SMS_MESSAGE_PHONE_NO));
+        smsMessage.setMessageContent(message);
+        this.smsMessagingService.sendMessage(smsMessage);
     }
 }
