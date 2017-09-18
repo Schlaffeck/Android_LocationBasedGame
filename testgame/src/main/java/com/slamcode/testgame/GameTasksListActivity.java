@@ -61,7 +61,7 @@ public class GameTasksListActivity extends ServiceRegistryAppCompatActivity  {
     private void setupTasksList()
     {
         final PersistenceContext<TestGameDataBundle> persistenceContext
-                = (PersistenceContext<TestGameDataBundle>) this.getServiceRegistryApplication().getRegistry().provideService(ServiceNames.PERSISTENCE_CONTEXT);
+                = provideServiceFromRegistry(ServiceNames.PERSISTENCE_CONTEXT);
 
         RecyclerView recyclerView = (RecyclerView) this.findViewById(R.id.testGame_tasksList_recyclerView);
         BindableTasksListRecyclerViewAdapter adapter = new BindableTasksListRecyclerViewAdapter(persistenceContext.getData().getGameTasks(),
