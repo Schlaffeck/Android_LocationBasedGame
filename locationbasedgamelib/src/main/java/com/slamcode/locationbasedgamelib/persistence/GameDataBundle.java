@@ -1,7 +1,7 @@
 package com.slamcode.locationbasedgamelib.persistence;
 
 import com.slamcode.locationbasedgamelib.general.Initializable;
-import com.slamcode.locationbasedgamelib.model.GameTaskData;
+import com.slamcode.locationbasedgamelib.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +27,22 @@ public class GameDataBundle implements Initializable {
         for (GameTaskData task :
                 this.gameTaskDataList) {
                 task.initialize();
+        }
+    }
+
+    public static class Provider implements GameDataBundleProvider<GameDataBundle>
+    {
+        @Override
+        public GameDataBundle getDefaultBundleInstance() {
+            return new GameDataBundle();
+        }
+
+        @Override
+        public void updateBundle(GameDataBundle dataBundle) {}
+
+        @Override
+        public Class<GameDataBundle> getBundleClassType() {
+            return GameDataBundle.class;
         }
     }
 }

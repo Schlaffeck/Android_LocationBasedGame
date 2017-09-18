@@ -2,21 +2,26 @@ package com.slamcode.testgame.viewmodels;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
-import android.databinding.DataBindingUtil;
 import android.databinding.ObservableArrayList;
-import android.icu.util.Calendar;
+import android.databinding.ObservableList;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
+import android.os.Handler;
 
 import com.android.databinding.library.baseAdapters.BR;
 import com.slamcode.locationbasedgamelib.location.LocationDataHelper;
 import com.slamcode.locationbasedgamelib.location.LocationTracker;
 import com.slamcode.locationbasedgamelib.model.LocationData;
+import com.slamcode.testgame.DialogService;
+import com.slamcode.locationbasedgamelib.model.PlaceData;
+import com.slamcode.testgame.messaging.sms.SmsMessagingService;
+import com.slamcode.testgame.view.dialog.AddNewPlaceDialogFragment;
+import com.slamcode.testgame.view.dialog.base.ModelBasedDialog;
 
-import java.security.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by smoriak on 20/07/2017.
@@ -26,11 +31,25 @@ public class TrackerDataViewModel extends BaseObservable {
 
     private LocationTracker locationTracker;
     private final LocationData targetLocation;
+    private final DialogService dialogService;
+    private final List<PlaceData> placeDataList;
+    private final SmsMessagingService smsMessagingService;
     private String lastLog;
 
-    public TrackerDataViewModel(LocationTracker locationTracker, LocationData targetLocation) {
+    private ObservableList<PlaceDataViewModel> placeList = new ObservableArrayList<>();
+
+    public TrackerDataViewModel(LocationTracker locationTracker, LocationData targetLocation, DialogService dialogService, List<PlaceData> placeDataList,
+                                SmsMessagingService smsMessagingService) {
         this.locationTracker = locationTracker;
         this.targetLocation = targetLocation;
+        this.dialogService = dialogService;
+        this.placeDataList = placeDataList;
+        this.smsMessagingService = smsMessagingService;
+        if(placeDataList != null)
+        {
+            for(PlaceData placeData : placeDataList)
+                placeList.add(new PlaceDataViewModel(placeData));
+        }
         this.locationTracker.addLocationListener(new TrackerLocationListener());
     }
 
@@ -61,8 +80,34 @@ public class TrackerDataViewModel extends BaseObservable {
         notifyPropertyChanged(BR.lastLog);
     }
 
-    private class TrackerLocationListener implements LocationListener{
+    @Bindable
+    public ObservableList<PlaceDataViewModel> getPlaceList() {
+        return placeList;
+    }
 
+    public void showAddNewPlaceDialog()
+    {
+        final AddNewPlaceDialogFragment dialog = new AddNewPlaceDialogFragment();
+        final PlaceData model = new PlaceData();
+        model.setLocationData(this.getLocation());
+        final PlaceDataViewModel newPlaceViewModel = new PlaceDataViewModel(model);
+        dialog.setModel(newPlaceViewModel);
+        dialog.setDialogStateChangedListener(new ModelBasedDialog.DialogStateChangedListener() {
+            @Override
+            public void onDialogClosed(boolean confirmed) {
+                if(confirmed)
+                {
+                    placeList.add(newPlaceViewModel);
+                    placeDataList.add(model);
+                }
+            }
+        });
+
+        this.dialogService.showDialog(dialog);
+    }
+
+    private class TrackerLocationListener implements LocationListener
+    {
         private String getTimeStampString()
         {
             return new SimpleDateFormat("HH:mm:ss").format(new Date());
@@ -70,7 +115,8 @@ public class TrackerDataViewModel extends BaseObservable {
 
         @Override
         public void onLocationChanged(Location location) {
-            setLastLog(String.format("%s: Location changed %f, %f", getTimeStampString(), location != null ? location.getLatitude() : 0, location != null ? location.getLongitude() : 0));
+            String locationChangeMessage = String.format("%s: Location changed %f, %f", getTimeStampString(), location != null ? location.getLatitude() : 0, location != null ? location.getLongitude() : 0);
+            setLastLog(locationChangeMessage);
             refreshLocation();
         }
 
@@ -91,5 +137,10 @@ public class TrackerDataViewModel extends BaseObservable {
             setLastLog(String.format("%s: Provider disabled '%s'", getTimeStampString(), provider));
             refreshLocation();
         }
+    }
+
+    private class LocationDataSenderHandler extends Handler
+    {
+
     }
 }

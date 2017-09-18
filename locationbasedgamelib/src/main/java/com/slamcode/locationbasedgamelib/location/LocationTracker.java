@@ -48,6 +48,11 @@ public final class LocationTracker extends Service implements LocationListener, 
         this.lastKnownLocation = this.getLocation();
     }
 
+    public LocationTrackerConfiguration getConfiguration()
+    {
+        return this.configuration;
+    }
+
     public Location getLocation() {
 
         Location result = this.getBestLocation();

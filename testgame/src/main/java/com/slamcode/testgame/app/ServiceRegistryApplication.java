@@ -8,7 +8,9 @@ import com.slamcode.locationbasedgamelib.location.LocationTracker;
 import com.slamcode.locationbasedgamelib.location.LocationTrackerConfiguration;
 import com.slamcode.locationbasedgamelib.permission.PermissionRequestor;
 import com.slamcode.testgame.data.PersistenceContextContainer;
+import com.slamcode.testgame.messaging.sms.SmsMessagingService;
 import com.slamcode.testgame.services.ServicesRegistry;
+import com.slamcode.testgame.settings.SharedPreferencesSettingsManager;
 
 /**
  * Created by smoriak on 04/08/2017.
@@ -36,6 +38,9 @@ public final class ServiceRegistryApplication extends Application implements Ser
         registry.registerService(ServiceNames.PERSISTENCE_CONTEXT, PersistenceContextContainer.initializePersistenceContext(this.getApplicationContext()));
         registry.registerServiceFactory(ServiceNames.LOCATION_TRACKER, this, true);
         registry.registerService(ServiceNames.CONTENT_LAYOUT_PROVIDER, new GameTaskContentSimpleLayoutProvider());
+        registry.registerService(ServiceNames.SMS_MESSAGING_SERVICE, new SmsMessagingService(this.getApplicationContext()));
+        registry.registerService(ServiceNames.SMS_MESSAGE_PHONE_NO, "+48797611899");
+        registry.registerService(ServiceNames.APP_SETTINGS_MANAGER, new SharedPreferencesSettingsManager(this.getApplicationContext()));
     }
 
     public Activity getCurrentActivity()

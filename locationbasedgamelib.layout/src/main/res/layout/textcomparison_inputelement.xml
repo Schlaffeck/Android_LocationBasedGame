@@ -13,13 +13,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@={vm.inputText}"/>
+        android:text="@={vm.inputValue}"/>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minWidth="@dimen/button_minWidth"
         android:layout_gravity="center"
         android:text="@{vm.commitCommandName, default=@string/inputElement_commitCommand_defaultText}"
-        android:onClick="@{(view) -> vm.commitInput(vm.inputText)}"/>
+        android:onClick="@{(view) -> vm.commitInput(vm.inputValue)}"/>
 </LinearLayout>
 </layout>

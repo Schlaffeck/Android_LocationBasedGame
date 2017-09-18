@@ -34,8 +34,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:onClick="@{(view) -> vm.refreshLocation()}"
-        app:srcCompat="@android:drawable/ic_menu_compass" />
+        android:onClick="@{(view) -> vm.showAddNewPlaceDialog()}"
+        app:srcCompat="@android:drawable/ic_input_add" />
 
 </android.support.design.widget.CoordinatorLayout>
 </layout>

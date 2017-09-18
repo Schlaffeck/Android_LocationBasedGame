@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="game_info_screen_title">Wyzwanie dla Agnieszki</string>
+    <string name="game_info_screen_message">
+        Dzień dobry kochanie :*\n\n
+
+        Mam nadzieję, że wstałas w pełni sił i podejmiesz się mojej małej gry, którą dla Ciebie przygotowałem.\n
+        Jeśli wszystko pójdzie sprawnie, to za kilka godzin będzie po wszystkimn i powinnaś zdążyć wszędzie indziej, gdzie planujesz dzisiaj jeszcze być ;)\n\n
+
+        Przed Tobą parę zadań, które można nazwać sentymentalną podróżą w nasz związek. Trzeba bedzie gdzieś pójść, coś zrobić, czasami coś sobie przypomnieć, przeczytać, posłuchać
+        albo sprawdzić w internecie, jesli pamięć zawiedzie. Myślę, że jednak nie będzie trudno :D\n\n
+
+        Kilka zasad:\n
+        - GPS powinien być włączony, byś mogła wykonać wszystkie zadania bez problemu\n
+        - Internet tez może byc uruchomiony usprawni znajdowanie twojej dokładnej lokalizacji\n
+        - Na biurku jest power bank, zabierz go ze soba na wszelki wypadek\n
+        - W razie problemów, ale tylko gdy absolutnie wszystko zawiedzie, możesz pisać pod help desk (797611899) i poprosic o podpowiedź do konkretnego zadania\n
+        - Lepiej nie dzwoń do mnie, będę zbyt zajęty, by odebrać :> \n
+        - Zjedz śniadanie przed startem\n
+
+        \n\nPowodzenia !
+    </string>
+</resources>

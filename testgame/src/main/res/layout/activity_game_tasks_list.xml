@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.slamcode.testgame.GameTasksListActivity">
 
     <android.support.v7.widget.RecyclerView
@@ -13,4 +14,11 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
         android:orientation="vertical"/>
-</RelativeLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/gameTask_listItem_showInfo_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        app:srcCompat="@android:drawable/ic_dialog_info"/>
+</android.support.design.widget.CoordinatorLayout>

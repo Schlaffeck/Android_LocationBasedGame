@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="vm"
+            type="com.slamcode.testgame.viewmodels.PlaceDataViewModel"/>
+        <variable
+            name="presenter"
+            type="com.slamcode.testgame.view.dialog.AddNewPlaceDialogFragment"/>
+    </data>
+<LinearLayout android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_margin="@dimen/fab_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/header_font_size"
+        android:text="Save current location under name:"/>
+    <EditText
+        android:layout_margin="@dimen/fab_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@={vm.name}"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="save"
+            android:onClick="@{(view) -> presenter.commitChanges()}"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="cancel"
+            android:onClick="@{(view) -> presenter.cancelChanges()}"/>
+
+    </LinearLayout>
+</LinearLayout>
+    </layout>

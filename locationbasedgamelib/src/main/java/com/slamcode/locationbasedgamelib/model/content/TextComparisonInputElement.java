@@ -3,11 +3,14 @@ package com.slamcode.locationbasedgamelib.model.content;
 import com.slamcode.locationbasedgamelib.general.ConfigurableAbstract;
 import com.slamcode.locationbasedgamelib.model.InputCommitParameters;
 import com.slamcode.locationbasedgamelib.model.InputResult;
+import com.slamcode.locationbasedgamelib.model.InputTip;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
+import java.util.regex.Matcher;
 
 /**
  * Represents input used with text field to input by user and button or other action item to commit the
@@ -63,11 +66,12 @@ public final class TextComparisonInputElement extends InputContentElementAbstrac
         return CONTENT_TYPE_ID;
     }
 
-    public String getInputText() {
+    @Override
+    public String getInputValue() {
         return inputText;
     }
 
-    public void setInputText(String inputText) {
+    public void setInputValue(String inputText) {
         if(this.inputText == inputText)
             return;
         this.inputText = inputText;
@@ -124,8 +128,11 @@ public final class TextComparisonInputElement extends InputContentElementAbstrac
 
     public static class TextInputComparator extends ConfigurableAbstract<TextComparisonConfiguration> implements Comparator<String>
     {
+        private final TextComparisonConfiguration configuration;
+
         public TextInputComparator(TextComparisonConfiguration configuration)
         {
+            this.configuration = configuration;
             this.configure(configuration);
         }
 
@@ -155,5 +162,34 @@ public final class TextComparisonInputElement extends InputContentElementAbstrac
 
             return one.compareTo(another);
         }
+
+        @Override
+        public TextComparisonConfiguration getConfiguration() {
+            return this.configuration;
+        }
+
+        public String findFirstMatchingOrNull(Collection<String> inputCollection, String inputToMatch)
+        {
+            for(String inputInList : inputCollection)
+                if(this.compare(inputInList, inputToMatch) == 0)
+                    return inputInList;
+
+            return null;
+        }
+
+        public InputTip<String> findFirstMatchingTipOrNull(Collection<InputTip<String>> inputCollection, String inputToMatch)
+        {
+            List<InputTip<String>> generalTips = new ArrayList<>();
+
+            for(InputTip<String> inputInList : inputCollection) {
+                if (!inputInList.isInputValueAssigned())
+                    generalTips.add(inputInList);
+                else if (this.compare(inputInList.getInputValue(), inputToMatch) == 0)
+                    return inputInList;
+            }
+
+            return generalTips.size() > 0 ? generalTips.get(new Random().nextInt(generalTips.size())) : null;
+        }
+
     }
 }

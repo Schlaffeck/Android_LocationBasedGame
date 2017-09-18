@@ -90,14 +90,6 @@ public class GameTaskData implements Initializable {
         this.statusChangedListeners.clear();
     }
 
-    public void intialize()
-    {
-        if(this.inputResultListener == null)
-            this.inputResultListener = new GameTaskInputCommittedListener();
-
-        this.inputResultListener.taskData = this;
-    }
-
     private void validateListeners()
     {
         if(this.statusChangedListeners == null)

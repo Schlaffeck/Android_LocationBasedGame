@@ -58,6 +58,16 @@ public abstract class ServiceRegistryAppCompatActivity extends AppCompatActivity
         return this.serviceRegistryApplication;
     }
 
+    public <ServiceType> ServiceType provideServiceFromRegistry(String serviceName)
+    {
+        Object service = this.serviceRegistryApplication.getRegistry().provideService(serviceName);
+
+        if(service != null)
+            return (ServiceType) service;
+
+        return null;
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

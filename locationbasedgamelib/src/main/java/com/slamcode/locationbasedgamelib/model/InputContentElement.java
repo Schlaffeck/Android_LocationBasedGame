@@ -1,10 +1,16 @@
 package com.slamcode.locationbasedgamelib.model;
 
+import java.util.List;
+
 /**
  * Represents input content simple interface data for task displayed to user with interaction
  */
 
 public interface InputContentElement<InputValue> extends GameTaskContentElement {
+
+    InputValue getInputValue();
+
+    List<InputTip<InputValue>> getInputTips();
 
     /**
      * Commit given input status and return result

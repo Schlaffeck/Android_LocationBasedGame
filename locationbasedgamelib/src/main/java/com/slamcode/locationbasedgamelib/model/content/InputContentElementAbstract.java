@@ -3,6 +3,7 @@ package com.slamcode.locationbasedgamelib.model.content;
 import com.slamcode.locationbasedgamelib.model.InputCommitParameters;
 import com.slamcode.locationbasedgamelib.model.InputContentElement;
 import com.slamcode.locationbasedgamelib.model.InputResult;
+import com.slamcode.locationbasedgamelib.model.InputTip;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,8 @@ import java.util.List;
  */
 
 public abstract class InputContentElementAbstract<InputValue> implements InputContentElement<InputValue> {
+
+    private List<InputTip<InputValue>> inputTips = new ArrayList<>();
 
     private transient List<OnInputCommittedListener<InputValue>> listeners = new ArrayList<>();
 
@@ -54,5 +57,13 @@ public abstract class InputContentElementAbstract<InputValue> implements InputCo
     {
         if(this.listeners == null)
             this.listeners = new ArrayList<>();
+    }
+
+    @Override
+    public List<InputTip<InputValue>> getInputTips() {
+        if(this.inputTips == null)
+            this.inputTips = new ArrayList<>();
+
+        return inputTips;
     }
 }
