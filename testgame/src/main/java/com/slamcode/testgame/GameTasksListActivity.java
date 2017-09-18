@@ -3,6 +3,7 @@ package com.slamcode.testgame;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -16,18 +17,28 @@ import com.slamcode.locationbasedgamelib.view.ContentLayoutProvider;
 import com.slamcode.testgame.app.ServiceNames;
 import com.slamcode.testgame.app.ServiceRegistryAppCompatActivity;
 import com.slamcode.testgame.data.TestGameDataBundle;
+import com.slamcode.testgame.settings.AppSettingsManager;
 
 public class GameTasksListActivity extends ServiceRegistryAppCompatActivity  {
+
+    private AppSettingsManager appSettingsManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_tasks_list);
+
+        this.appSettingsManager = provideServiceFromRegistry(ServiceNames.APP_SETTINGS_MANAGER);
+        setupButtons();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        if(!this.appSettingsManager.wasInfoDialogShown()) {
+            this.appSettingsManager.setWasInfoDialogShown(true);
+            this.showInfoDialog();
+        }
         this.setupTasksList();
     }
 
@@ -42,6 +53,30 @@ public class GameTasksListActivity extends ServiceRegistryAppCompatActivity  {
         Intent intent = new Intent(this, GameTaskContentActivity.class);
         intent.putExtra(GameTaskData.ID_FIELD_NAME, gameTask.getId());
         this.startActivity(intent);
+    }
+
+    private void setupButtons() {
+        FloatingActionButton showInfoButton = (FloatingActionButton)this.findViewById(R.id.gameTask_listItem_showInfo_button);
+        showInfoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showInfoDialog();
+            }
+        });
+    }
+
+    private void showInfoDialog()
+    {
+        AlertDialog alertDialog = new AlertDialog.Builder(this)
+                .setTitle(R.string.game_info_screen_title)
+                .setMessage(R.string.game_info_screen_message)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
     }
 
     private void showSimpleDialog(String title, String message)
