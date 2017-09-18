@@ -1,13 +1,16 @@
 package com.slamcode.testgame;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.slamcode.locationbasedgamelayout.view.OnAdapterItemClickListener;
 import com.slamcode.locationbasedgamelayout.view.binding.BindableTasksListRecyclerViewAdapter;
 import com.slamcode.locationbasedgamelib.model.GameTaskData;
+import com.slamcode.locationbasedgamelib.model.GameTaskStatus;
 import com.slamcode.locationbasedgamelib.persistence.PersistenceContext;
 import com.slamcode.locationbasedgamelib.view.ContentLayoutProvider;
 import com.slamcode.testgame.app.ServiceNames;
@@ -41,6 +44,20 @@ public class GameTasksListActivity extends ServiceRegistryAppCompatActivity  {
         this.startActivity(intent);
     }
 
+    private void showSimpleDialog(String title, String message)
+    {
+        AlertDialog alertDialog = new AlertDialog.Builder(this)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+    }
+
     private void setupTasksList()
     {
         final PersistenceContext<TestGameDataBundle> persistenceContext
@@ -52,8 +69,18 @@ public class GameTasksListActivity extends ServiceRegistryAppCompatActivity  {
         adapter.addOnAdapterItemClickListener(new OnAdapterItemClickListener() {
             @Override
             public void onItemClick(RecyclerView.Adapter adapter, View itemView, int itemPosition) {
-                // move to details activity
-                goToGameTaskContent(persistenceContext.getData().getGameTasks().get(itemPosition));
+                GameTaskData previousTask = itemPosition > 0 ? persistenceContext.getData().getGameTasks().get(itemPosition -1) : null;
+                GameTaskData thisTask = persistenceContext.getData().getGameTasks().get(itemPosition);
+
+                if(previousTask != null  && previousTask.getStatus() != GameTaskStatus.Success
+                        && thisTask.getStatus() == GameTaskStatus.NotStarted)
+                {
+                   showSimpleDialog("Do previous task first", "You can not start this task before finishing previous one!");
+                }
+                else {
+                    // move to details activity
+                    goToGameTaskContent(thisTask);
+                }
             }
         });
         recyclerView.setAdapter(adapter);
