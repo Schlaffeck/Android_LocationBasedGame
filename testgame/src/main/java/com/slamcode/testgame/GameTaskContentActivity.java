@@ -2,6 +2,7 @@ package com.slamcode.testgame;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.location.Location;
@@ -125,11 +126,28 @@ public class GameTaskContentActivity extends ServiceRegistryAppCompatActivity im
             @Override
             public void onStatusChanged(GameTaskStatus newStatus) {
                 if(newStatus == GameTaskStatus.Success) {
-                    showSimpleMessageDialog("GREAT", "Task is finished move to the next one :)");
                     sendSmsMessageToDefaultNumber(String.format(Locale.ENGLISH, "Done task %d: %s", taskData.getId(), taskData.getGameTaskHeader().getHeaderTitle()));
+                    showSimpleMessageDialog(null, "GREAT, You did it now move to next task :)", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            startNextTaskActivity();
+                        }
+                    });
                 }
             }
         };
+    }
+
+    private void startNextTaskActivity() {
+
+        int currentIndex = persistenceContext.getData().getGameTasks().indexOf(this.taskData);
+        if(currentIndex != persistenceContext.getData().getPlaceList().size() -1) {
+
+            GameTaskData nextTask = persistenceContext.getData().getGameTasks().get(currentIndex + 1);
+            Intent intent = new Intent(this, GameTaskContentActivity.class);
+            intent.putExtra(GameTaskData.ID_FIELD_NAME, nextTask.getId());
+            this.startActivity(intent);
+        }
     }
 
     @Override
@@ -184,10 +202,17 @@ public class GameTaskContentActivity extends ServiceRegistryAppCompatActivity im
 
     private void showSimpleMessageDialog(String title, String message)
     {
+       this.showSimpleMessageDialog(title, message, null);
+    }
+
+    private void showSimpleMessageDialog(String title, String message, DialogInterface.OnClickListener onClickListener)
+    {
         new AlertDialog.Builder(getServiceRegistryApplication().getCurrentActivity())
                 .setMessage(message)
                 .setTitle(title)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setPositiveButton("OK", onClickListener != null ?
+                        onClickListener :
+                        new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
