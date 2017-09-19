@@ -133,6 +133,24 @@ public class GameTaskBuilder {
         return this;
     }
 
+    public GameTaskBuilder withTipsForPreviousTextInputElement(String[] inputs, String[] tipMessages)
+    {
+        TextComparisonInputElement textComparisonInputElement = findLastTextComparisonInputElementOrNull(this.buildingTask.getGameTaskContent());
+
+        if(textComparisonInputElement == null)
+            return this;
+
+        for(int i = 0; i < Math.min(inputs.length, tipMessages.length); i++) {
+            InputTip<String> tip = new InputTip<>();
+            tip.setInputValue(inputs[i]);
+            tip.setInputValueAssigned(true);
+            tip.setTipMessage(tipMessages[i]);
+            textComparisonInputElement.getInputTips().add(tip);
+        }
+
+        return this;
+    }
+
     public GameTaskBuilder withTipForPreviousTextInputElement(String generalTipMessage)
     {
         TextComparisonInputElement textComparisonInputElement = findLastTextComparisonInputElementOrNull(this.buildingTask.getGameTaskContent());
@@ -144,6 +162,23 @@ public class GameTaskBuilder {
         tip.setInputValueAssigned(false);
         tip.setTipMessage(generalTipMessage);
         textComparisonInputElement.getInputTips().add(tip);
+
+        return this;
+    }
+
+    public GameTaskBuilder withTipsForPreviousTextInputElement(String[] generalTipMessages)
+    {
+        TextComparisonInputElement textComparisonInputElement = findLastTextComparisonInputElementOrNull(this.buildingTask.getGameTaskContent());
+
+        if(textComparisonInputElement == null)
+            return this;
+
+        for(int i = 0; i < generalTipMessages.length; i++) {
+            InputTip<String> tip = new InputTip<>();
+            tip.setInputValueAssigned(false);
+            tip.setTipMessage(generalTipMessages[i]);
+            textComparisonInputElement.getInputTips().add(tip);
+        }
 
         return this;
     }
