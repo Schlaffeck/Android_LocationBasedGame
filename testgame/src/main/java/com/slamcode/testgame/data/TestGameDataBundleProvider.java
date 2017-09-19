@@ -1,6 +1,7 @@
 package com.slamcode.testgame.data;
 
 import android.content.Context;
+import android.util.TypedValue;
 
 import com.slamcode.locationbasedgamelib.model.GameTaskData;
 import com.slamcode.locationbasedgamelib.model.builder.GameTaskBuilder;
@@ -99,6 +100,9 @@ public final class TestGameDataBundleProvider implements GameDataBundleProvider<
     }
 
     private float getFloat(int resId) {
-        return this.context.getResources().getDimension(resId);
+
+        TypedValue outValue = new TypedValue();
+        this.context.getResources().getValue(resId, outValue, true);
+        return outValue.getFloat();
     }
 }
