@@ -27,6 +27,7 @@ public final class TestGameDataBundleProvider implements GameDataBundleProvider<
         gameTasks.add(createTaskTheatre());
         gameTasks.add(createTaskKiller());
         gameTasks.add(createTaskCreature());
+        gameTasks.add(createTaskPlace());
 
         gameTasks.add(createTaskFinal());
 
@@ -86,6 +87,18 @@ public final class TestGameDataBundleProvider implements GameDataBundleProvider<
     private GameTaskData createTaskFinal() {
         return new GameTaskBuilder(99).withTitle(getString(R.string.game_task_final_title))
                 .withTextElement(getString(R.string.game_task_final_message))
+                .getTask();
+    }
+
+    private GameTaskData createTaskPlace()
+    {
+        return new GameTaskBuilder(2).withTitle(getString(R.string.game_task_place_title))
+                .withTextElement(getString(R.string.game_task_place_content))
+                .withLocationComparisonElement(getString(R.string.game_task_location_input_confirm_button_text),
+                        getFloat(R.dimen.game_task_place_location_latitude),
+                        getFloat(R.dimen.game_task_place_location_longitude),
+                        getFloat(R.dimen.game_task_place_location_acceptance_distance),
+                        null)
                 .getTask();
     }
 

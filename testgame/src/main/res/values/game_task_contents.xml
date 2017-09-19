@@ -87,7 +87,7 @@
         \n\nJesteś w parku na ławce w otoczeniu drzew, które powoli tracą kolory i liście?\n\nPamietasz? Kiedyś byliśmy w podpobnym miejscu na wycieczce w Budapeszcie.
     \nOdbyliśmy wspinaczkę po alejkach wzgórza na jego szczyt, by oglądać piękny widok na miasto.
         \n\nNie pamiętam czy byliśmy zmęczeni, czy się pokłócilismy, albo zgubiliśmy ale pamiętam, że z jakiegos powodu zaczęłaś narzekać i to narzekanie bardzo przypominało mi
-        pewwnego stwora, którego w przyp-ływie natchnienia przedstawiłem mniej więcej tak:</string>
+        pewwnego stwora, którego w przypływie natchnienia przedstawiłem mniej więcej tak:</string>
     <string name="game_task_creature_content_after_audio">
         Porównałem cię do niego. Pamiętasz jak się nazywał ten stwór?
     </string>
@@ -109,6 +109,20 @@
         <item>Chyba nie. Na pewno moge powiedzieć, że to latający stwór był</item>
     </string-array>
     <integer name="game_task_creature_tries_threshold">3</integer>
+
+
+    <!-- task place -->
+    <string name="game_task_place_title">Miejsce</string>
+    <string name="game_task_place_content">Założę się, że byłaś wtedy po prostu głodna :D
+        \n\nOk posiedziałaś sobie i odpoczęłaś chwilę, myślę że czas wyruszyć w dalszą drogę.
+        \nByć może po drodze zechcesz coś przekąsić, na pewno nie zaszkodzi. Jeszcze pare zadań przed nami, ale przecież jesteśmy przyzwyczajeni do chodzenia.
+    \n\nDużo podróżowaliśmy po różnych miejscach w Europie z przyjemnością ogladając zabytki architektury i życie innych miast,
+    jednak na początku w tym mieście było jedno ważne miejsce, gdzie się spotykaliśmy i ukrywaliśmy przed zazdrosnym wzrokiem przechodniów.
+    \nNadszedł czas by je po raz kolejny odwiedzić, to kolejny krok w naszej nostalgicznej podróży wspomnieć ;)</string>
+    <item name="game_task_place_location_longitude" format="float" type="dimen">51.1102050</item>
+    <item name="game_task_place_location_latitude" format="float" type="dimen">17.027114</item>
+    <item name="game_task_place_location_acceptance_distance" format="float" type="dimen">20.0</item>
+    <integer name="game_task_place_tries_threshold">3</integer>
 
     <!-- all done task -->
     <string name="game_task_final_title">Koniec wędrówki</string>
