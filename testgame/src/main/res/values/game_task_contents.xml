@@ -14,10 +14,106 @@
         - GPS powinien być włączony, byś mogła wykonać wszystkie zadania bez problemu\n
         - Internet tez może byc uruchomiony usprawni znajdowanie twojej dokładnej lokalizacji\n
         - Na biurku jest power bank, zabierz go ze soba na wszelki wypadek\n
-        - W razie problemów, ale tylko gdy absolutnie wszystko zawiedzie, możesz pisać pod help desk (797611899) i poprosic o podpowiedź do konkretnego zadania\n
+        - Słuchawki też mogą się przydać\n
+        - Przy odpowiedniej liczbie nieudanych prób przy każdym zadaniu pojawi się możliwość prośby o podpowiedź, wyślij tam pytanie a na pewno dostaniesz naprowadzającą podpowiedź\n
         - Lepiej nie dzwoń do mnie, będę zbyt zajęty, by odebrać :> \n
-        - Zjedz śniadanie przed startem\n
+        - Zjedz śniadanie i podłąduj telefon przed startem\n
 
         \n\nPowodzenia !
+        \n\nP.S: Ta informacja będzie widoczna pod przyciskiem \'info\' na ekranie listy zadań
     </string>
+
+    <string name="game_task_input_confirm_button_text">Sprawdź</string>
+    <string name="game_task_location_input_confirm_button_text">Jestem tu</string>
+
+    <!--  task cat -->
+    <string name="game_task_cat_title">Poszukiwanie koteczka</string>
+    <string name="game_task_cat_content">Na rozgrzewkę coś łatwego:\nNiedawno Sławeczek podarował Agnieszeczce pięknego rudego koteczka.\n\nZnajdź koteczka i podaj jego imię</string>
+    <string-array name="game_task_cat_answers">
+        <item>harmless offering</item>
+        <item>harmless ofering</item>
+        <item>harmles ofering</item>
+        <item>harmles offering</item>
+    </string-array>
+    <string-array name="game_task_cat_tips_answers">
+        <item>kot</item>
+        <item>koteczek</item>
+        <item>kotek</item>
+        <item>harmless</item>
+    </string-array>
+    <string-array name="game_task_cat_tips_messages">
+        <item>Ten kot ma imię, jest napisane na nim</item>
+        <item>Ten koteczek ma imię, jest napisane na nim</item>
+        <item>Ten kotek ma imię, jest napisane na nim</item>
+        <item>To prawie odpowiedź, brakuje tylko drugiego członu.</item>
+    </string-array>
+    <string-array name="game_task_cat_tips_general_messages">
+        <item>Zła odpowiedź. Poszukaj błyszczącego rudzielca. Ma nazwę wypisaną nad pyszczkiem.</item>
+        <item>Niestety, to nie to. Może koteczek leży na biurku?</item>
+    </string-array>
+    <integer name="game_task_cat_tries_threshold">5</integer>
+
+    <!-- task theatre -->
+    <string name="game_task_theatre_title">Wycieczka kulturalna</string>
+    <string name="game_task_theatre_content">To pewnie też nie będzie trudne\n\nKolejne zadanie to znaleźć się tam, gdzie miała miejsce nasza pierwsza niezapomniana randka.
+        \n\nTo miejsce gdzie Sławek nie był od dawna przedtem ale bywa często teraz.
+        \n\nNa miejscu czeka kolejne zadanie.</string>
+    <item name="game_task_theatre_location_longitude" format="float" type="dimen">51.105226</item>
+    <item name="game_task_theatre_location_latitude" format="float" type="dimen">17.033120</item>
+    <item name="game_task_theatre_location_acceptance_distance" format="float" type="dimen">20.0</item>
+    <integer name="game_task_theatre_tries_threshold">3</integer>
+
+    <!-- task killer -->
+    <string name="game_task_killer_title">Kto zabił?</string>
+    <string name="game_task_killer_content">Jesteś na miejscu, super.\n\nMożesz skorzystać z ławeczki w parku usiaść chwilę i spróbować przypomnieć sobie
+    odpowiedź na poniższe pytanie:
+    \n\nNa pewno pamiętasz tytuł spektaklu na którym byliśmy, czyli \'Szalone nożyczki\' gdzie publiczność decydowała, kto był mordercą.
+        \n\nPytanie czy pamiętasz, kogo publicznosc wytypowała, gdy my tam byliśmy, a dokładnie czy \'łysy\' był mordercą?</string>
+    <string-array name="game_task_killer_answers">
+        <item>nie</item>
+        <item>tak</item>
+        <item>nie wiem</item>
+    </string-array>
+    <string-array name="game_task_killer_tips_general_messages">
+        <item>Tak albo nie ;)</item>
+        <item>Po prostu napisz jak Ci się wydaje</item>
+    </string-array>
+    <integer name="game_task_killer_tries_threshold">3</integer>
+
+    <!-- task creature -->
+    <string name="game_task_creature_title">Stwór w podróży</string>
+    <string name="game_task_creature_content_before_audio">Szczerze powiem, że ja nie pamiętam kto był zabójca, więc każda odpowiedź była akceptowalna.
+        \nNie przeszkadza mi to jednak w miłym wspominaniu spektaklu i naszych wspólnych spotkań oraz wycieczek
+        \n\nJesteś w parku na ławce w otoczeniu drzew, które powoli tracą kolory i liście?\n\nPamietasz? Kiedyś byliśmy w podpobnym miejscu na wycieczce w Budapeszcie.
+    \nOdbyliśmy wspinaczkę po alejkach wzgórza na jego szczyt, by oglądać piękny widok na miasto.
+        \n\nNie pamiętam czy byliśmy zmęczeni, czy się pokłócilismy, albo zgubiliśmy ale pamiętam, że z jakiegos powodu zaczęłaś narzekać i to narzekanie bardzo przypominało mi
+        pewwnego stwora, którego w przyp-ływie natchnienia przedstawiłem mniej więcej tak:</string>
+    <string name="game_task_creature_content_after_audio">
+        Porównałem cię do niego. Pamiętasz jak się nazywał ten stwór?
+    </string>
+    <string-array name="game_task_creature_answers">
+        <item>pterodaktyl</item>
+    </string-array>
+    <string-array name="game_task_creature_tips_answers">
+        <item>pterozaur</item>
+        <item>dinozaur</item>
+        <item> </item>
+    </string-array>
+    <string-array name="game_task_creature_tips_messages">
+        <item>No prawie. Na podpowiedź weź pierwszy człon tego słowa i dodaj  do niego egzotyczny owoc :D</item>
+        <item>Owszem był to dinozaur, tylko jak dpokładnie się nazywał?</item>
+        <item>Pusta odpowiedź to niepoprawna odpowiedź ;P</item>
+    </string-array>
+    <string-array name="game_task_creature_tips_general_messages">
+        <item>To nie to. Podpowiem, że na nasze śzczęście te stwory już wyginęły</item>
+        <item>Chyba nie. Na pewno moge powiedzieć, że to latający stwór był</item>
+    </string-array>
+    <integer name="game_task_creature_tries_threshold">3</integer>
+
+    <!-- all done task -->
+    <string name="game_task_final_title">Koniec wędrówki</string>
+    <string name="game_task_final_message">To już koniec zadań, mam nadzieję, że pogoda dopisała i nie musiałaś nadkładać drogi.
+    \n\nW tym momencie lub za chwilę powinniśmy się spotkać na mecie po odbiór nagrody :D
+    \n\nDziekuję za udział kochanie :*</string>
+
 </resources>
