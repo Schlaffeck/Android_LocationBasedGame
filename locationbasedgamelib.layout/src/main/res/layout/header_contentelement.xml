@@ -7,7 +7,7 @@
 </data>
 <LinearLayout
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_margin="@dimen/contentItem_margin">
     <TextView
         android:layout_width="match_parent"

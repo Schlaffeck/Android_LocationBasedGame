@@ -5,21 +5,39 @@
         <variable
             name="vm"
             type="com.slamcode.locationbasedgamelib.model.GameTaskData"/>
+        <import type="android.view.View"/>
+        <import type="com.slamcode.locationbasedgamelib.model.GameTaskStatus"/>
     </data>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/header_font_size"
         android:padding="@dimen/contentItem_margin"
         android:text="@{vm.gameTaskHeader.headerTitle, default=@string/headerElement_default_text}"/>
-        <android.support.v7.widget.RecyclerView
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+    <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             bind:gameTaskContentItems="@{vm.gameTaskContent}"
             app:layoutManager="android.support.v7.widget.LinearLayoutManager"
             android:orientation="vertical"/>
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        bind:gameTaskContentItems="@{vm.helpTaskContent}"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+        android:orientation="vertical"
+        android:visibility="@{vm.status == GameTaskStatus.TriesThresholdReached ? View.VISIBLE : View.GONE}"/>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>
 </layout>
