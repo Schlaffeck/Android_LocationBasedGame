@@ -9,5 +9,6 @@ public enum GameTaskStatus {
     NotStarted,
     Ongoing,
     Success,
-    Failure
+    Failure,
+    TriesThresholdReached,
 }

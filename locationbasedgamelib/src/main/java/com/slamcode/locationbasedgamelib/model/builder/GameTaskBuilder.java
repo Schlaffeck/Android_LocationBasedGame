@@ -29,6 +29,8 @@ public class GameTaskBuilder {
 
     private GameTaskData buildingTask;
 
+    private GameTaskBuilder helpTaskBuilder;
+
     public GameTaskBuilder(int taskId){
         this.buildingTask = new GameTaskData(taskId);
     }
@@ -40,6 +42,21 @@ public class GameTaskBuilder {
             this.buildingTask.setGameTaskHeader((header = new GameTaskHeader()));
         header.setHeaderTitle(taskTitle);
         return this;
+    }
+
+    public GameTaskBuilder withTriesThreshold(int triesThreshold)
+    {
+        this.buildingTask.setInputTriesThreshold(triesThreshold);
+        return this;
+    }
+
+    public GameTaskBuilder getHelpTaskBuilder()
+    {
+        if(this.helpTaskBuilder == null) {
+            this.helpTaskBuilder = new GameTaskBuilder(0);
+            this.buildingTask.setHelpTaskContent(this.helpTaskBuilder.getTask().getGameTaskContent());
+        }
+        return this.helpTaskBuilder;
     }
 
     public GameTaskBuilder withTextElement(String displayText)
