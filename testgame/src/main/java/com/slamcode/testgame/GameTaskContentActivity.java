@@ -140,15 +140,15 @@ public class GameTaskContentActivity extends ServiceRegistryAppCompatActivity im
 
     private void startNextTaskActivity() {
 
-//        this.finish();
-        int currentIndex = persistenceContext.getData().getGameTasks().indexOf(this.taskData);
-        if(currentIndex != persistenceContext.getData().getPlaceList().size() -1) {
-
-            GameTaskData nextTask = persistenceContext.getData().getGameTasks().get(currentIndex + 1);
-            Intent intent = new Intent(this, GameTaskContentActivity.class);
-            intent.putExtra(GameTaskData.ID_FIELD_NAME, nextTask.getId());
-            this.startActivity(intent);
-        }
+        this.finish();
+//        int currentIndex = persistenceContext.getData().getGameTasks().indexOf(this.taskData);
+//        if(currentIndex != persistenceContext.getData().getPlaceList().size() -1) {
+//
+//            GameTaskData nextTask = persistenceContext.getData().getGameTasks().get(currentIndex + 1);
+//            Intent intent = new Intent(this, GameTaskContentActivity.class);
+//            intent.putExtra(GameTaskData.ID_FIELD_NAME, nextTask.getId());
+//            this.startActivity(intent);
+//        }
     }
 
     @Override
