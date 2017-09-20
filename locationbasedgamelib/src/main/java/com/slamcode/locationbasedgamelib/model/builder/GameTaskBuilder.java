@@ -242,6 +242,16 @@ public class GameTaskBuilder {
                 locationComparisonElement.addOnInputCommittedListener(listener);
             }
         }
+
+        if(data.getHelpTaskContent() != null)
+        for(GameTaskContentElement element : data.getHelpTaskContent().getContentElements())
+        {
+            if(element instanceof LocationComparisonInputElement)
+            {
+                LocationComparisonInputElement locationComparisonElement = (LocationComparisonInputElement)element;
+                locationComparisonElement.addOnInputCommittedListener(listener);
+            }
+        }
     }
 
     public static void removeLocationInputListener(GameTaskData data, InputContentElement.OnInputCommittedListener<LocationData> listener)
@@ -254,6 +264,16 @@ public class GameTaskBuilder {
                 locationComparisonElement.removeOnInputCommittedListener(listener);
             }
         }
+
+        if(data.getHelpTaskContent() != null)
+            for(GameTaskContentElement element : data.getHelpTaskContent().getContentElements())
+            {
+                if(element instanceof LocationComparisonInputElement)
+                {
+                    LocationComparisonInputElement locationComparisonElement = (LocationComparisonInputElement)element;
+                    locationComparisonElement.removeOnInputCommittedListener(listener);
+                }
+            }
     }
 
     public static void addTextInputComparisonListener(GameTaskData data, InputContentElement.OnInputCommittedListener<String> listener)
@@ -266,6 +286,16 @@ public class GameTaskBuilder {
                 textComparisonInputElement.addOnInputCommittedListener(listener);
             }
         }
+
+        if(data.getHelpTaskContent() != null)
+            for(GameTaskContentElement element : data.getHelpTaskContent().getContentElements())
+            {
+                if(element instanceof TextComparisonInputElement)
+                {
+                    TextComparisonInputElement textComparisonInputElement = (TextComparisonInputElement)element;
+                    textComparisonInputElement.addOnInputCommittedListener(listener);
+                }
+            }
     }
 
     public static void removeTextInputComparisonListener(GameTaskData data, InputContentElement.OnInputCommittedListener<String> listener)
@@ -278,6 +308,16 @@ public class GameTaskBuilder {
                 textComparisonInputElement.removeOnInputCommittedListener(listener);
             }
         }
+
+        if(data.getHelpTaskContent() != null)
+            for(GameTaskContentElement element : data.getHelpTaskContent().getContentElements())
+            {
+                if(element instanceof TextComparisonInputElement)
+                {
+                    TextComparisonInputElement textComparisonInputElement = (TextComparisonInputElement)element;
+                    textComparisonInputElement.removeOnInputCommittedListener(listener);
+                }
+            }
     }
 
     public static void addAudioPlayers(GameTaskData data, AudioPlayer.Provider audioPlayerProvider)
@@ -294,6 +334,20 @@ public class GameTaskBuilder {
                 typedElement.useAudioPlayer(player);
             }
         }
+
+        if(data.getHelpTaskContent() != null)
+            for(GameTaskContentElement element : data.getHelpTaskContent().getContentElements())
+            {
+                if(element instanceof DisplayAudioPlayerElement)
+                {
+                    DisplayAudioPlayerElement typedElement = (DisplayAudioPlayerElement)element;
+                    AudioPlayer player = audioPlayerProvider.provideAudioPlayer(typedElement.getAudioFileResourceId());
+                    if(player == null)
+                        player = audioPlayerProvider.provideAudioPlayer(typedElement.getAudioFileUriString());
+
+                    typedElement.useAudioPlayer(player);
+                }
+            }
     }
 
     private TextComparisonInputElement findLastTextComparisonInputElementOrNull(GameTaskContent gameTaskContent)
