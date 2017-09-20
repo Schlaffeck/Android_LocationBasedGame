@@ -107,15 +107,15 @@ public class GameTasksListActivity extends ServiceRegistryAppCompatActivity  {
                 GameTaskData previousTask = itemPosition > 0 ? persistenceContext.getData().getGameTasks().get(itemPosition -1) : null;
                 GameTaskData thisTask = persistenceContext.getData().getGameTasks().get(itemPosition);
 
-//                if(previousTask != null  && previousTask.getStatus() != GameTaskStatus.Success
-//                        && thisTask.getStatus() == GameTaskStatus.NotStarted)
-//                {
-//                   showSimpleDialog("Najpierw zrób poprzednie zadanie", "Trzeba wszystkie zadania zrobić po kolei ;)!");
-//                }
-//                else {
+                if(previousTask != null  && previousTask.getStatus() != GameTaskStatus.Success
+                        && thisTask.getStatus() == GameTaskStatus.NotStarted)
+                {
+                   showSimpleDialog("Najpierw zrób poprzednie zadanie", "Trzeba wszystkie zadania zrobić po kolei ;)!");
+                }
+                else {
                     // move to details activity
                     goToGameTaskContent(thisTask);
-//                }
+                }
             }
         });
         recyclerView.setAdapter(adapter);
