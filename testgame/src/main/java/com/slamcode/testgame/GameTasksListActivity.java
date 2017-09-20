@@ -110,7 +110,7 @@ public class GameTasksListActivity extends ServiceRegistryAppCompatActivity  {
                 if(previousTask != null  && previousTask.getStatus() != GameTaskStatus.Success
                         && thisTask.getStatus() == GameTaskStatus.NotStarted)
                 {
-                   showSimpleDialog("Do previous task first", "You can not start this task before finishing previous one!");
+                   showSimpleDialog("Najpierw zrób poprzednie zadanie", "Trzeba wszystkie zadania zrobić po kolei ;)!");
                 }
                 else {
                     // move to details activity

@@ -93,12 +93,12 @@ public class GameTaskContentActivity extends ServiceRegistryAppCompatActivity im
                 LocationComparisonInputElement.LocationComparisonResult locationComparisonResult
                         = (LocationComparisonInputElement.LocationComparisonResult)result;
                 if(result.isInputCorrect())
-                    showSimpleMessageDialog(null, "You made it, great!");
+                    showSimpleMessageDialog(null, "Dotarłaś, super!");
                 else
                     if(locationComparisonResult.isCurrentLocationAvailable())
-                    showSimpleMessageDialog(null, String.format(Locale.getDefault(), "Not quite there yet. You are about %f meters from the target", locationComparisonResult.getDistanceFromTargetMeters()));
+                    showSimpleMessageDialog(null, String.format(Locale.getDefault(), "To jeszcze nie to miejsce. Jestes jakieś %f metrów od celu.", locationComparisonResult.getDistanceFromTargetMeters()));
                 else
-                    showSimpleMessageDialog(null, "No location available. Check your GPS settings and try again");
+                    showSimpleMessageDialog(null, "Brak lokalizacji. Sprawdź GPS w telefonie i spróbuj jeszcze raz.");
             }
         };
 
@@ -111,7 +111,7 @@ public class GameTaskContentActivity extends ServiceRegistryAppCompatActivity im
             @Override
             public void inputCommitted(InputContentElement<String> element, InputResult result) {
                 if(result.isInputCorrect())
-                    showSimpleMessageDialog(null, "Answer is correct :)");
+                    showSimpleMessageDialog(null, "Odpowiedź poprawna :)");
                 else {
                     InputTip tip = TextComparisonInputElement.IgnoreAllComparator.findFirstMatchingTipOrNull(element.getInputTips(), element.getInputValue());
                     if(tip != null)
@@ -127,7 +127,7 @@ public class GameTaskContentActivity extends ServiceRegistryAppCompatActivity im
             public void onStatusChanged(GameTaskStatus newStatus) {
                 if(newStatus == GameTaskStatus.Success) {
                     sendSmsMessageToDefaultNumber(String.format(Locale.ENGLISH, "Done task %d: %s", taskData.getId(), taskData.getGameTaskHeader().getHeaderTitle()));
-                    showSimpleMessageDialog(null, "GREAT, You did it now move to next task :)", new DialogInterface.OnClickListener() {
+                    showSimpleMessageDialog(null, "Udało się, czas na kolejne zadanie :)", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             startNextTaskActivity();
@@ -140,6 +140,7 @@ public class GameTaskContentActivity extends ServiceRegistryAppCompatActivity im
 
     private void startNextTaskActivity() {
 
+//        this.finish();
         int currentIndex = persistenceContext.getData().getGameTasks().indexOf(this.taskData);
         if(currentIndex != persistenceContext.getData().getPlaceList().size() -1) {
 
