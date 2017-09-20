@@ -126,7 +126,7 @@ public final class TestGameDataBundleProvider implements GameDataBundleProvider<
         return new GameTaskBuilder(7).withTitle(getString(R.string.game_task_music_title))
                 .withPictureElement(R.drawable.rojek)
                 .withTextElement(getString(R.string.game_task_music_before_audio_content))
-                .withTextElement(getString(R.string.game_task_music_link_content))
+                .withAudioPlayerElement(R.raw.music, null, this.context)
                 .withTextElement(getString(R.string.game_task_music_after_audio_content))
                 .withTextInputComparisonElement(getString(R.string.game_task_input_confirm_button_text), getStringArray(R.array.game_task_music_answers))
                 .withTipsForPreviousTextInputElement(getStringArray(R.array.game_task_music_tips_answers), getStringArray(R.array.game_task_music_tips_messages))
