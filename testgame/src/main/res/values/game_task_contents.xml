@@ -5,21 +5,20 @@
         Dzień dobry kochanie :*\n\n
 
         Mam nadzieję, że wstałas w pełni sił i podejmiesz się mojej małej gry, którą dla Ciebie przygotowałem.\n
-        Jeśli wszystko pójdzie sprawnie, to za kilka godzin będzie po wszystkimn i powinnaś zdążyć wszędzie indziej, gdzie planujesz dzisiaj jeszcze być ;)\n\n
+        Jeśli wszystko pójdzie sprawnie, to za nie dłużej niż dwie godziny będzie po wszystkimn i powinnaś zdążyć wszędzie indziej, gdzie planujesz dzisiaj jeszcze być ;)\n\n
 
         Przed Tobą parę zadań, które można nazwać sentymentalną podróżą w nasz związek. Trzeba bedzie gdzieś pójść, coś zrobić, czasami coś sobie przypomnieć, przeczytać, posłuchać
-        albo sprawdzić w internecie, jesli pamięć zawiedzie. Myślę, że jednak nie będzie trudno :D\n\n
+        albo sprawdzić w internecie, jeśli pamięć zawiedzie. Myślę, że jednak nie będzie trudno :D\n\n
 
-        Kilka zasad:\n
-        - Przy niektórych zadaniach GPS powinien być włączony, byś mogła wykonać wszystkie zadania bez problemu\n
-        - Internet wtedy też może byc uruchomiony usprawni znajdowanie twojej dokładnej lokalizacji\n
-        - Jeśli aplikacja poprosi o jakies uprawnienia, pozwól jej na nie
+        Kilka zasad do zapamiętania:\n
+        - Przy niektórych zadaniach GPS powinien być włączony, byś mogła wykonać je bez problemu\n
+        - Internet wtedy też może byc uruchomiony usprawni to znajdowanie twojej dokładnej lokalizacji\n
+        - Jeśli aplikacja poprosi o jakies uprawnienia, pozwól jej na nie\n
         - Na biurku jest power bank, zabierz go ze sobą na wszelki wypadek\n
         - Słuchawki też mogą się przydać\n
-        - Przy odpowiedniej liczbie nieudanych prób dla niektórych punktów wędrówki pojawi się pomocnicze zadanie, na pewno Cię naprowadzi\n
-        - Lepiej nie dzwoń do mnie, będę zbyt zajęty, by odebrać :> \n
         - Zjedz śniadanie i podładuj telefon przed startem\n
         - Jeśli ma padać, parasol się przyda\n
+        - Lepiej nie dzwoń do mnie, będę zbyt zajęty, by odebrać :> \n
 
         \n\nPowodzenia !
         \n\nP.S: Ta informacja będzie widoczna pod przyciskiem \'info\' na ekranie listy zadań
@@ -30,8 +29,8 @@
 
     <!--  task cat -->
     <string name="game_task_cat_title">Poszukiwanie koteczka</string>
-    <string name="game_task_cat_content">Idź spokojnie wypij herbatkę z miodkiem, na rozgrzewkę, tak jak to zadanie.
-        \nPrzygotowałem coś łatwego:\nNiedawno Sławeczek podarował Agnieszeczce pięknego rudego koteczka.\n\nZnajdź go i podaj jego imię</string>
+    <string name="game_task_cat_content">Idź i spokojnie wypij herbatkę z miodkiem, na rozgrzewkę dla ciała.\
+        nA na rpozgrzewkę dla umysłu przygotowałem takie oto zadanie:\nNiedawno Sławeczek podarował Agnieszeczce pięknego rudego koteczka.\n\nZnajdź go i podaj jego imię</string>
     <string-array name="game_task_cat_answers">
         <item>harmless offering</item>
         <item>harmless ofering</item>
@@ -53,6 +52,7 @@
     <string-array name="game_task_cat_tips_general_messages">
         <item>Zła odpowiedź. Poszukaj błyszczącego rudzielca. Ma nazwę wypisaną nad pyszczkiem.</item>
         <item>Niestety, to nie to. Może koteczek leży na biurku?</item>
+        <item>Coś nie tak, sprawdź czy dokładnie wpisałaś nazwę</item>
     </string-array>
     <integer name="game_task_cat_tries_threshold">5</integer>
 
@@ -60,12 +60,13 @@
     <string name="game_task_theatre_title">Wycieczka kulturalna</string>
     <string name="game_task_theatre_content">To pewnie też nie będzie trudne\n\nKolejne zadanie to znaleźć się tam, gdzie miała miejsce nasza pierwsza niezapomniana randka.
         \n\nTo miejsce gdzie Sławek nie był od dawna przedtem ale bywa często teraz.
-        \n\nNa miejscu czeka kolejne zadanie.</string>
+        \n\nNa miejscu czeka kolejne zadanie.
+        \n\nUbierz płaszcyk, sprawdź rozkłady jazdy i wyjdź z domu</string>
     <item name="game_task_theatre_location_latitude" format="float" type="dimen">51.105226</item>
     <item name="game_task_theatre_location_longitude" format="float" type="dimen">17.033120</item>
     <item name="game_task_theatre_location_acceptance_distance" format="float" type="dimen">25.0</item>
-    <integer name="game_task_theatre_tries_threshold">5</integer>
-    <string name="game_task_theatre_help_content">Może być, że GPS nie działa dość dokładnie, dlatego zamiast naciskać wciaż ten przysisk, wystarczy żebyś policzyła
+    <integer name="game_task_theatre_tries_threshold">10</integer>
+    <string name="game_task_theatre_help_content">Może być, że GPS nie działa dość dokładnie, dlatego zamiast naciskać wciąż ten przysisk, wystarczy żebyś podała
         liczbę gołębii przed tym miejscem :)</string>
     <string-array name="game_task_theatre_help_answers">
         <item>6</item>
@@ -77,10 +78,11 @@
     <string-array name="game_task_theatre_help_general_tips">
         <item>Nie, podpowiem tylko, że stoją przed budynkiem i się nie ruszają</item>
         <item>Niezupełnie. Bardzo  łatwo je policzyć, bo nie uciekają</item>
+        <item>Może pomoże, że nie chodzi o żywe gołębie :D</item>
     </string-array>
 
     <!-- task killer -->
-    <string name="game_task_killer_title">Kto zabił?</string>
+    <string name="game_task_killer_title">Kto to był?</string>
     <string name="game_task_killer_content">Czyli dotarłaś do teatru, super.\n\nMożesz skorzystać z ławeczki w parku usiąść chwilę, oczyścić umysł i spróbować przypomnieć sobie
     odpowiedź na poniższe pytanie:
     \n\nNa pewno pamiętasz tytuł spektaklu na którym byliśmy, czyli \'Szalone nożyczki\' gdzie publiczność decydowała, kto był mordercą.
@@ -89,6 +91,8 @@
         <item>nie</item>
         <item>tak</item>
         <item>nie wiem</item>
+        <item>nie pamietam</item>
+        <item>nie pamiętam</item>
     </string-array>
     <string-array name="game_task_killer_tips_general_messages">
         <item>Tak albo nie ;)</item>
@@ -114,11 +118,13 @@
         <item>pterozaur</item>
         <item>dinozaur</item>
         <item> </item>
+        <item>pterodactyl</item>
     </string-array>
     <string-array name="game_task_creature_tips_messages">
         <item>No prawie. Na podpowiedź weź pierwszy człon tego słowa i dodaj  do niego egzotyczny owoc :D</item>
-        <item>Owszem był to dinozaur, tylko jak dpokładnie się nazywał?</item>
+        <item>Owszem był to dinozaur, tylko jak dokładnie się nazywał?</item>
         <item>Pusta odpowiedź to niepoprawna odpowiedź ;P</item>
+        <item>Po polsku proszę ;)</item>
     </string-array>
     <string-array name="game_task_creature_tips_general_messages">
         <item>To nie to. Podpowiem, że na nasze śzczęście te stwory już wyginęły</item>
@@ -133,13 +139,13 @@
         \n\nOk posiedziałaś sobie i odpoczęłaś chwilę, myślę że czas wyruszyć w dalszą drogę.
         \nByć może po drodze zechcesz coś przekąsić, na pewno nie zaszkodzi. Jeszcze pare zadań przed nami, ale przecież jesteśmy przyzwyczajeni do chodzenia.
     \n\nDużo podróżowaliśmy po różnych miejscach w Europie z przyjemnością ogladając zabytki architektury i życie innych miast,
-    jednak na początku w tym mieście było jedno ważne miejsce, gdzie się spotykaliśmy i ukrywaliśmy przed zazdrosnym wzrokiem przechodniów.
-    \nNadszedł czas by je po raz kolejny odwiedzić, to kolejny krok w naszej nostalgicznej podróży wspomnieć ;)</string>
+    jednak na początku to w tym mieście było jedno ważne miejsce, gdzie się spotykaliśmy i ukrywaliśmy przed zazdrosnym wzrokiem przechodniów i rodziny.
+    \nNadszedł czas by je po raz kolejny odwiedzić, miejsce schadzek, to kolejny krok w naszej nostalgicznej podróży wspomnień ;)</string>
     <item name="game_task_place_location_latitude" format="float" type="dimen">51.1102050</item>
     <item name="game_task_place_location_longitude" format="float" type="dimen">17.027114</item>
     <item name="game_task_place_location_acceptance_distance" format="float" type="dimen">25.0</item>
-    <integer name="game_task_place_tries_threshold">7</integer>
-    <string name="game_task_place_help_content">No dobra uwierzę Ci, że jesteś w dobrym miejscu.\n\nJeśli tak to wpisz bez spacji po kolei od góry do dołu
+    <integer name="game_task_place_tries_threshold">10</integer>
+    <string name="game_task_place_help_content">No dobra uwierzę Ci, że jesteś w dobrym miejscu.\n\nJeśli tak, to wpisz bez spacji po kolei od góry do dołu
     wszystkie numery mieszkań z pierwszej od lewej kolumny skrytek pocztowych:</string>
     <string-array name="game_task_place_help_answers">
         <item>123456</item>
@@ -151,10 +157,10 @@
 
     <!-- task day -->
     <string name="game_task_day_title">Urodzony przed dziennikiem</string>
-    <string name="game_task_day_content">Miejsce, które neidawno było twoim domem no i naszym azylem.\n\nRzeczywiście na początku wiele rzeczy się tu działo.\n\nJak nastolatkowie
+    <string name="game_task_day_content">Miejsce, które niedawno było twoim domem no i naszym azylem.\n\nRzeczywiście na początku wiele rzeczy się tu działo.\n\nJak nastolatkowie
     w obawie przed rodzicami ukrywalismy się w klatce schodowej :*
     \n\nTeraz już mamy własny kąt, ale wspomnienia pozostały
-    \n\nTym razem jednak sprawdzę, czy wiesz co się działo zanim się poznalismy.
+    \n\nTym razem jednak sprawdzę, coś czego wspomnieć nie możesz, ale powinnaś wiedzieć.
     \n\nMama mówiła, ze przyszedłem na świat przed dziennikiem, nie mogłem się doczekac na najświeższe informacje z dnia. Czy może wiesz jaki to był dzień tygodnia?</string>
     <string-array name="game_task_day_answers">
         <item>wtorek</item>
@@ -192,8 +198,8 @@
     <string name="game_task_music_before_audio_content">Było trochę myślenia i biegania, to tu, to tam. Czas chyba na lekka przerwę i
     posłuchanie dobrej muzyki.
     \n\nPamiętamy koncert na który Sławek poszedł za Agnieszką dawno temu w lutym, a Agnieszka się ciągle upiera, że to nie było zaplanowane :D
-    \n\nMusieli być wtedy świeżo po ostatniej płycie z Rojkiem, więc pewnie grali coś z niej także.
-        \n\nNa niej też było parę perełek jak ten utwór (Wsłuchaj się i zrelaksuj):</string>
+    \n\nGrał oczywiście Myslovitz.\nMusieli być wtedy świeżo po ostatniej płycie z Rojkiem, więc pewnie grali coś z niej także.
+        \n\nPłyta przeminęła trochę bez echa ale na niej też było parę perełek, takich jak ten utwór (Wsłuchaj się i zrelaksuj):</string>
     <string name="game_task_music_link_content"><a href="https://www.dropbox.com/s/e78070nj5khmpzb/music.mp3?dl=0">Mjuzik</a></string>
     <string name="game_task_music_after_audio_content">Pytanie co wg tekstu utworu wszyscy robią na końcu?</string>
     <string-array name="game_task_music_answers">
@@ -224,15 +230,14 @@
     <!-- task poem -->
     <string name="game_task_poem_title">Rymowanka</string>
     <string name="game_task_poem_content">Czas znaleźć kolejne miejsce, może ono być niedaleko lub całkiem daleko stąd.\n\nJest dość świeże i może nie tak istotne dla naszego zwiazku,
-        ale na pewno
-    pasujące do tematu miłości ;)
+        ale na pewno pasujące do tematu miłości ;)
     \n\nŻeby było zabawniej niech wskazówką będzie rymowanka:
     \n\n
-    \n\nZnajdź to miejsce. Byc może to chwilę potrwa więc w międzyczasie warto sobie posłuchać jakiejś dobrej muzyki, jak ta z poprzedniego zadania :)</string>
+    \n\nZnajdź to miejsce. Być może to chwilę potrwa więc w międzyczasie warto sobie posłuchać jakiejś dobrej muzyki, jak ta z poprzedniego zadania :)</string>
     <item name="game_task_poem_location_latitude" format="float" type="dimen">51.071157</item>
     <item name="game_task_poem_location_longitude" format="float" type="dimen">17.002387</item>
     <item name="game_task_poem_location_acceptance_distance" format="float" type="dimen">25.0</item>
-    <integer name="game_task_poem_tries_threshold">7</integer>
+    <integer name="game_task_poem_tries_threshold">10</integer>
     <string name="game_task_poem_help_content">Być moze jesteś w dobrym miejscu, tylko GPS szwankuje, jeśli tak to nie sprawi ci problemu podanie roku wyrytego na kamieniu
     obok celu wędrówki:</string>
     <string-array name="game_task_poem_help_answers">
@@ -253,6 +258,6 @@
     \n\nDziekuję za udział kochanie :*</string>
     <item name="game_task_final_location_latitude" format="float" type="dimen">51.070847</item>
     <item name="game_task_final_location_longitude" format="float" type="dimen">16.996691</item>
-    <item name="game_task_final_location_acceptance_distance" format="float" type="dimen">15.0</item>
+    <item name="game_task_final_location_acceptance_distance" format="float" type="dimen">25.0</item>
 
 </resources>

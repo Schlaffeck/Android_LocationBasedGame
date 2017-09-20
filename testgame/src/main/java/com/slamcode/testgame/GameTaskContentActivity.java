@@ -173,6 +173,8 @@ public class GameTaskContentActivity extends ServiceRegistryAppCompatActivity im
             GameTaskBuilder.addLocationInputListener(this.taskData, this.locationDataOnInputCommittedListener);
             GameTaskBuilder.addTextInputComparisonListener(this.taskData, this.textOnInputCommittedListener);
             GameTaskBuilder.addAudioPlayers(this.taskData, this);
+            if(this.taskData.getStatus() == GameTaskStatus.NotStarted)
+                this.taskData.setStatus(GameTaskStatus.Ongoing);
             this.taskData.addStatusChangedListener(this.taskStatusChangedListener);
         }
 

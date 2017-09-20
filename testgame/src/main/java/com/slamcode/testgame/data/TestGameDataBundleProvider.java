@@ -39,7 +39,7 @@ public final class TestGameDataBundleProvider implements GameDataBundleProvider<
 
     @Override
     public void updateBundle(TestGameDataBundle dataBundle) {
-            dataBundle.setGameTasks(this.getDefaultBundleInstance().getGameTasks());
+            //dataBundle.setGameTasks(this.getDefaultBundleInstance().getGameTasks());
     }
 
     @Override
@@ -157,6 +157,11 @@ public final class TestGameDataBundleProvider implements GameDataBundleProvider<
                 .withPictureElement(R.drawable.statue)
                 .withTextElement(getString(R.string.game_task_final_message))
                 .withPictureElement(R.drawable.flowers)
+                .withLocationComparisonElement(getString(R.string.game_task_location_input_confirm_button_text),
+                        getFloat(R.dimen.game_task_final_location_latitude),
+                        getFloat(R.dimen.game_task_final_location_longitude),
+                        getFloat(R.dimen.game_task_final_location_acceptance_distance),
+                        null)
                 .getTask();
     }
 
