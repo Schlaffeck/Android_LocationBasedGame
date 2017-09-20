@@ -59,15 +59,19 @@ public final class TestGameDataBundleProvider implements GameDataBundleProvider<
 
     private GameTaskData createTaskTheatre()
     {
-        return new GameTaskBuilder(2).withTitle(getString(R.string.game_task_theatre_title))
+        GameTaskBuilder builder = new GameTaskBuilder(2).withTitle(getString(R.string.game_task_theatre_title))
+                .withTriesThreshold(getInt(R.integer.game_task_theatre_tries_threshold))
                 .withPictureElement(R.drawable.gaudi)
                 .withTextElement(getString(R.string.game_task_theatre_content))
                 .withLocationComparisonElement(getString(R.string.game_task_location_input_confirm_button_text),
                         getFloat(R.dimen.game_task_theatre_location_latitude),
                         getFloat(R.dimen.game_task_theatre_location_longitude),
                         getFloat(R.dimen.game_task_theatre_location_acceptance_distance),
-                        null)
-                .getTask();
+                        null);
+        builder.getHelpTaskBuilder().withTextElement(getString(R.string.game_task_theatre_help_content))
+                .withTextInputComparisonElement(getString(R.string.game_task_input_confirm_button_text), getStringArray(R.array.game_task_theatre_help_answers))
+                .withTipsForPreviousTextInputElement(getStringArray(R.array.game_task_theatre_help_general_tips));
+        return builder.getTask();
     }
 
     private GameTaskData createTaskKiller() {
@@ -92,15 +96,20 @@ public final class TestGameDataBundleProvider implements GameDataBundleProvider<
 
     private GameTaskData createTaskPlace()
     {
-        return new GameTaskBuilder(5).withTitle(getString(R.string.game_task_place_title))
+        GameTaskBuilder builder = new GameTaskBuilder(5).withTitle(getString(R.string.game_task_place_title))
+                .withTriesThreshold(getInt(R.integer.game_task_place_tries_threshold))
                 .withPictureElement(R.drawable.walk)
                 .withTextElement(getString(R.string.game_task_place_content))
                 .withLocationComparisonElement(getString(R.string.game_task_location_input_confirm_button_text),
                         getFloat(R.dimen.game_task_place_location_latitude),
                         getFloat(R.dimen.game_task_place_location_longitude),
                         getFloat(R.dimen.game_task_place_location_acceptance_distance),
-                        null)
-                .getTask();
+                        null);
+
+        builder.getHelpTaskBuilder().withTextElement(getString(R.string.game_task_place_help_content))
+                .withTextInputComparisonElement(getString(R.string.game_task_input_confirm_button_text), getStringArray(R.array.game_task_place_help_answers))
+                .withTipsForPreviousTextInputElement(getStringArray(R.array.game_task_place_help_general_tips));
+        return builder.getTask();
     }
 
     private GameTaskData createTaskDay() {
@@ -126,15 +135,21 @@ public final class TestGameDataBundleProvider implements GameDataBundleProvider<
     }
 
     private GameTaskData createTaskPoem() {
-        return new GameTaskBuilder(8).withTitle(getString(R.string.game_task_poem_title))
+        GameTaskBuilder builder = new GameTaskBuilder(8).withTitle(getString(R.string.game_task_poem_title))
+                .withTriesThreshold(getInt(R.integer.game_task_poem_tries_threshold))
                 .withPictureElement(R.drawable.mountains)
                 .withTextElement(getString(R.string.game_task_poem_content))
                 .withLocationComparisonElement(getString(R.string.game_task_location_input_confirm_button_text),
                         getFloat(R.dimen.game_task_poem_location_latitude),
                         getFloat(R.dimen.game_task_poem_location_longitude),
                         getFloat(R.dimen.game_task_poem_location_acceptance_distance),
-                        null)
-                .getTask();
+                        null);
+
+        builder.getHelpTaskBuilder().withTextElement(getString(R.string.game_task_poem_help_content))
+                .withTextInputComparisonElement(getString(R.string.game_task_input_confirm_button_text), getStringArray(R.array.game_task_poem_help_answers))
+                .withTipsForPreviousTextInputElement(getStringArray(R.array.game_task_poem_help_general_tips));
+
+                return builder.getTask();
     }
 
     private GameTaskData createTaskFinal() {
@@ -148,6 +163,11 @@ public final class TestGameDataBundleProvider implements GameDataBundleProvider<
     private String getString(int resId)
     {
         return this.context.getString(resId);
+    }
+
+    private Integer getInt(int resId)
+    {
+        return this.context.getResources().getInteger(resId);
     }
 
     private String[] getStringArray(int resId)

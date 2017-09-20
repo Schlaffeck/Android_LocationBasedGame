@@ -64,7 +64,20 @@
     <item name="game_task_theatre_location_latitude" format="float" type="dimen">51.105226</item>
     <item name="game_task_theatre_location_longitude" format="float" type="dimen">17.033120</item>
     <item name="game_task_theatre_location_acceptance_distance" format="float" type="dimen">25.0</item>
-    <integer name="game_task_theatre_tries_threshold">3</integer>
+    <integer name="game_task_theatre_tries_threshold">5</integer>
+    <string name="game_task_theatre_help_content">Może być, że GPS nie działa dość dokładnie, dlatego zamiast naciskać wciaż ten przysisk, wystarczy żebyś policzyła
+        liczbę gołębii przed tym miejscem :)</string>
+    <string-array name="game_task_theatre_help_answers">
+        <item>6</item>
+        <item>sześć</item>
+        <item>szesc</item>
+        <item>sześc</item>
+        <item>szesć</item>
+    </string-array>
+    <string-array name="game_task_theatre_help_general_tips">
+        <item>Nie, podpowiem tylko, że stoją przed budynkiem i się nie ruszają</item>
+        <item>Niezupełnie. Bardzo  łatwo je policzyć, bo nie uciekają</item>
+    </string-array>
 
     <!-- task killer -->
     <string name="game_task_killer_title">Kto zabił?</string>
@@ -125,7 +138,16 @@
     <item name="game_task_place_location_latitude" format="float" type="dimen">51.1102050</item>
     <item name="game_task_place_location_longitude" format="float" type="dimen">17.027114</item>
     <item name="game_task_place_location_acceptance_distance" format="float" type="dimen">25.0</item>
-    <integer name="game_task_place_tries_threshold">3</integer>
+    <integer name="game_task_place_tries_threshold">7</integer>
+    <string name="game_task_place_help_content">No dobra uwierzę Ci, że jesteś w dobrym miejscu.\n\nJeśli tak to wpisz bez spacji po kolei od góry do dołu
+    wszystkie numery mieszkań z pierwszej od lewej kolumny skrytek pocztowych:</string>
+    <string-array name="game_task_place_help_answers">
+        <item>123456</item>
+    </string-array>
+    <string-array name="game_task_place_help_general_tips">
+        <item>Coś nie tak</item>
+        <item>Sprawdź, czy dobrze po kolei wpisujesz</item>
+    </string-array>
 
     <!-- task day -->
     <string name="game_task_day_title">Urodzony przed dziennikiem</string>
@@ -210,6 +232,16 @@
     <item name="game_task_poem_location_latitude" format="float" type="dimen">51.071157</item>
     <item name="game_task_poem_location_longitude" format="float" type="dimen">17.002387</item>
     <item name="game_task_poem_location_acceptance_distance" format="float" type="dimen">25.0</item>
+    <integer name="game_task_poem_tries_threshold">7</integer>
+    <string name="game_task_poem_help_content">Być moze jesteś w dobrym miejscu, tylko GPS szwankuje, jeśli tak to nie sprawi ci problemu podanie roku wyrytego na kamieniu
+    obok celu wędrówki:</string>
+    <string-array name="game_task_poem_help_answers">
+        <item>1995</item>
+    </string-array>
+    <string-array name="game_task_poem_help_general_tips">
+        <item>Niezupełnie, być może rok jest słabo widoczny. Strzelaj</item>
+        <item>Chyba coś nie tak</item>
+    </string-array>
 
     <!-- all done task -->
     <string name="game_task_final_title">Koniec i początek</string>

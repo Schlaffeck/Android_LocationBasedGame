@@ -9,6 +9,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
@@ -39,6 +40,7 @@ public class GameTaskContentActivity extends ServiceRegistryAppCompatActivity im
     private PersistenceContext<TestGameDataBundle> persistenceContext;
     private GameTaskData.StatusChangedListener taskStatusChangedListener;
     private SmsMessagingService smsMessagingService;
+    private ViewDataBinding taskContentViewBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,7 +127,11 @@ public class GameTaskContentActivity extends ServiceRegistryAppCompatActivity im
         this.taskStatusChangedListener = new GameTaskData.StatusChangedListener() {
             @Override
             public void onStatusChanged(GameTaskStatus newStatus) {
-                if(newStatus == GameTaskStatus.Success) {
+                if(newStatus == GameTaskStatus.TriesThresholdReached) {
+                    taskContentViewBinding.setVariable(Bindings.VIEW_MODEL_BINDING_VARIABLE_ID, taskData);
+                    showSimpleMessageDialog(null, "Coś Ci nie idzie. Sprawdź zadanie pomocnicze niżej");
+                }
+                else if(newStatus == GameTaskStatus.Success) {
                     sendSmsMessageToDefaultNumber(String.format(Locale.ENGLISH, "Done task %d: %s", taskData.getId(), taskData.getGameTaskHeader().getHeaderTitle()));
                     showSimpleMessageDialog(null, "Udało się, czas na kolejne zadanie :)", new DialogInterface.OnClickListener() {
                         @Override
@@ -156,7 +162,6 @@ public class GameTaskContentActivity extends ServiceRegistryAppCompatActivity im
         super.onStart();
         int taskId = this.getIntent().getIntExtra(GameTaskData.ID_FIELD_NAME, 0);
 
-
         for(int i = 0; i < persistenceContext.getData().getGameTasks().size() && this.taskData == null; i++)
         {
             GameTaskData data = persistenceContext.getData().getGameTasks().get(i);
@@ -174,8 +179,8 @@ public class GameTaskContentActivity extends ServiceRegistryAppCompatActivity im
         ViewGroup mainContent = (ViewGroup) this.findViewById(android.R.id.content);
         if(mainContent != null)
         {
-            ViewDataBinding taskContentView = DataBindingUtil.inflate(this.getLayoutInflater(), this.layoutProvider.getGameTaskDataLayoutId(), mainContent, true);
-            taskContentView.setVariable(Bindings.VIEW_MODEL_BINDING_VARIABLE_ID, this.taskData);
+            this.taskContentViewBinding = DataBindingUtil.inflate(this.getLayoutInflater(), this.layoutProvider.getGameTaskDataLayoutId(), mainContent, true);
+            this.taskContentViewBinding.setVariable(Bindings.VIEW_MODEL_BINDING_VARIABLE_ID, this.taskData);
         }
     }
 
