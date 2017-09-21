@@ -25,7 +25,7 @@ public final class EntryPasswordDialog extends ModelBasedDialog<String> {
             public void onClick(View v) {
                 Calendar calendarNow = Calendar.getInstance();
                 Calendar toCompare = Calendar.getInstance();
-                toCompare.set(2017, 8, 23, 9, 0);
+                toCompare.set(2017, 8, 21, 9, 30, 0);
                 if(calendarNow.after(toCompare) || key.equals(passwordEditText.getText().toString()))
                     commitChanges();
                 else
