@@ -13,6 +13,7 @@
         Kilka zasad do zapamiętania:\n
         - Przy niektórych zadaniach GPS powinien być włączony, byś mogła wykonać je bez problemu\n
         - Internet wtedy też może byc uruchomiony usprawni to znajdowanie twojej dokładnej lokalizacji\n
+        - Lokalizacja się czasami chrzani ale bądź cierpliwa i próbuj, a w końcu się uda\n
         - Jeśli aplikacja poprosi o jakies uprawnienia, pozwól jej na nie\n
         - Na biurku jest power bank, zabierz go ze sobą na wszelki wypadek\n
         - Słuchawki też mogą się przydać\n
@@ -69,11 +70,8 @@
     <string name="game_task_theatre_help_content">Może być, że GPS nie działa dość dokładnie, dlatego zamiast naciskać wciąż ten przysisk, wystarczy żebyś podała
         liczbę gołębii przed tym miejscem :)</string>
     <string-array name="game_task_theatre_help_answers">
-        <item>6</item>
-        <item>sześć</item>
-        <item>szesc</item>
-        <item>sześc</item>
-        <item>szesć</item>
+        <item>3</item>
+        <item>trzy</item>
     </string-array>
     <string-array name="game_task_theatre_help_general_tips">
         <item>Nie, podpowiem tylko, że stoją przed budynkiem i się nie ruszają</item>
@@ -146,9 +144,9 @@
     <item name="game_task_place_location_acceptance_distance" format="float" type="dimen">25.0</item>
     <integer name="game_task_place_tries_threshold">10</integer>
     <string name="game_task_place_help_content">No dobra uwierzę Ci, że jesteś w dobrym miejscu.\n\nJeśli tak, to wpisz bez spacji po kolei od góry do dołu
-    wszystkie numery mieszkań z pierwszej od lewej kolumny skrytek pocztowych:</string>
+    wszystkie numery mieszkań z trzeciej od lewej kolumny skrytek pocztowych:</string>
     <string-array name="game_task_place_help_answers">
-        <item>123456</item>
+        <item>1112131415</item>
     </string-array>
     <string-array name="game_task_place_help_general_tips">
         <item>Coś nie tak</item>
