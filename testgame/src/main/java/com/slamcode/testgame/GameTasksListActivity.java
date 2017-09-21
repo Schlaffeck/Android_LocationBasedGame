@@ -32,6 +32,8 @@ public class GameTasksListActivity extends ServiceRegistryAppCompatActivity  {
     private SmsMessagingService smsMessagingService;
     private LocationTracker locationTracker;
     private Calendar lastLocationSend;
+    private boolean wasInfoDialogShown;
+    private boolean needToShowPasswordDialog = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,9 +80,12 @@ public class GameTasksListActivity extends ServiceRegistryAppCompatActivity  {
 
     private void showPasswordDialogIfNeeded()
     {
+        if(!needToShowPasswordDialog)
+            return;
+
         Calendar calendarNow = Calendar.getInstance();
         Calendar toCompare = Calendar.getInstance();
-        toCompare.set(2017, 8, 21, 9, 30, 0);
+        toCompare.set(2017, 8, 23, 9, 30, 0);
         if(calendarNow.before(toCompare))
         {
             EntryPasswordDialog dialog = new EntryPasswordDialog();
@@ -90,15 +95,20 @@ public class GameTasksListActivity extends ServiceRegistryAppCompatActivity  {
                 public void onDialogClosed(boolean confirmed) {
                     //        if(!this.appSettingsManager.wasInfoDialogShown()) {
                     //            this.appSettingsManager.setWasInfoDialogShown(true);
-                                    showInfoDialog();
+                    needToShowPasswordDialog = false;
+                    if(!wasInfoDialogShown) {
+                        showInfoDialog();
+                        wasInfoDialogShown = true;
+                    }
                     //        }
                 }
             });
             dialog.show(this.getFragmentManager(), null);
         }
-        else {
-            showInfoDialog();
-        }
+        else if(!wasInfoDialogShown) {
+                showInfoDialog();
+                wasInfoDialogShown = true;
+            }
     }
 
     private void showInfoDialog()
