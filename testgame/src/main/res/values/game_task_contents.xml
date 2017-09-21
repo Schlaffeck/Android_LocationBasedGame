@@ -144,9 +144,9 @@
     <item name="game_task_place_location_acceptance_distance" format="float" type="dimen">25.0</item>
     <integer name="game_task_place_tries_threshold">10</integer>
     <string name="game_task_place_help_content">No dobra uwierzę Ci, że jesteś w dobrym miejscu.\n\nJeśli tak, to wpisz bez spacji po kolei od góry do dołu
-    wszystkie numery mieszkań z trzeciej od lewej kolumny skrytek pocztowych:</string>
+    wszystkie numery mieszkań z trzeciej od prawej kolumny skrytek pocztowych:</string>
     <string-array name="game_task_place_help_answers">
-        <item>1112131415</item>
+        <item>1617181920</item>
     </string-array>
     <string-array name="game_task_place_help_general_tips">
         <item>Coś nie tak</item>
@@ -230,7 +230,17 @@
     <string name="game_task_poem_content">Czas znaleźć kolejne miejsce, może ono być niedaleko lub całkiem daleko stąd.\n\nJest dość świeże i może nie tak istotne dla naszego zwiazku,
         ale na pewno pasujące do tematu miłości ;)
     \n\nŻeby było zabawniej niech wskazówką będzie rymowanka:
-    \n\n
+    \n\n\tStoi sobie gdzieś w ogródku
+        \n\tI rozwiewa resztki smutków
+        \n\tMa dwie nogi i dwie ręce
+        \n\tI po lewej stronie serce
+        \n\tDrugie też po prawej stronie
+        \n\tUśmiechniety król w koronie
+        \n\tKorona ta nie taka zwykła
+        \n\tZe szpicem chodź lekko zwisła
+        \n\tTwe zadanie jest dość proste:
+        \n\tJak nazywa się ten gostek
+        \n\tOn nazywa się&#8230;
     \n\nZnajdź to miejsce. Być może to chwilę potrwa więc w międzyczasie warto sobie posłuchać jakiejś dobrej muzyki, jak ta z poprzedniego zadania :)</string>
     <item name="game_task_poem_location_latitude" format="float" type="dimen">51.071157</item>
     <item name="game_task_poem_location_longitude" format="float" type="dimen">17.002387</item>
