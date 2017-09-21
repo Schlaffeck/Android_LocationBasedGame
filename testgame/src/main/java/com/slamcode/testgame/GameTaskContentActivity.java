@@ -58,29 +58,29 @@ public class GameTaskContentActivity extends ServiceRegistryAppCompatActivity im
             @Override
             public void onLocationChanged(Location location) {
                 if(location != null && !locationDetermined) {
-                    Toast.makeText(getApplicationContext(), String.format("Location changed: %s", location.toString()), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), String.format("Location changed: %s", location.toString()), Toast.LENGTH_SHORT).show();
                     locationDetermined = true;
                 }
                 else if(locationDetermined)
                 {
-                    Toast.makeText(getApplicationContext(), "Location lost", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "Location lost", Toast.LENGTH_SHORT).show();
                     locationDetermined = false;
                 }
             }
 
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras) {
-                Toast.makeText(getApplicationContext(), String.format("'%s' provider status changed to %d", provider, status), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), String.format("'%s' provider status changed to %d", provider, status), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onProviderEnabled(String provider) {
-                Toast.makeText(getApplicationContext(), String.format("'%s' provider enabled", provider), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), String.format("'%s' provider enabled", provider), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onProviderDisabled(String provider) {
-                Toast.makeText(getApplicationContext(), String.format("'%s' provider disabled", provider), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), String.format("'%s' provider disabled", provider), Toast.LENGTH_SHORT).show();
             }
         };
 
