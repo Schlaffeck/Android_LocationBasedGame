@@ -62,7 +62,7 @@
     <string name="game_task_theatre_content">To pewnie też nie będzie trudne\n\nKolejne zadanie to znaleźć się tam, gdzie miała miejsce nasza pierwsza niezapomniana randka.
         \n\nTo miejsce gdzie Sławek nie był od dawna przedtem ale bywa często teraz.
         \n\nNa miejscu czeka kolejne zadanie.
-        \n\nUbierz płaszcyk, sprawdź rozkłady jazdy i wyjdź z domu</string>
+        \n\nUbierz płaszczyk, sprawdź rozkłady jazdy i wyjdź z domu</string>
     <item name="game_task_theatre_location_latitude" format="float" type="dimen">51.105226</item>
     <item name="game_task_theatre_location_longitude" format="float" type="dimen">17.033120</item>
     <item name="game_task_theatre_location_acceptance_distance" format="float" type="dimen">25.0</item>
