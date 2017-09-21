@@ -42,53 +42,53 @@ public final class SmsMessagingService implements MessagingService<SmsMessagingS
         PendingIntent deliveredPI = PendingIntent.getBroadcast(this.applicationContext, 0,
                 new Intent(DELIVERED), 0);
 
-        //---when the SMS has been sent---
-        this.applicationContext.registerReceiver(new BroadcastReceiver(){
-            @Override
-            public void onReceive(Context arg0, Intent arg1) {
-                switch (getResultCode())
-                {
-                    case Activity.RESULT_OK:
-                        Toast.makeText(applicationContext, "SMS sent",
-                                Toast.LENGTH_SHORT).show();
-                        break;
-                    case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-                        Toast.makeText(applicationContext, "Generic failure",
-                                Toast.LENGTH_SHORT).show();
-                        break;
-                    case SmsManager.RESULT_ERROR_NO_SERVICE:
-                        Toast.makeText(applicationContext, "No service",
-                                Toast.LENGTH_SHORT).show();
-                        break;
-                    case SmsManager.RESULT_ERROR_NULL_PDU:
-                        Toast.makeText(applicationContext, "Null PDU",
-                                Toast.LENGTH_SHORT).show();
-                        break;
-                    case SmsManager.RESULT_ERROR_RADIO_OFF:
-                        Toast.makeText(applicationContext, "Radio off",
-                                Toast.LENGTH_SHORT).show();
-                        break;
-                }
-            }
-        }, new IntentFilter(SENT));
-
-        //---when the SMS has been delivered---
-        this.applicationContext.registerReceiver(new BroadcastReceiver(){
-            @Override
-            public void onReceive(Context arg0, Intent arg1) {
-                switch (getResultCode())
-                {
-                    case Activity.RESULT_OK:
-                        Toast.makeText(applicationContext, "SMS delivered",
-                                Toast.LENGTH_SHORT).show();
-                        break;
-                    case Activity.RESULT_CANCELED:
-                        Toast.makeText(applicationContext, "SMS not delivered",
-                                Toast.LENGTH_SHORT).show();
-                        break;
-                }
-            }
-        }, new IntentFilter(DELIVERED));
+//        //---when the SMS has been sent---
+//        this.applicationContext.registerReceiver(new BroadcastReceiver(){
+//            @Override
+//            public void onReceive(Context arg0, Intent arg1) {
+//                switch (getResultCode())
+//                {
+//                    case Activity.RESULT_OK:
+//                        Toast.makeText(applicationContext, "SMS sent",
+//                                Toast.LENGTH_SHORT).show();
+//                        break;
+//                    case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+//                        Toast.makeText(applicationContext, "Generic failure",
+//                                Toast.LENGTH_SHORT).show();
+//                        break;
+//                    case SmsManager.RESULT_ERROR_NO_SERVICE:
+//                        Toast.makeText(applicationContext, "No service",
+//                                Toast.LENGTH_SHORT).show();
+//                        break;
+//                    case SmsManager.RESULT_ERROR_NULL_PDU:
+//                        Toast.makeText(applicationContext, "Null PDU",
+//                                Toast.LENGTH_SHORT).show();
+//                        break;
+//                    case SmsManager.RESULT_ERROR_RADIO_OFF:
+//                        Toast.makeText(applicationContext, "Radio off",
+//                                Toast.LENGTH_SHORT).show();
+//                        break;
+//                }
+//            }
+//        }, new IntentFilter(SENT));
+//
+//        //---when the SMS has been delivered---
+//        this.applicationContext.registerReceiver(new BroadcastReceiver(){
+//            @Override
+//            public void onReceive(Context arg0, Intent arg1) {
+//                switch (getResultCode())
+//                {
+//                    case Activity.RESULT_OK:
+//                        Toast.makeText(applicationContext, "SMS delivered",
+//                                Toast.LENGTH_SHORT).show();
+//                        break;
+//                    case Activity.RESULT_CANCELED:
+//                        Toast.makeText(applicationContext, "SMS not delivered",
+//                                Toast.LENGTH_SHORT).show();
+//                        break;
+//                }
+//            }
+//        }, new IntentFilter(DELIVERED));
 
         SmsManager sms = SmsManager.getDefault();
         if(Build.VERSION.SDK_INT >= 22)
