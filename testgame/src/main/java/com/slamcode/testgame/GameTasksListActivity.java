@@ -21,12 +21,17 @@ import com.slamcode.testgame.app.ServiceRegistryAppCompatActivity;
 import com.slamcode.testgame.data.TestGameDataBundle;
 import com.slamcode.testgame.messaging.sms.SmsMessagingService;
 import com.slamcode.testgame.settings.AppSettingsManager;
+import com.slamcode.testgame.view.dialog.EntryPasswordDialog;
+import com.slamcode.testgame.view.dialog.base.ModelBasedDialog;
+
+import java.util.Calendar;
 
 public class GameTasksListActivity extends ServiceRegistryAppCompatActivity  {
 
     private AppSettingsManager appSettingsManager;
     private SmsMessagingService smsMessagingService;
     private LocationTracker locationTracker;
+    private Calendar lastLocationSend;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +48,9 @@ public class GameTasksListActivity extends ServiceRegistryAppCompatActivity  {
     @Override
     protected void onStart() {
         super.onStart();
-        if(!this.appSettingsManager.wasInfoDialogShown()) {
-            this.appSettingsManager.setWasInfoDialogShown(true);
-            this.showInfoDialog();
-        }
+
         this.setupTasksList();
+        this.showPasswordDialogIfNeeded();
     }
 
     @Override
@@ -71,6 +74,27 @@ public class GameTasksListActivity extends ServiceRegistryAppCompatActivity  {
                 showInfoDialog();
             }
         });
+    }
+
+    private void showPasswordDialogIfNeeded()
+    {
+        Calendar calendarNow = Calendar.getInstance();
+        Calendar toCompare = Calendar.getInstance();
+        toCompare.set(2017, 8, 23, 9, 0);
+        if(calendarNow.before(toCompare))
+        {
+            EntryPasswordDialog dialog = new EntryPasswordDialog();
+            dialog.setDialogStateChangedListener(new ModelBasedDialog.DialogStateChangedListener() {
+                @Override
+                public void onDialogClosed(boolean confirmed) {
+                    //        if(!this.appSettingsManager.wasInfoDialogShown()) {
+                    //            this.appSettingsManager.setWasInfoDialogShown(true);
+                                    showInfoDialog();
+                    //        }
+                }
+            });
+            dialog.show(this.getFragmentManager(), null);
+        }
     }
 
     private void showInfoDialog()
@@ -144,9 +168,29 @@ public class GameTasksListActivity extends ServiceRegistryAppCompatActivity  {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                sendSmsMessageToDefaultNumber("Location changed: " + locationTracker.getLocationData());
+                if(shouldSendMessage())
+                    sendSmsMessageToDefaultNumber("Location changed: " + locationTracker.getLocationData());
+
                 handler.postDelayed(this, sendMessageIntervalMillis);
             }
         }, 10000);
+    }
+
+    private boolean shouldSendMessage()
+    {
+        boolean send = false;
+        if(this.lastLocationSend == null)
+            send = true;
+        else
+        {
+            Calendar now = Calendar.getInstance();
+            now.add(Calendar.MINUTE, -10);
+            send = now.after(this.lastLocationSend);
+        }
+
+        if(send)
+            this.lastLocationSend = Calendar.getInstance();
+
+        return send;
     }
 }
