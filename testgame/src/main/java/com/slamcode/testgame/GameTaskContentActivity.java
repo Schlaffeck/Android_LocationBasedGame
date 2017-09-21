@@ -19,6 +19,7 @@ import com.slamcode.locationbasedgamelib.model.*;
 import com.slamcode.locationbasedgamelib.model.builder.*;
 import com.slamcode.locationbasedgamelib.model.content.LocationComparisonInputElement;
 import com.slamcode.locationbasedgamelib.model.content.TextComparisonInputElement;
+import com.slamcode.locationbasedgamelib.model.utils.GameTaskDataUtils;
 import com.slamcode.locationbasedgamelib.multimedia.AudioPlayer;
 import com.slamcode.locationbasedgamelib.multimedia.MediaServiceAudioPlayer;
 import com.slamcode.locationbasedgamelib.persistence.PersistenceContext;
@@ -36,6 +37,7 @@ public class GameTaskContentActivity extends ServiceRegistryAppCompatActivity im
     private ContentLayoutProvider layoutProvider;
     private InputContentElement.OnInputCommittedListener<LocationData> locationDataOnInputCommittedListener;
     private InputContentElement.OnInputCommittedListener<String> textOnInputCommittedListener;
+    private LocationListener locationListener;
     private LocationTracker locationTracker;
     private PersistenceContext<TestGameDataBundle> persistenceContext;
     private GameTaskData.StatusChangedListener taskStatusChangedListener;
@@ -51,8 +53,7 @@ public class GameTaskContentActivity extends ServiceRegistryAppCompatActivity im
         this.locationTracker = provideServiceFromRegistry(ServiceNames.LOCATION_TRACKER);
         this.persistenceContext = provideServiceFromRegistry(ServiceNames.PERSISTENCE_CONTEXT);
         this.smsMessagingService = provideServiceFromRegistry(ServiceNames.SMS_MESSAGING_SERVICE);
-
-        this.locationTracker.addLocationListener(new LocationListener() {
+        this.locationListener = new LocationListener() {
             boolean locationDetermined = false;
             @Override
             public void onLocationChanged(Location location) {
@@ -81,7 +82,7 @@ public class GameTaskContentActivity extends ServiceRegistryAppCompatActivity im
             public void onProviderDisabled(String provider) {
                 Toast.makeText(getApplicationContext(), String.format("'%s' provider disabled", provider), Toast.LENGTH_SHORT).show();
             }
-        });
+        };
 
         this.locationDataOnInputCommittedListener = new InputContentElement.OnInputCommittedListener<LocationData>() {
             @Override
@@ -176,6 +177,9 @@ public class GameTaskContentActivity extends ServiceRegistryAppCompatActivity im
             if(this.taskData.getStatus() == GameTaskStatus.NotStarted)
                 this.taskData.setStatus(GameTaskStatus.Ongoing);
             this.taskData.addStatusChangedListener(this.taskStatusChangedListener);
+
+            if(GameTaskDataUtils.hasLocationComparisonInput(this.taskData))
+                this.locationTracker.addLocationListener(this.locationListener);
         }
 
         ViewGroup mainContent = (ViewGroup) this.findViewById(android.R.id.content);
@@ -194,6 +198,9 @@ public class GameTaskContentActivity extends ServiceRegistryAppCompatActivity im
             GameTaskBuilder.removeLocationInputListener(this.taskData, this.locationDataOnInputCommittedListener);
             GameTaskBuilder.removeTextInputComparisonListener(this.taskData, this.textOnInputCommittedListener);
             this.taskData.removeStatusChangedListener(this.taskStatusChangedListener);
+
+            if(GameTaskDataUtils.hasLocationComparisonInput(this.taskData))
+                this.locationTracker.removeLocationListener(this.locationListener);
         }
         this.persistenceContext.persist();
     }

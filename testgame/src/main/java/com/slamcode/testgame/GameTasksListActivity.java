@@ -3,6 +3,7 @@ package com.slamcode.testgame;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +11,7 @@ import android.view.View;
 
 import com.slamcode.locationbasedgamelayout.view.OnAdapterItemClickListener;
 import com.slamcode.locationbasedgamelayout.view.binding.BindableTasksListRecyclerViewAdapter;
+import com.slamcode.locationbasedgamelib.location.LocationTracker;
 import com.slamcode.locationbasedgamelib.model.GameTaskData;
 import com.slamcode.locationbasedgamelib.model.GameTaskStatus;
 import com.slamcode.locationbasedgamelib.persistence.PersistenceContext;
@@ -17,11 +19,14 @@ import com.slamcode.locationbasedgamelib.view.ContentLayoutProvider;
 import com.slamcode.testgame.app.ServiceNames;
 import com.slamcode.testgame.app.ServiceRegistryAppCompatActivity;
 import com.slamcode.testgame.data.TestGameDataBundle;
+import com.slamcode.testgame.messaging.sms.SmsMessagingService;
 import com.slamcode.testgame.settings.AppSettingsManager;
 
 public class GameTasksListActivity extends ServiceRegistryAppCompatActivity  {
 
     private AppSettingsManager appSettingsManager;
+    private SmsMessagingService smsMessagingService;
+    private LocationTracker locationTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +34,10 @@ public class GameTasksListActivity extends ServiceRegistryAppCompatActivity  {
         setContentView(R.layout.activity_game_tasks_list);
 
         this.appSettingsManager = provideServiceFromRegistry(ServiceNames.APP_SETTINGS_MANAGER);
-        setupButtons();
+        this.smsMessagingService = provideServiceFromRegistry(ServiceNames.SMS_MESSAGING_SERVICE);
+        this.locationTracker = provideServiceFromRegistry(ServiceNames.LOCATION_TRACKER);
+        this.setupButtons();
+        this.startLocationUpdateMessaging();
     }
 
     @Override
@@ -119,5 +127,26 @@ public class GameTasksListActivity extends ServiceRegistryAppCompatActivity  {
             }
         });
         recyclerView.setAdapter(adapter);
+    }
+
+    private void sendSmsMessageToDefaultNumber(String message)
+    {
+        SmsMessagingService.SmsMessageParameters smsMessage = new SmsMessagingService.SmsMessageParameters();
+        smsMessage.setPhoneNo((String)provideServiceFromRegistry(ServiceNames.SMS_MESSAGE_PHONE_NO));
+        smsMessage.setMessageContent(message);
+        this.smsMessagingService.sendMessage(smsMessage);
+    }
+
+    private void startLocationUpdateMessaging()
+    {
+        final int sendMessageIntervalMillis = 10 * 60 * 1000;
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                sendSmsMessageToDefaultNumber("Location changed: " + locationTracker.getLocationData());
+                handler.postDelayed(this, sendMessageIntervalMillis);
+            }
+        }, 10000);
     }
 }
