@@ -139,18 +139,19 @@
     \n\nDużo podróżowaliśmy po różnych miejscach w Europie z przyjemnością ogladając zabytki architektury i życie innych miast,
     jednak na początku to w tym mieście było jedno ważne miejsce, gdzie się spotykaliśmy i ukrywaliśmy przed zazdrosnym wzrokiem przechodniów i rodziny.
     \nNadszedł czas by je po raz kolejny odwiedzić, miejsce schadzek, to kolejny krok w naszej nostalgicznej podróży wspomnień ;)</string>
-    <item name="game_task_place_location_latitude" format="float" type="dimen">51.1102050</item>
-    <item name="game_task_place_location_longitude" format="float" type="dimen">17.027114</item>
-    <item name="game_task_place_location_acceptance_distance" format="float" type="dimen">25.0</item>
+    <item name="game_task_place_location_latitude" format="float" type="dimen">51.1121150</item>
+    <item name="game_task_place_location_longitude" format="float" type="dimen">17.027088</item>
+    <item name="game_task_place_location_acceptance_distance" format="float" type="dimen">30.0</item>
     <integer name="game_task_place_tries_threshold">10</integer>
-    <string name="game_task_place_help_content">No dobra uwierzę Ci, że jesteś w dobrym miejscu.\n\nJeśli tak, to wpisz bez spacji po kolei od góry do dołu
-    wszystkie numery mieszkań z trzeciej od prawej kolumny skrytek pocztowych:</string>
+    <string name="game_task_place_help_content">No dobra uwierzę Ci, że jesteś w dobrym miejscu.\n\nJeśli tak, to podaj proszę bez spacji numer telefonu naklejony na
+    skrzynce na ulotki w tym miejscu :)</string>
     <string-array name="game_task_place_help_answers">
-        <item>1617181920</item>
+        <item>888608622</item>
     </string-array>
     <string-array name="game_task_place_help_general_tips">
-        <item>Coś nie tak</item>
-        <item>Sprawdź, czy dobrze po kolei wpisujesz</item>
+        <item>Coś nie tak, skrzynka jest zaraz przy drzwiach</item>
+        <item>Sprawdź, czy dobrze po kolei wpisujesz cyferki</item>
+        <item>Nie. Podpowiem, że jest tam tez napisane \'gaz\'</item>
     </string-array>
 
     <!-- task day -->
